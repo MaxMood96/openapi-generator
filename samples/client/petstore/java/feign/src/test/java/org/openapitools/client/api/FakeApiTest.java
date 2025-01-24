@@ -2,7 +2,10 @@ package org.openapitools.client.api;
 
 import org.openapitools.client.ApiClient;
 import java.math.BigDecimal;
+import org.openapitools.client.model.ChildWithNullable;
 import org.openapitools.client.model.Client;
+import org.openapitools.client.model.EnumClass;
+import org.openapitools.client.model.FakeBigDecimalMap200Response;
 import java.io.File;
 import org.openapitools.client.model.FileSchemaTestClass;
 import org.openapitools.client.model.HealthCheckResult;
@@ -11,10 +14,13 @@ import java.time.OffsetDateTime;
 import org.openapitools.client.model.OuterComposite;
 import org.openapitools.client.model.OuterObjectWithEnumProperty;
 import org.openapitools.client.model.Pet;
+import org.openapitools.client.model.TestInlineFreeformAdditionalPropertiesRequest;
 import org.openapitools.client.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +36,19 @@ class FakeApiTest {
     @BeforeEach
     public void setup() {
         api = new ApiClient().buildClient(FakeApi.class);
+    }
+
+    
+    /**
+     * 
+     *
+     * for Java apache and Java native, test toUrlQueryString for maps with BegDecimal keys
+     */
+    @Test
+    void fakeBigDecimalMapTest() {
+        // FakeBigDecimalMap200Response response = api.fakeBigDecimalMap();
+
+        // TODO: test validations
     }
 
     
@@ -151,6 +170,20 @@ class FakeApiTest {
 
     
     /**
+     * test referenced additionalProperties
+     *
+     * 
+     */
+    @Test
+    void testAdditionalPropertiesReferenceTest() {
+        Map<String, Object> requestBody = null;
+        // api.testAdditionalPropertiesReference(requestBody);
+
+        // TODO: test validations
+    }
+
+    
+    /**
      * 
      *
      * For this test, the body has to be a binary file.
@@ -264,9 +297,10 @@ class FakeApiTest {
         String enumQueryString = null;
         Integer enumQueryInteger = null;
         Double enumQueryDouble = null;
+        List<EnumClass> enumQueryModelArray = null;
         List<String> enumFormStringArray = null;
         String enumFormString = null;
-        // api.testEnumParameters(enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble, enumFormStringArray, enumFormString);
+        // api.testEnumParameters(enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble, enumQueryModelArray, enumFormStringArray, enumFormString);
 
         // TODO: test validations
     }
@@ -289,7 +323,8 @@ class FakeApiTest {
             .enumQueryStringArray(null)
             .enumQueryString(null)
             .enumQueryInteger(null)
-            .enumQueryDouble(null);
+            .enumQueryDouble(null)
+            .enumQueryModelArray(null);
         // api.testEnumParameters(enumHeaderStringArray, enumHeaderString, enumFormStringArray, enumFormString, queryParams);
 
     // TODO: test validations
@@ -350,6 +385,20 @@ class FakeApiTest {
 
     
     /**
+     * test inline free-form additionalProperties
+     *
+     * 
+     */
+    @Test
+    void testInlineFreeformAdditionalPropertiesTest() {
+        TestInlineFreeformAdditionalPropertiesRequest testInlineFreeformAdditionalPropertiesRequest = null;
+        // api.testInlineFreeformAdditionalProperties(testInlineFreeformAdditionalPropertiesRequest);
+
+        // TODO: test validations
+    }
+
+    
+    /**
      * test json serialization of form data
      *
      * 
@@ -359,6 +408,20 @@ class FakeApiTest {
         String param = null;
         String param2 = null;
         // api.testJsonFormData(param, param2);
+
+        // TODO: test validations
+    }
+
+    
+    /**
+     * test nullable parent property
+     *
+     * 
+     */
+    @Test
+    void testNullableTest() {
+        ChildWithNullable childWithNullable = null;
+        // api.testNullable(childWithNullable);
 
         // TODO: test validations
     }
@@ -405,5 +468,19 @@ class FakeApiTest {
 
     // TODO: test validations
     }
+    
+    /**
+     * test referenced string map
+     *
+     * 
+     */
+    @Test
+    void testStringMapReferenceTest() {
+        Map<String, String> requestBody = null;
+        // api.testStringMapReference(requestBody);
+
+        // TODO: test validations
+    }
+
     
 }

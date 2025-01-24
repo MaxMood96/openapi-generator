@@ -20,12 +20,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import javax.validation.constraints.*;
-import javax.validation.Valid;
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 
 /**
  * Tag
@@ -34,29 +32,31 @@ import javax.validation.Valid;
   Tag.JSON_PROPERTY_ID,
   Tag.JSON_PROPERTY_NAME
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Tag {
   public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private Long id;
 
   public static final String JSON_PROPERTY_NAME = "name";
+  @jakarta.annotation.Nullable
   private String name;
 
   public Tag() {
   }
 
-  public Tag id(Long id) {
+  public Tag id(@jakarta.annotation.Nullable Long id) {
     
     this.id = id;
     return this;
   }
 
-   /**
+  /**
    * Get id
    * @return id
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+
   @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -67,23 +67,22 @@ public class Tag {
 
   @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setId(Long id) {
+  public void setId(@jakarta.annotation.Nullable Long id) {
     this.id = id;
   }
 
-
-  public Tag name(String name) {
+  public Tag name(@jakarta.annotation.Nullable String name) {
     
     this.name = name;
     return this;
   }
 
-   /**
+  /**
    * Get name
    * @return name
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+
   @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -94,10 +93,9 @@ public class Tag {
 
   @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setName(String name) {
+  public void setName(@jakarta.annotation.Nullable String name) {
     this.name = name;
   }
-
 
   @Override
   public boolean equals(Object o) {

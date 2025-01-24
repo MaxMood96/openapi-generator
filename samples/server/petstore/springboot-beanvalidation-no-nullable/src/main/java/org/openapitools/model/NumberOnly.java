@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -19,11 +20,10 @@ import javax.annotation.Generated;
  * NumberOnly
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class NumberOnly {
 
-  @JsonProperty("JustNumber")
-  private BigDecimal justNumber;
+  private @Nullable BigDecimal justNumber;
 
   public NumberOnly justNumber(BigDecimal justNumber) {
     this.justNumber = justNumber;
@@ -33,9 +33,10 @@ public class NumberOnly {
   /**
    * Get justNumber
    * @return justNumber
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
+  @JsonProperty("JustNumber")
   public BigDecimal getJustNumber() {
     return justNumber;
   }

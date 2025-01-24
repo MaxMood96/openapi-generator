@@ -17,12 +17,14 @@
 
 package org.openapitools.codegen.languages;
 
-import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.util.SchemaTypeUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.meta.features.DocumentationFeature;
+import org.openapitools.codegen.meta.features.SecurityFeature;
 import org.openapitools.codegen.model.ModelMap;
 import org.openapitools.codegen.model.ModelsMap;
 import org.openapitools.codegen.model.OperationMap;
@@ -41,31 +43,46 @@ public class TypeScriptAxiosClientCodegen extends AbstractTypeScriptClientCodege
     public static final String WITH_NODE_IMPORTS = "withNodeImports";
     public static final String STRING_ENUMS = "stringEnums";
     public static final String STRING_ENUMS_DESC = "Generate string enums instead of objects for enum values.";
+    public static final String USE_SQUARE_BRACKETS_IN_ARRAY_NAMES = "useSquareBracketsInArrayNames";
+    public static final String AXIOS_VERSION = "axiosVersion";
+    public static final String DEFAULT_AXIOS_VERSION = "^1.6.1";
 
+    @Getter @Setter
     protected String npmRepository = null;
     protected Boolean stringEnums = false;
+
+    @Getter @Setter
+    protected String axiosVersion = DEFAULT_AXIOS_VERSION;
 
     private String tsModelPackage = "";
 
     public TypeScriptAxiosClientCodegen() {
         super();
 
-        modifyFeatureSet(features -> features.includeDocumentationFeatures(DocumentationFeature.Readme));
+        modifyFeatureSet(features -> features
+                .includeDocumentationFeatures(DocumentationFeature.Readme)
+                .includeSecurityFeatures(SecurityFeature.BearerToken));
 
         // clear import mapping (from default generator) as TS does not use it
         // at the moment
         importMapping.clear();
+
+        reservedWords.add("options");
 
         outputFolder = "generated-code/typescript-axios";
         embeddedTemplateDir = templateDir = "typescript-axios";
 
         this.cliOptions.add(new CliOption(NPM_REPOSITORY, "Use this property to set an url of your private npmRepo in the package.json"));
         this.cliOptions.add(new CliOption(WITH_INTERFACES, "Setting this property to true will generate interfaces next to the default class implementations.", SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
-        this.cliOptions.add(new CliOption(SEPARATE_MODELS_AND_API, "Put the model and api in separate folders and in separate classes", SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
+        this.cliOptions.add(new CliOption(SEPARATE_MODELS_AND_API, "Put the model and api in separate folders and in separate classes. This requires in addition a value for 'apiPackage' and 'modelPackage'", SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
+        this.cliOptions.add(new CliOption(CodegenConstants.MODEL_PACKAGE, CodegenConstants.MODEL_PACKAGE_DESC));
+        this.cliOptions.add(new CliOption(CodegenConstants.API_PACKAGE, CodegenConstants.API_PACKAGE_DESC));
         this.cliOptions.add(new CliOption(WITHOUT_PREFIX_ENUMS, "Don't prefix enum names with class names", SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
         this.cliOptions.add(new CliOption(USE_SINGLE_REQUEST_PARAMETER, "Setting this property to true will generate functions with a single argument containing all API endpoint parameters instead of one argument per parameter.", SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
         this.cliOptions.add(new CliOption(WITH_NODE_IMPORTS, "Setting this property to true adds imports for NodeJS", SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
         this.cliOptions.add(new CliOption(STRING_ENUMS, STRING_ENUMS_DESC).defaultValue(String.valueOf(this.stringEnums)));
+        this.cliOptions.add(new CliOption(USE_SQUARE_BRACKETS_IN_ARRAY_NAMES, "Setting this property to true will add brackets to array attribute names, e.g. my_values[].", SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
+        this.cliOptions.add(new CliOption(AXIOS_VERSION, "Use this property to override the axios version in package.json").defaultValue(DEFAULT_AXIOS_VERSION));
         // Templates have no mapping between formatted property names and original base names so use only "original" and remove this option
         removeOption(CodegenConstants.MODEL_PROPERTY_NAMING);
     }
@@ -78,14 +95,6 @@ public class TypeScriptAxiosClientCodegen extends AbstractTypeScriptClientCodege
     @Override
     public String getHelp() {
         return "Generates a TypeScript client library using axios.";
-    }
-
-    public String getNpmRepository() {
-        return npmRepository;
-    }
-
-    public void setNpmRepository(String npmRepository) {
-        this.npmRepository = npmRepository;
     }
 
     private static String getRelativeToRoot(String path) {
@@ -145,11 +154,17 @@ public class TypeScriptAxiosClientCodegen extends AbstractTypeScriptClientCodege
             addNpmPackageGeneration();
         }
 
+        if (additionalProperties.containsKey(AXIOS_VERSION)) {
+            setAxiosVersion(additionalProperties.get(AXIOS_VERSION).toString());
+        }
+        additionalProperties.put("axiosVersion", getAxiosVersion());
+
     }
 
     @Override
     public OperationsMap postProcessOperationsWithModels(OperationsMap objs, List<ModelMap> allModels) {
         objs = super.postProcessOperationsWithModels(objs, allModels);
+        this.updateOperationParameterForEnum(objs);
         OperationMap vals = objs.getOperations();
         List<CodegenOperation> operations = vals.getOperation();
         /*
@@ -160,7 +175,22 @@ public class TypeScriptAxiosClientCodegen extends AbstractTypeScriptClientCodege
                 .filter(op -> op.hasConsumes)
                 .filter(op -> op.consumes.stream().anyMatch(opc -> opc.values().stream().anyMatch("multipart/form-data"::equals)))
                 .forEach(op -> op.vendorExtensions.putIfAbsent("multipartFormData", true));
+
         return objs;
+    }
+
+    private void updateOperationParameterForEnum(OperationsMap operations) {
+        // This method will add extra information as to whether or not we have enums and
+        // update their names with the operation.id prefixed.
+        // It will also set the uniqueId status if provided.
+        for (CodegenOperation op : operations.getOperations().getOperation()) {
+            for (CodegenParameter param : op.allParams) {
+                if (Boolean.TRUE.equals(param.isEnum)) {
+                    param.datatypeWithEnum = param.datatypeWithEnum
+                            .replace(param.enumName, op.operationIdCamelCase + param.enumName);
+                }
+            }
+        }
     }
 
     @Override
@@ -187,7 +217,7 @@ public class TypeScriptAxiosClientCodegen extends AbstractTypeScriptClientCodege
 
     @Override
     protected void addAdditionPropertiesToCodeGenModel(CodegenModel codegenModel, Schema schema) {
-        codegenModel.additionalPropertiesType = getTypeDeclaration(getAdditionalProperties(schema));
+        codegenModel.additionalPropertiesType = getTypeDeclaration(ModelUtils.getAdditionalProperties(schema));
         addImport(codegenModel, codegenModel.additionalPropertiesType);
     }
 
@@ -202,6 +232,11 @@ public class TypeScriptAxiosClientCodegen extends AbstractTypeScriptClientCodege
 
         for (ModelMap mo  : models) {
             CodegenModel cm = mo.getModel();
+
+            // Type is already any
+            if (cm.getAdditionalPropertiesIsAnyType() && "any".equals(cm.getAdditionalPropertiesType())) {
+                cm.setAdditionalPropertiesIsAnyType(false);
+            }
 
             // Deduce the model file name in kebab case
             cm.classFilename = cm.classname.replaceAll("([a-z0-9])([A-Z])", "$1-$2").toLowerCase(Locale.ROOT);
@@ -290,7 +325,7 @@ public class TypeScriptAxiosClientCodegen extends AbstractTypeScriptClientCodege
     }
 
     @Override
-    protected void addImport(ComposedSchema composed, Schema childSchema, CodegenModel model, String modelName) {
+    protected void addImport(Schema composed, Schema childSchema, CodegenModel model, String modelName) {
         // import everything (including child schema of a composed schema)
         addImport(model, modelName);
     }

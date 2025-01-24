@@ -20,14 +20,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import javax.validation.constraints.*;
-import javax.validation.Valid;
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 
 /**
  * EnumArrays
@@ -36,15 +35,15 @@ import javax.validation.Valid;
   EnumArrays.JSON_PROPERTY_JUST_SYMBOL,
   EnumArrays.JSON_PROPERTY_ARRAY_ENUM
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class EnumArrays {
   /**
    * Gets or Sets justSymbol
    */
   public enum JustSymbolEnum {
-    GREATER_THAN_OR_EQUAL_TO(">="),
+    GREATER_THAN_OR_EQUAL_TO(String.valueOf(">=")),
     
-    DOLLAR("$");
+    DOLLAR(String.valueOf("$"));
 
     private String value;
 
@@ -74,15 +73,16 @@ public class EnumArrays {
   }
 
   public static final String JSON_PROPERTY_JUST_SYMBOL = "just_symbol";
+  @jakarta.annotation.Nullable
   private JustSymbolEnum justSymbol;
 
   /**
    * Gets or Sets arrayEnum
    */
   public enum ArrayEnumEnum {
-    FISH("fish"),
+    FISH(String.valueOf("fish")),
     
-    CRAB("crab");
+    CRAB(String.valueOf("crab"));
 
     private String value;
 
@@ -112,23 +112,24 @@ public class EnumArrays {
   }
 
   public static final String JSON_PROPERTY_ARRAY_ENUM = "array_enum";
-  private List<ArrayEnumEnum> arrayEnum = null;
+  @jakarta.annotation.Nullable
+  private List<ArrayEnumEnum> arrayEnum = new ArrayList<>();
 
   public EnumArrays() {
   }
 
-  public EnumArrays justSymbol(JustSymbolEnum justSymbol) {
+  public EnumArrays justSymbol(@jakarta.annotation.Nullable JustSymbolEnum justSymbol) {
     
     this.justSymbol = justSymbol;
     return this;
   }
 
-   /**
+  /**
    * Get justSymbol
    * @return justSymbol
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+
   @JsonProperty(JSON_PROPERTY_JUST_SYMBOL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -139,12 +140,11 @@ public class EnumArrays {
 
   @JsonProperty(JSON_PROPERTY_JUST_SYMBOL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setJustSymbol(JustSymbolEnum justSymbol) {
+  public void setJustSymbol(@jakarta.annotation.Nullable JustSymbolEnum justSymbol) {
     this.justSymbol = justSymbol;
   }
 
-
-  public EnumArrays arrayEnum(List<ArrayEnumEnum> arrayEnum) {
+  public EnumArrays arrayEnum(@jakarta.annotation.Nullable List<ArrayEnumEnum> arrayEnum) {
     
     this.arrayEnum = arrayEnum;
     return this;
@@ -158,12 +158,12 @@ public class EnumArrays {
     return this;
   }
 
-   /**
+  /**
    * Get arrayEnum
    * @return arrayEnum
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+
   @JsonProperty(JSON_PROPERTY_ARRAY_ENUM)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -174,10 +174,9 @@ public class EnumArrays {
 
   @JsonProperty(JSON_PROPERTY_ARRAY_ENUM)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setArrayEnum(List<ArrayEnumEnum> arrayEnum) {
+  public void setArrayEnum(@jakarta.annotation.Nullable List<ArrayEnumEnum> arrayEnum) {
     this.arrayEnum = arrayEnum;
   }
-
 
   @Override
   public boolean equals(Object o) {

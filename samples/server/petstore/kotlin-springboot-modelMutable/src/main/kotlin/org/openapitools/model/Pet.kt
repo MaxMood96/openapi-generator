@@ -1,10 +1,12 @@
 package org.openapitools.model
 
 import java.util.Objects
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 import org.openapitools.model.Category
 import org.openapitools.model.Tag
+import java.io.Serializable
 import javax.validation.constraints.DecimalMax
 import javax.validation.constraints.DecimalMin
 import javax.validation.constraints.Email
@@ -28,36 +30,47 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class Pet(
 
     @Schema(example = "doggie", required = true, description = "")
-    @field:JsonProperty("name", required = true) var name: kotlin.String,
+    @get:JsonProperty("name", required = true) var name: kotlin.String,
 
     @Schema(example = "null", required = true, description = "")
-    @field:JsonProperty("photoUrls", required = true) var photoUrls: kotlin.collections.MutableList<kotlin.String>,
+    @get:JsonProperty("photoUrls", required = true) var photoUrls: kotlin.collections.MutableList<kotlin.String>,
 
     @Schema(example = "null", description = "")
-    @field:JsonProperty("id") var id: kotlin.Long? = null,
-
-    @field:Valid
-    @Schema(example = "null", description = "")
-    @field:JsonProperty("category") var category: Category? = null,
+    @get:JsonProperty("id") var id: kotlin.Long? = null,
 
     @field:Valid
     @Schema(example = "null", description = "")
-    @field:JsonProperty("tags") var tags: kotlin.collections.MutableList<Tag>? = null,
+    @get:JsonProperty("category") var category: Category? = null,
+
+    @field:Valid
+    @Schema(example = "null", description = "")
+    @get:JsonProperty("tags") var tags: kotlin.collections.MutableList<Tag>? = null,
 
     @Schema(example = "null", description = "pet status in the store")
-    @field:JsonProperty("status") var status: Pet.Status? = null
-) {
+    @get:JsonProperty("status") var status: Pet.Status? = null
+    ) : Serializable{
 
     /**
     * pet status in the store
     * Values: available,pending,sold
     */
-    enum class Status(val value: kotlin.String) {
+    enum class Status(@get:JsonValue val value: kotlin.String) {
 
-        @JsonProperty("available") available("available"),
-        @JsonProperty("pending") pending("pending"),
-        @JsonProperty("sold") sold("sold")
+        available("available"),
+        pending("pending"),
+        sold("sold");
+
+        companion object {
+            @JvmStatic
+            @JsonCreator
+            fun forValue(value: kotlin.String): Status {
+                return values().first{it -> it.value == value}
+            }
+        }
     }
 
+    companion object {
+        private const val serialVersionUID: kotlin.Long = 1
+    }
 }
 

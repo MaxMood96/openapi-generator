@@ -20,26 +20,26 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * ArrayOfNumberOnly
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ArrayOfNumberOnly {
   public static final String SERIALIZED_NAME_ARRAY_NUMBER = "ArrayNumber";
   @SerializedName(SERIALIZED_NAME_ARRAY_NUMBER)
-  private List<BigDecimal> arrayNumber = null;
+  @javax.annotation.Nullable
+  private List<BigDecimal> arrayNumber = new ArrayList<>();
 
   public ArrayOfNumberOnly() {
   }
 
-  public ArrayOfNumberOnly arrayNumber(List<BigDecimal> arrayNumber) {
+  public ArrayOfNumberOnly arrayNumber(@javax.annotation.Nullable List<BigDecimal> arrayNumber) {
     
     this.arrayNumber = arrayNumber;
     return this;
@@ -53,22 +53,20 @@ public class ArrayOfNumberOnly {
     return this;
   }
 
-   /**
+  /**
    * Get arrayNumber
    * @return arrayNumber
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
 
   public List<BigDecimal> getArrayNumber() {
     return arrayNumber;
   }
 
 
-  public void setArrayNumber(List<BigDecimal> arrayNumber) {
+  public void setArrayNumber(@javax.annotation.Nullable List<BigDecimal> arrayNumber) {
     this.arrayNumber = arrayNumber;
   }
-
 
   @Override
   public boolean equals(Object o) {

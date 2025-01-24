@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -37,33 +35,36 @@ import org.hibernate.validator.constraints.*;
   OuterComposite.JSON_PROPERTY_MY_STRING,
   OuterComposite.JSON_PROPERTY_MY_BOOLEAN
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class OuterComposite {
   public static final String JSON_PROPERTY_MY_NUMBER = "my_number";
+  @javax.annotation.Nullable
   private BigDecimal myNumber;
 
   public static final String JSON_PROPERTY_MY_STRING = "my_string";
+  @javax.annotation.Nullable
   private String myString;
 
   public static final String JSON_PROPERTY_MY_BOOLEAN = "my_boolean";
+  @javax.annotation.Nullable
   private Boolean myBoolean;
 
   public OuterComposite() {
   }
 
-  public OuterComposite myNumber(BigDecimal myNumber) {
+  public OuterComposite myNumber(@javax.annotation.Nullable BigDecimal myNumber) {
     
     this.myNumber = myNumber;
     return this;
   }
 
-   /**
+  /**
    * Get myNumber
    * @return myNumber
-  **/
+   */
   @javax.annotation.Nullable
   @Valid
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_MY_NUMBER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -74,23 +75,22 @@ public class OuterComposite {
 
   @JsonProperty(JSON_PROPERTY_MY_NUMBER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMyNumber(BigDecimal myNumber) {
+  public void setMyNumber(@javax.annotation.Nullable BigDecimal myNumber) {
     this.myNumber = myNumber;
   }
 
-
-  public OuterComposite myString(String myString) {
+  public OuterComposite myString(@javax.annotation.Nullable String myString) {
     
     this.myString = myString;
     return this;
   }
 
-   /**
+  /**
    * Get myString
    * @return myString
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_MY_STRING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -101,23 +101,22 @@ public class OuterComposite {
 
   @JsonProperty(JSON_PROPERTY_MY_STRING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMyString(String myString) {
+  public void setMyString(@javax.annotation.Nullable String myString) {
     this.myString = myString;
   }
 
-
-  public OuterComposite myBoolean(Boolean myBoolean) {
+  public OuterComposite myBoolean(@javax.annotation.Nullable Boolean myBoolean) {
     
     this.myBoolean = myBoolean;
     return this;
   }
 
-   /**
+  /**
    * Get myBoolean
    * @return myBoolean
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_MY_BOOLEAN)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -128,10 +127,9 @@ public class OuterComposite {
 
   @JsonProperty(JSON_PROPERTY_MY_BOOLEAN)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMyBoolean(Boolean myBoolean) {
+  public void setMyBoolean(@javax.annotation.Nullable Boolean myBoolean) {
     this.myBoolean = myBoolean;
   }
-
 
   @Override
   public boolean equals(Object o) {

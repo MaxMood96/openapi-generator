@@ -7,3 +7,5 @@ additionalProperties:
   artifactId: petstore-okhttp-gson
   hideGenerationTimestamp: "true"
   supportStreaming: true
+  serializableModel: true
+  enumPropertyNaming: legacy

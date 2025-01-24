@@ -2,6 +2,7 @@ package org.openapitools.model
 
 import java.util.Objects
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 import javax.validation.constraints.DecimalMax
 import javax.validation.constraints.DecimalMin
 import javax.validation.constraints.Email
@@ -22,14 +23,17 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class ModelApiResponse(
 
     @Schema(example = "null", description = "")
-    @field:JsonProperty("code") val code: kotlin.Int? = null,
+    @get:JsonProperty("code") val code: kotlin.Int? = null,
 
     @Schema(example = "null", description = "")
-    @field:JsonProperty("type") val type: kotlin.String? = null,
+    @get:JsonProperty("type") val type: kotlin.String? = null,
 
     @Schema(example = "null", description = "")
-    @field:JsonProperty("message") val message: kotlin.String? = null
-) {
+    @get:JsonProperty("message") val message: kotlin.String? = null
+    ) : Serializable{
 
+    companion object {
+        private const val serialVersionUID: kotlin.Long = 1
+    }
 }
 

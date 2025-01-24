@@ -13,8 +13,10 @@
 
 package org.openapitools.client.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,13 +24,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
+import org.openapitools.client.ApiClient;
 /**
  * EnumArrays
  */
@@ -36,15 +38,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   EnumArrays.JSON_PROPERTY_JUST_SYMBOL,
   EnumArrays.JSON_PROPERTY_ARRAY_ENUM
 })
-@javax.annotation.processing.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class EnumArrays {
   /**
    * Gets or Sets justSymbol
    */
   public enum JustSymbolEnum {
-    GREATER_THAN_OR_EQUAL_TO(">="),
+    GREATER_THAN_OR_EQUAL_TO(String.valueOf(">=")),
     
-    DOLLAR("$");
+    DOLLAR(String.valueOf("$"));
 
     private String value;
 
@@ -74,15 +76,16 @@ public class EnumArrays {
   }
 
   public static final String JSON_PROPERTY_JUST_SYMBOL = "just_symbol";
+  @javax.annotation.Nullable
   private JustSymbolEnum justSymbol;
 
   /**
    * Gets or Sets arrayEnum
    */
   public enum ArrayEnumEnum {
-    FISH("fish"),
+    FISH(String.valueOf("fish")),
     
-    CRAB("crab");
+    CRAB(String.valueOf("crab"));
 
     private String value;
 
@@ -112,25 +115,24 @@ public class EnumArrays {
   }
 
   public static final String JSON_PROPERTY_ARRAY_ENUM = "array_enum";
-  private List<ArrayEnumEnum> arrayEnum = null;
+  @javax.annotation.Nullable
+  private List<ArrayEnumEnum> arrayEnum = new ArrayList<>();
 
   public EnumArrays() { 
   }
 
-  public EnumArrays justSymbol(JustSymbolEnum justSymbol) {
+  public EnumArrays justSymbol(@javax.annotation.Nullable JustSymbolEnum justSymbol) {
     this.justSymbol = justSymbol;
     return this;
   }
 
-   /**
+  /**
    * Get justSymbol
    * @return justSymbol
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_JUST_SYMBOL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
   public JustSymbolEnum getJustSymbol() {
     return justSymbol;
   }
@@ -138,12 +140,12 @@ public class EnumArrays {
 
   @JsonProperty(JSON_PROPERTY_JUST_SYMBOL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setJustSymbol(JustSymbolEnum justSymbol) {
+  public void setJustSymbol(@javax.annotation.Nullable JustSymbolEnum justSymbol) {
     this.justSymbol = justSymbol;
   }
 
 
-  public EnumArrays arrayEnum(List<ArrayEnumEnum> arrayEnum) {
+  public EnumArrays arrayEnum(@javax.annotation.Nullable List<ArrayEnumEnum> arrayEnum) {
     this.arrayEnum = arrayEnum;
     return this;
   }
@@ -156,15 +158,13 @@ public class EnumArrays {
     return this;
   }
 
-   /**
+  /**
    * Get arrayEnum
    * @return arrayEnum
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_ARRAY_ENUM)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
   public List<ArrayEnumEnum> getArrayEnum() {
     return arrayEnum;
   }
@@ -172,7 +172,7 @@ public class EnumArrays {
 
   @JsonProperty(JSON_PROPERTY_ARRAY_ENUM)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setArrayEnum(List<ArrayEnumEnum> arrayEnum) {
+  public void setArrayEnum(@javax.annotation.Nullable List<ArrayEnumEnum> arrayEnum) {
     this.arrayEnum = arrayEnum;
   }
 
@@ -219,5 +219,53 @@ public class EnumArrays {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
+  }
+
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @param prefix prefix of the query string
+   * @return URL query string
+   */
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
+    }
+
+    StringJoiner joiner = new StringJoiner("&");
+
+    // add `just_symbol` to the URL query string
+    if (getJustSymbol() != null) {
+      joiner.add(String.format("%sjust_symbol%s=%s", prefix, suffix, URLEncoder.encode(ApiClient.valueToString(getJustSymbol()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `array_enum` to the URL query string
+    if (getArrayEnum() != null) {
+      for (int i = 0; i < getArrayEnum().size(); i++) {
+        joiner.add(String.format("%sarray_enum%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix),
+            URLEncoder.encode(ApiClient.valueToString(getArrayEnum().get(i)), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+      }
+    }
+
+    return joiner.toString();
+  }
 }
 

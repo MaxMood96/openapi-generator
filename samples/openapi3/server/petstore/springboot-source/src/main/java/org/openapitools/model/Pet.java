@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.openapitools.model.Category;
 import org.openapitools.model.Tag;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -22,25 +24,20 @@ import javax.annotation.Generated;
  * A pet for sale in the pet store
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Pet {
 
-  @JsonProperty("id")
-  private Long id;
+  private @Nullable Long id;
 
-  @JsonProperty("category")
-  private Category category;
+  private @Nullable Category category;
 
-  @JsonProperty("name")
   private String name;
 
-  @JsonProperty("photoUrls")
   @Valid
   private List<String> photoUrls = new ArrayList<>();
 
-  @JsonProperty("tags")
   @Valid
-  private List<Tag> tags = null;
+  private List<@Valid Tag> tags = new ArrayList<>();
 
   /**
    * pet status in the store
@@ -79,8 +76,20 @@ public class Pet {
     }
   }
 
-  @JsonProperty("status")
-  private StatusEnum status;
+  @Deprecated
+  private @Nullable StatusEnum status;
+
+  public Pet() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public Pet(String name, List<String> photoUrls) {
+    this.name = name;
+    this.photoUrls = photoUrls;
+  }
 
   public Pet id(Long id) {
     this.id = id;
@@ -90,8 +99,9 @@ public class Pet {
   /**
    * Get id
    * @return id
-  */
+   */
   
+  @JsonProperty("id")
   public Long getId() {
     return id;
   }
@@ -108,8 +118,9 @@ public class Pet {
   /**
    * Get category
    * @return category
-  */
+   */
   @Valid 
+  @JsonProperty("category")
   public Category getCategory() {
     return category;
   }
@@ -126,8 +137,9 @@ public class Pet {
   /**
    * Get name
    * @return name
-  */
+   */
   @NotNull 
+  @JsonProperty("name")
   public String getName() {
     return name;
   }
@@ -142,6 +154,9 @@ public class Pet {
   }
 
   public Pet addPhotoUrlsItem(String photoUrlsItem) {
+    if (this.photoUrls == null) {
+      this.photoUrls = new ArrayList<>();
+    }
     this.photoUrls.add(photoUrlsItem);
     return this;
   }
@@ -149,8 +164,9 @@ public class Pet {
   /**
    * Get photoUrls
    * @return photoUrls
-  */
+   */
   @NotNull 
+  @JsonProperty("photoUrls")
   public List<String> getPhotoUrls() {
     return photoUrls;
   }
@@ -159,7 +175,7 @@ public class Pet {
     this.photoUrls = photoUrls;
   }
 
-  public Pet tags(List<Tag> tags) {
+  public Pet tags(List<@Valid Tag> tags) {
     this.tags = tags;
     return this;
   }
@@ -175,13 +191,14 @@ public class Pet {
   /**
    * Get tags
    * @return tags
-  */
+   */
   @Valid 
-  public List<Tag> getTags() {
+  @JsonProperty("tags")
+  public List<@Valid Tag> getTags() {
     return tags;
   }
 
-  public void setTags(List<Tag> tags) {
+  public void setTags(List<@Valid Tag> tags) {
     this.tags = tags;
   }
 
@@ -193,12 +210,19 @@ public class Pet {
   /**
    * pet status in the store
    * @return status
-  */
+   * @deprecated
+   */
   
+  @JsonProperty("status")
+  @Deprecated
   public StatusEnum getStatus() {
     return status;
   }
 
+  /**
+   * @deprecated
+   */
+  @Deprecated
   public void setStatus(StatusEnum status) {
     this.status = status;
   }

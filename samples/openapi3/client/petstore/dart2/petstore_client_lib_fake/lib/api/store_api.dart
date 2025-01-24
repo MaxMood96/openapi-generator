@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -117,7 +117,7 @@ class StoreApi {
 
   /// Find purchase order by ID
   ///
-  /// For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
+  /// For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -153,7 +153,7 @@ class StoreApi {
 
   /// Find purchase order by ID
   ///
-  /// For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
+  /// For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions
   ///
   /// Parameters:
   ///

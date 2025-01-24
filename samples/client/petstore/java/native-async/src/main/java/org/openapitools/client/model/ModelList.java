@@ -13,8 +13,10 @@
 
 package org.openapitools.client.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,39 +24,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
+import org.openapitools.client.ApiClient;
 /**
  * ModelList
  */
 @JsonPropertyOrder({
   ModelList.JSON_PROPERTY_123LIST
 })
-@javax.annotation.processing.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ModelList {
   public static final String JSON_PROPERTY_123LIST = "123-list";
+  @javax.annotation.Nullable
   private String _123list;
 
   public ModelList() { 
   }
 
-  public ModelList _123list(String _123list) {
+  public ModelList _123list(@javax.annotation.Nullable String _123list) {
     this._123list = _123list;
     return this;
   }
 
-   /**
+  /**
    * Get _123list
    * @return _123list
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_123LIST)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
   public String get123list() {
     return _123list;
   }
@@ -62,7 +63,7 @@ public class ModelList {
 
   @JsonProperty(JSON_PROPERTY_123LIST)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void set123list(String _123list) {
+  public void set123list(@javax.annotation.Nullable String _123list) {
     this._123list = _123list;
   }
 
@@ -107,5 +108,44 @@ public class ModelList {
     return o.toString().replace("\n", "\n    ");
   }
 
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
+  }
+
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @param prefix prefix of the query string
+   * @return URL query string
+   */
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
+    }
+
+    StringJoiner joiner = new StringJoiner("&");
+
+    // add `123-list` to the URL query string
+    if (get123list() != null) {
+      joiner.add(String.format("%s123-list%s=%s", prefix, suffix, URLEncoder.encode(ApiClient.valueToString(get123list()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    return joiner.toString();
+  }
 }
 

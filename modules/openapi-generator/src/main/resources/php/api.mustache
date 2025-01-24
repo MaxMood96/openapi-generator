@@ -69,20 +69,20 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/consumes}}        ],{{/operation}}
     ];
 
-/**
+    /**
      * @param ClientInterface $client
      * @param Configuration   $config
      * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
-        ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        ?ClientInterface $client = null,
+        ?Configuration $config = null,
+        ?HeaderSelector $selector = null,
+        int $hostIndex = 0
     ) {
         $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
+        $this->config = $config ?: Configuration::getDefaultConfiguration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
     }
@@ -152,7 +152,7 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/-last}}
 {{/servers}}
 {{#allParams}}
-     * @param  {{{dataType}}} ${{paramName}}{{#description}} {{.}}{{/description}}{{^description}} {{paramName}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
+     * @param  {{{dataType}}}{{^required}}|null{{/required}} ${{paramName}}{{#description}} {{.}}{{/description}}{{^description}} {{paramName}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
 {{#servers}}
 {{#-first}}
@@ -162,7 +162,7 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/servers}}
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['{{{operationId}}}'] to see the possible values for this operation
      *
-     * @throws \{{invokerPackage}}\ApiException on non-2xx response
+     * @throws \{{invokerPackage}}\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return {{#returnType}}{{#responses}}{{#dataType}}{{^-first}}|{{/-first}}{{/dataType}}{{{dataType}}}{{/responses}}{{/returnType}}{{^returnType}}void{{/returnType}}
     {{#isDeprecated}}
@@ -211,7 +211,7 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/-last}}
 {{/servers}}
 {{#allParams}}
-     * @param  {{{dataType}}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
+     * @param  {{{dataType}}}{{^required}}|null{{/required}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
 {{#servers}}
 {{#-first}}
@@ -221,7 +221,7 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/servers}}
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['{{{operationId}}}'] to see the possible values for this operation
      *
-     * @throws \{{invokerPackage}}\ApiException on non-2xx response
+     * @throws \{{invokerPackage}}\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of {{#returnType}}{{#responses}}{{#dataType}}{{^-first}}|{{/-first}}{{/dataType}}{{{dataType}}}{{/responses}}{{/returnType}}{{^returnType}}null{{/returnType}}, HTTP status code, HTTP response headers (array of strings)
     {{#isDeprecated}}
@@ -254,18 +254,6 @@ use {{invokerPackage}}\ObjectSerializer;
 
             $statusCode = $response->getStatusCode();
 
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
             {{#returnType}}
             {{#responses}}
             {{#-first}}
@@ -279,7 +267,19 @@ use {{invokerPackage}}\ObjectSerializer;
                     } else {
                         $content = (string) $response->getBody();
                         if ('{{{dataType}}}' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -294,13 +294,38 @@ use {{invokerPackage}}\ObjectSerializer;
             {{/-last}}
             {{/responses}}
 
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
             $returnType = '{{{returnType}}}';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ($returnType !== 'string') {
-                    $content = json_decode($content);
+                    try {
+                        $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                    } catch (\JsonException $exception) {
+                        throw new ApiException(
+                            sprintf(
+                                'Error JSON decoding server response (%s)',
+                                $request->getUri()
+                            ),
+                            $statusCode,
+                            $response->getHeaders(),
+                            $content
+                        );
+                    }
                 }
             }
 
@@ -370,7 +395,7 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/-last}}
 {{/servers}}
 {{#allParams}}
-     * @param  {{{dataType}}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
+     * @param  {{{dataType}}}{{^required}}|null{{/required}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
 {{#servers}}
 {{#-first}}
@@ -432,7 +457,7 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/-last}}
 {{/servers}}
 {{#allParams}}
-     * @param  {{{dataType}}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
+     * @param  {{{dataType}}}{{^required}}|null{{/required}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
 {{#servers}}
 {{#-first}}
@@ -522,7 +547,7 @@ use {{invokerPackage}}\ObjectSerializer;
 {{/-last}}
 {{/servers}}
 {{#allParams}}
-     * @param  {{{dataType}}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
+     * @param  {{{dataType}}}{{^required}}|null{{/required}} ${{paramName}}{{#description}} {{.}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}{{#isDeprecated}} (deprecated){{/isDeprecated}}
 {{/allParams}}
 {{#servers}}
 {{#-first}}
@@ -663,6 +688,9 @@ use {{invokerPackage}}\ObjectSerializer;
         }
         {{/formParams}}
 
+        {{#isMultipart}}
+        $multipart = true;
+        {{/isMultipart}}
         $headers = $this->headerSelector->selectHeaders(
             [{{#produces}}'{{{mediaType}}}', {{/produces}}],
             $contentType,
@@ -674,7 +702,7 @@ use {{invokerPackage}}\ObjectSerializer;
         if (isset(${{paramName}})) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization(${{paramName}}));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization(${{paramName}}));
             } else {
                 $httpBody = ${{paramName}};
             }
@@ -699,7 +727,7 @@ use {{invokerPackage}}\ObjectSerializer;
 
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
-                $httpBody = \GuzzleHttp\json_encode($formParams);
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams);

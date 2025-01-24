@@ -17,66 +17,110 @@
 
 package org.openapitools.codegen.languages;
 
-import com.samskivert.mustache.Mustache;
-import com.samskivert.mustache.Template;
-import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
-import io.swagger.v3.parser.util.SchemaTypeUtil;
-import joptsimple.internal.Strings;
-import org.openapitools.codegen.*;
-import org.openapitools.codegen.meta.features.*;
-import org.openapitools.codegen.model.ModelMap;
-import org.openapitools.codegen.model.ModelsMap;
-import org.openapitools.codegen.model.OperationMap;
-import org.openapitools.codegen.model.OperationsMap;
-import org.openapitools.codegen.utils.ModelUtils;
-import org.openapitools.codegen.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import static org.openapitools.codegen.utils.StringUtils.camelize;
+import org.openapitools.codegen.CliOption;
+import org.openapitools.codegen.CodegenConfig;
+import org.openapitools.codegen.CodegenConstants;
+import org.openapitools.codegen.CodegenModel;
+import org.openapitools.codegen.CodegenOperation;
+import org.openapitools.codegen.CodegenProperty;
+import org.openapitools.codegen.CodegenParameter;
+import org.openapitools.codegen.CodegenType;
+import org.openapitools.codegen.SupportingFile;
+import org.openapitools.codegen.VendorExtension;
+import org.openapitools.codegen.meta.features.ClientModificationFeature;
+import org.openapitools.codegen.meta.features.DocumentationFeature;
+import org.openapitools.codegen.meta.features.GlobalFeature;
+import org.openapitools.codegen.meta.features.ParameterFeature;
+import org.openapitools.codegen.meta.features.SchemaSupportFeature;
+import org.openapitools.codegen.meta.features.SecurityFeature;
+import org.openapitools.codegen.meta.features.WireFormatFeature;
+import org.openapitools.codegen.model.ModelMap;
+import org.openapitools.codegen.model.ModelsMap;
+import org.openapitools.codegen.model.OperationMap;
+import org.openapitools.codegen.model.OperationsMap;
+import org.openapitools.codegen.templating.mustache.ReplaceAllLambda;
+import org.openapitools.codegen.utils.ModelUtils;
+import org.openapitools.codegen.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableMap;
+import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.Mustache.Lambda;
+import com.samskivert.mustache.Template;
+
+import io.swagger.v3.oas.models.media.Discriminator;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.parser.util.SchemaTypeUtil;
+import joptsimple.internal.Strings;
+import lombok.AccessLevel;
+import lombok.Setter;
 
 public class RustClientCodegen extends AbstractRustCodegen implements CodegenConfig {
     private final Logger LOGGER = LoggerFactory.getLogger(RustClientCodegen.class);
-    private boolean useSingleRequestParameter = false;
-    private boolean supportAsync = true;
+    @Setter(AccessLevel.PRIVATE) private boolean useSingleRequestParameter = false;
+    @Setter(AccessLevel.PRIVATE) private boolean supportAsync = true;
+    @Setter(AccessLevel.PRIVATE) private boolean supportMiddleware = false;
+    @Setter(AccessLevel.PRIVATE) private boolean supportTokenSource = false;
     private boolean supportMultipleResponses = false;
     private boolean withAWSV4Signature = false;
-    private boolean preferUnsignedInt = false;
-    private boolean bestFitInt = false;
+    @Setter private boolean preferUnsignedInt = false;
+    @Setter private boolean bestFitInt = false;
+    @Setter private boolean avoidBoxedModels = false;
 
     public static final String PACKAGE_NAME = "packageName";
+    public static final String EXTERN_CRATE_NAME = "externCrateName";
     public static final String PACKAGE_VERSION = "packageVersion";
     public static final String HYPER_LIBRARY = "hyper";
+    public static final String HYPER0X_LIBRARY = "hyper0x";
     public static final String REQWEST_LIBRARY = "reqwest";
+    public static final String REQWEST_TRAIT_LIBRARY = "reqwest-trait";
+    public static final String REQWEST_TRAIT_LIBRARY_ATTR = "reqwestTrait";
     public static final String SUPPORT_ASYNC = "supportAsync";
+    public static final String SUPPORT_MIDDLEWARE = "supportMiddleware";
+    public static final String SUPPORT_TOKEN_SOURCE = "supportTokenSource";
     public static final String SUPPORT_MULTIPLE_RESPONSES = "supportMultipleResponses";
     public static final String PREFER_UNSIGNED_INT = "preferUnsignedInt";
     public static final String BEST_FIT_INT = "bestFitInt";
+    public static final String AVOID_BOXED_MODELS = "avoidBoxedModels";
+    public static final String TOP_LEVEL_API_CLIENT = "topLevelApiClient";
+    public static final String MOCKALL = "mockall";
+    public static final String BON_BUILDER = "useBonBuilder";
 
-    protected String packageName = "openapi";
-    protected String packageVersion = "1.0.0";
+    @Setter protected String packageName = "openapi";
+    @Setter protected String packageVersion = "1.0.0";
     protected String apiDocPath = "docs/";
     protected String modelDocPath = "docs/";
     protected String apiFolder = "src/apis";
     protected String modelFolder = "src/models";
 
+    @Override
     public CodegenType getTag() {
         return CodegenType.CLIENT;
     }
 
+    @Override
     public String getName() {
         return "rust";
     }
 
+    @Override
     public String getHelp() {
         return "Generates a Rust client library (beta).";
     }
@@ -89,8 +133,10 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
                 .wireFormatFeatures(EnumSet.of(WireFormatFeature.JSON, WireFormatFeature.XML, WireFormatFeature.Custom))
                 .securityFeatures(EnumSet.of(
                         SecurityFeature.BasicAuth,
+                        SecurityFeature.BearerToken,
                         SecurityFeature.ApiKey,
-                        SecurityFeature.OAuth2_Implicit
+                        SecurityFeature.OAuth2_Implicit,
+                        SecurityFeature.AWSV4Signature
                 ))
                 .excludeGlobalFeatures(
                         GlobalFeature.XMLStructureDefinitions,
@@ -103,6 +149,9 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
                 )
                 .excludeParameterFeatures(
                         ParameterFeature.Cookie
+                )
+                .includeSchemaSupportFeatures(
+                        SchemaSupportFeature.oneOf
                 )
                 .includeClientModificationFeatures(
                         ClientModificationFeature.BasePath,
@@ -142,11 +191,13 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         typeMapping.clear();
         typeMapping.put("integer", "i32");
         typeMapping.put("long", "i64");
-        typeMapping.put("number", "f32");
+        typeMapping.put("number", "f64");
         typeMapping.put("float", "f32");
         typeMapping.put("double", "f64");
         typeMapping.put("boolean", "bool");
         typeMapping.put("string", "String");
+        typeMapping.put("array", "Vec");
+        typeMapping.put("map", "std::collections::HashMap");
         typeMapping.put("UUID", "uuid::Uuid");
         typeMapping.put("URI", "String");
         typeMapping.put("date", "string");
@@ -175,7 +226,11 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
                 .defaultValue(Boolean.FALSE.toString()));
         cliOptions.add(new CliOption(SUPPORT_ASYNC, "If set, generate async function call instead. This option is for 'reqwest' library only", SchemaTypeUtil.BOOLEAN_TYPE)
                 .defaultValue(Boolean.TRUE.toString()));
-        cliOptions.add(new CliOption(SUPPORT_MULTIPLE_RESPONSES, "If set, return type wraps an enum of all possible 2xx schemas. This option is for 'reqwest' library only", SchemaTypeUtil.BOOLEAN_TYPE)
+        cliOptions.add(new CliOption(SUPPORT_MIDDLEWARE, "If set, add support for reqwest-middleware. This option is for 'reqwest' and 'reqwest-trait' library only", SchemaTypeUtil.BOOLEAN_TYPE)
+                .defaultValue(Boolean.FALSE.toString()));
+        cliOptions.add(new CliOption(SUPPORT_TOKEN_SOURCE, "If set, add support for google-cloud-token. This option is for 'reqwest' and 'reqwest-trait' library only and requires the 'supportAsync' option", SchemaTypeUtil.BOOLEAN_TYPE)
+                .defaultValue(Boolean.FALSE.toString()));
+        cliOptions.add(new CliOption(SUPPORT_MULTIPLE_RESPONSES, "If set, return type wraps an enum of all possible 2xx schemas. This option is for 'reqwest' and 'reqwest-trait' library only", SchemaTypeUtil.BOOLEAN_TYPE)
                 .defaultValue(Boolean.FALSE.toString()));
         cliOptions.add(new CliOption(CodegenConstants.ENUM_NAME_SUFFIX, CodegenConstants.ENUM_NAME_SUFFIX_DESC).defaultValue(this.enumSuffix));
         cliOptions.add(new CliOption(CodegenConstants.WITH_AWSV4_SIGNATURE_COMMENT, CodegenConstants.WITH_AWSV4_SIGNATURE_COMMENT_DESC, SchemaTypeUtil.BOOLEAN_TYPE)
@@ -184,9 +239,19 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
                 .defaultValue(Boolean.FALSE.toString()));
         cliOptions.add(new CliOption(BEST_FIT_INT, "Use best fitting integer type where minimum or maximum is set", SchemaTypeUtil.BOOLEAN_TYPE)
                 .defaultValue(Boolean.FALSE.toString()));
+        cliOptions.add(new CliOption(AVOID_BOXED_MODELS, "If set, `Box<T>` will not be used for models", SchemaTypeUtil.BOOLEAN_TYPE)
+                .defaultValue(Boolean.FALSE.toString()));
+        cliOptions.add(new CliOption(MOCKALL, "Adds `#[automock]` from the mockall crate to api traits. This option is for 'reqwest-trait' library only", SchemaTypeUtil.BOOLEAN_TYPE)
+                .defaultValue(Boolean.FALSE.toString()));
+        cliOptions.add(new CliOption(TOP_LEVEL_API_CLIENT, "Creates a top level `Api` trait and `ApiClient` struct that contain all Apis. This option is for 'reqwest-trait' library only", SchemaTypeUtil.BOOLEAN_TYPE)
+                .defaultValue(Boolean.FALSE.toString()));
+        cliOptions.add(new CliOption(BON_BUILDER, "Use the bon crate for building parameter types. This option is for the 'reqwest-trait' library only", SchemaTypeUtil.BOOLEAN_TYPE)
+                .defaultValue(Boolean.FALSE.toString()));
 
-        supportedLibraries.put(HYPER_LIBRARY, "HTTP client: Hyper.");
+        supportedLibraries.put(HYPER_LIBRARY, "HTTP client: Hyper (v1.x).");
+        supportedLibraries.put(HYPER0X_LIBRARY, "HTTP client: Hyper (v0.x).");
         supportedLibraries.put(REQWEST_LIBRARY, "HTTP client: Reqwest.");
+        supportedLibraries.put(REQWEST_TRAIT_LIBRARY, "HTTP client: Reqwest (trait based).");
 
         CliOption libraryOption = new CliOption(CodegenConstants.LIBRARY, "library template (sub-template) to use.");
         libraryOption.setEnum(supportedLibraries);
@@ -197,53 +262,92 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
     }
 
     @Override
-    public ModelsMap postProcessModels(ModelsMap objs) {
-        // process enum in models
-        return postProcessModelsEnum(objs);
-    }
+    public CodegenModel fromModel(String name, Schema model) {
+        CodegenModel mdl = super.fromModel(name, model);
 
-    @SuppressWarnings("static-method")
-    public Map<String, ModelsMap> postProcessAllModels(Map<String, ModelsMap> objs) {
-        // Index all CodegenModels by model name.
-        Map<String, CodegenModel> allModels = new HashMap<>();
+        // set correct names and baseNames to oneOf in composed-schema to use as enum variant names & mapping
+        if (mdl.getComposedSchemas() != null && mdl.getComposedSchemas().getOneOf() != null
+                && !mdl.getComposedSchemas().getOneOf().isEmpty()) {
 
-        for (Map.Entry<String, ModelsMap> entry : objs.entrySet()) {
-            String modelName = toModelName(entry.getKey());
-            List<ModelMap> models = entry.getValue().getModels();
-            for (ModelMap mo : models) {
-                CodegenModel cm = mo.getModel();
-                allModels.put(modelName, cm);
+            List<CodegenProperty> newOneOfs = mdl.getComposedSchemas().getOneOf().stream()
+                    .map(CodegenProperty::clone)
+                    .collect(Collectors.toList());
+            List<Schema> schemas = ModelUtils.getInterfaces(model);
+            if (newOneOfs.size() != schemas.size()) {
+                // For safety reasons, this should never happen unless there is an error in the code
+                throw new RuntimeException("oneOf size does not match the model");
             }
+
+            Map<String, String> refsMapping = Optional.ofNullable(model.getDiscriminator())
+                    .map(Discriminator::getMapping).orElse(Collections.emptyMap());
+
+            // Reverse mapped references to use as baseName for oneOF, but different keys may point to the same $ref.
+            // Thus, we group them by the value
+            Map<String, List<String>> mappedNamesByRef = refsMapping.entrySet().stream()
+                    .collect(Collectors.groupingBy(Map.Entry::getValue,
+                            Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+                    ));
+
+            for (int i = 0; i < newOneOfs.size(); i++) {
+                CodegenProperty oneOf = newOneOfs.get(i);
+                Schema schema = schemas.get(i);
+
+                if (mappedNamesByRef.containsKey(schema.get$ref())) {
+                    // prefer mapped names if present
+                    // remove mapping not in order not to reuse for the next occurrence of the ref
+                    List<String> names = mappedNamesByRef.get(schema.get$ref());
+                    String mappedName = names.remove(0);
+                    oneOf.setBaseName(mappedName);
+                    oneOf.setName(toModelName(mappedName));
+                } else if (!org.apache.commons.lang3.StringUtils.isEmpty(schema.get$ref())) {
+                    // use $ref if it's reference
+                    String refName = ModelUtils.getSimpleRef(schema.get$ref());
+                    if (refName != null) {
+                        String modelName = toModelName(refName);
+                        oneOf.setName(modelName);
+                        oneOf.setBaseName(refName);
+                    }
+                } else {
+                    // In-placed type (primitive), because there is no mapping or ref for it.
+                    // use camelized `title` if present, otherwise use `type`
+                    String oneOfName = Optional.ofNullable(schema.getTitle()).orElseGet(schema::getType);
+                    oneOf.setName(toModelName(oneOfName));
+                }
+            }
+
+            mdl.getComposedSchemas().setOneOf(newOneOfs);
         }
 
-        for (Map.Entry<String, ModelsMap> entry : objs.entrySet()) {
-            List<ModelMap> models = entry.getValue().getModels();
-            for (ModelMap mo : models) {
-                CodegenModel cm = mo.getModel();
-                if (cm.discriminator != null) {
-                    List<Object> discriminatorVars = new ArrayList<>();
-                    for (CodegenDiscriminator.MappedModel mappedModel : cm.discriminator.getMappedModels()) {
-                        CodegenModel model = allModels.get(mappedModel.getModelName());
-                        Map<String, Object> mas = new HashMap<>();
-                        mas.put("modelName", camelize(mappedModel.getModelName()));
-                        mas.put("mappingName", mappedModel.getMappingName());
+        return mdl;
+    }
 
-                        // TODO: deleting the variable from the array was
-                        // problematic; I don't know what this is supposed to do
-                        // so I'm just cloning it for the moment
-                        List<CodegenProperty> vars = new ArrayList<>(model.getVars());
-                        vars.removeIf(p -> p.name.equals(cm.discriminator.getPropertyName()));
-                        mas.put("vars", vars);
-                        discriminatorVars.add(mas);
+    @Override
+    public ModelsMap postProcessModels(ModelsMap objs) {
+        for (ModelMap model : objs.getModels()) {
+            CodegenModel cm = model.getModel();
+
+            // Remove the discriminator field from the model, serde will take care of this
+            if (cm.discriminator != null) {
+                String reserved_var_name = cm.discriminator.getPropertyBaseName();
+
+                for (CodegenProperty cp : cm.vars) {
+                    if (cp.baseName.equals(reserved_var_name)) {
+                        cm.vars.remove(cp);
+                        break;
                     }
-                    // TODO: figure out how to properly have the original property type that didn't go through toVarName
-                    String vendorExtensionTagName = cm.discriminator.getPropertyName().replace("_", "");
-                    cm.vendorExtensions.put("x-tag-name", vendorExtensionTagName);
-                    cm.vendorExtensions.put("x-mapped-models", discriminatorVars);
+                }
+            }
+
+            // Flag structs with byteArrays in them so that we can annotate them with the serde_as macro
+            for (CodegenProperty cp : cm.vars) {
+                if (cp.isByteArray) {
+                    cm.vendorExtensions.put("x-rust-has-byte-array", true);
+                    break;
                 }
             }
         }
-        return objs;
+        // process enum in models
+        return postProcessModelsEnum(objs);
     }
 
     @Override
@@ -282,6 +386,16 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         }
         writePropertyBack(SUPPORT_ASYNC, getSupportAsync());
 
+        if (additionalProperties.containsKey(SUPPORT_MIDDLEWARE)) {
+            this.setSupportMiddleware(convertPropertyToBoolean(SUPPORT_MIDDLEWARE));
+        }
+        writePropertyBack(SUPPORT_MIDDLEWARE, getSupportMiddleware());
+
+        if (additionalProperties.containsKey(SUPPORT_TOKEN_SOURCE)) {
+            this.setSupportTokenSource(convertPropertyToBoolean(SUPPORT_TOKEN_SOURCE));
+        }
+        writePropertyBack(SUPPORT_TOKEN_SOURCE, getSupportTokenSource());
+
         if (additionalProperties.containsKey(SUPPORT_MULTIPLE_RESPONSES)) {
             this.setSupportMultipleReturns(convertPropertyToBoolean(SUPPORT_MULTIPLE_RESPONSES));
         }
@@ -297,16 +411,27 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         }
         writePropertyBack(BEST_FIT_INT, getBestFitInt());
 
+        if (additionalProperties.containsKey(AVOID_BOXED_MODELS)) {
+            this.setAvoidBoxedModels(convertPropertyToBoolean(AVOID_BOXED_MODELS));
+        }
+        writePropertyBack(AVOID_BOXED_MODELS, getAvoidBoxedModels());
+
         additionalProperties.put(CodegenConstants.PACKAGE_NAME, packageName);
         additionalProperties.put(CodegenConstants.PACKAGE_VERSION, packageVersion);
+        additionalProperties.put(EXTERN_CRATE_NAME, getExternCrateName());
 
         additionalProperties.put("apiDocPath", apiDocPath);
         additionalProperties.put("modelDocPath", modelDocPath);
 
         if (HYPER_LIBRARY.equals(getLibrary())) {
             additionalProperties.put(HYPER_LIBRARY, "true");
+        } else if (HYPER0X_LIBRARY.equals(getLibrary())) {
+            additionalProperties.put(HYPER_LIBRARY, "true");
+            additionalProperties.put(HYPER0X_LIBRARY, "true");
         } else if (REQWEST_LIBRARY.equals(getLibrary())) {
             additionalProperties.put(REQWEST_LIBRARY, "true");
+        } else if (REQWEST_TRAIT_LIBRARY.equals(getLibrary())) {
+            additionalProperties.put(REQWEST_TRAIT_LIBRARY_ATTR, "true");
         } else {
             LOGGER.error("Unknown library option (-l/--library): {}", getLibrary());
         }
@@ -339,18 +464,37 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
                 // remove v or V
                 content = content.trim().replace("v", "");
                 content = content.replace("V", "");
+
+                String[] contents = content.split("[.]");
+                if (contents.length == 1) {
+                    // convert 5 to 5.0.0 for example
+                    content += ".0.0";
+                } else if (contents.length == 2) {
+                    // convert 5.2 to 5.2.0 for example
+                    content += ".0";
+                }
+
                 writer.write(content);
             }
         });
 
     }
 
+    private String getExternCrateName() {
+        // The external name used when importing a crate has all '-' replaced with '_'.
+        return packageName.replace('-', '_');
+    }
+
     private boolean getSupportAsync() {
         return supportAsync;
     }
 
-    private void setSupportAsync(boolean supportAsync) {
-        this.supportAsync = supportAsync;
+    private boolean getSupportMiddleware() {
+        return supportMiddleware;
+    }
+
+    private boolean getSupportTokenSource() {
+        return supportTokenSource;
     }
 
     public boolean getSupportMultipleReturns() {
@@ -365,24 +509,16 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         return preferUnsignedInt;
     }
 
-    public void setPreferUnsignedInt(boolean preferUnsignedInt) {
-        this.preferUnsignedInt = preferUnsignedInt;
-    }
-
     public boolean getBestFitInt() {
         return bestFitInt;
-    }
-
-    public void setBestFitInt(boolean bestFitInt) {
-        this.bestFitInt = bestFitInt;
     }
 
     private boolean getUseSingleRequestParameter() {
         return useSingleRequestParameter;
     }
 
-    private void setUseSingleRequestParameter(boolean useSingleRequestParameter) {
-        this.useSingleRequestParameter = useSingleRequestParameter;
+    public boolean getAvoidBoxedModels() {
+        return avoidBoxedModels;
     }
 
     @Override
@@ -407,42 +543,9 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
 
     @Override
     public String getTypeDeclaration(Schema p) {
-        if (ModelUtils.isArraySchema(p)) {
-            ArraySchema ap = (ArraySchema) p;
-            Schema inner = ap.getItems();
-            if (inner == null) {
-                LOGGER.warn("{}(array property) does not have a proper inner type defined.Default to string",
-                        ap.getName());
-                inner = new StringSchema().description("TODO default missing array inner type to string");
-            }
-            return "Vec<" + getTypeDeclaration(inner) + ">";
-        } else if (ModelUtils.isMapSchema(p)) {
-            Schema inner = getAdditionalProperties(p);
-            if (inner == null) {
-                LOGGER.warn("{}(map property) does not have a proper inner type defined. Default to string", p.getName());
-                inner = new StringSchema().description("TODO default missing map inner type to string");
-            }
-            return "::std::collections::HashMap<String, " + getTypeDeclaration(inner) + ">";
-        }
-
-        // Not using the supertype invocation, because we want to UpperCamelize
-        // the type.
-        String schemaType = getSchemaType(p);
-        if (typeMapping.containsKey(schemaType)) {
-            return typeMapping.get(schemaType);
-        }
-
-        if (typeMapping.containsValue(schemaType)) {
-            return schemaType;
-        }
-
-        if (languageSpecificPrimitives.contains(schemaType)) {
-            return schemaType;
-        }
-
-        // return fully-qualified model name
-        // crate::models::{{classnameFile}}::{{classname}}
-        return "crate::models::" + toModelName(schemaType);
+        // use unaliased schema for client-side
+        Schema unaliasSchema = unaliasSchema(p);
+        return super.getTypeDeclaration(unaliasSchema);
     }
 
     @Override
@@ -494,6 +597,30 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         if (property.isNullable && !property.required) {
             additionalProperties.put("serdeWith", true);
         }
+
+        // If a property is a base64-encoded byte array, use `serde_with` for deserialization.
+        if (property.isByteArray) {
+            additionalProperties.put("serdeWith", true);
+        }
+    }
+
+    @Override
+    public void postProcessParameter(CodegenParameter parameter) {
+        super.postProcessParameter(parameter);
+        // in order to avoid name conflicts, we map parameters inside the functions
+        String inFunctionIdentifier = "";
+        if (this.useSingleRequestParameter) {
+            inFunctionIdentifier = "params." + parameter.paramName;
+        } else {
+            if (parameter.paramName.startsWith("r#")) {
+                inFunctionIdentifier = "p_" + parameter.paramName.substring(2);
+            } else {
+                inFunctionIdentifier = "p_" + parameter.paramName;
+            }
+        }
+        if (!parameter.vendorExtensions.containsKey(this.VENDOR_EXTENSION_PARAM_IDENTIFIER)) { // allow to overwrite this value
+            parameter.vendorExtensions.put(this.VENDOR_EXTENSION_PARAM_IDENTIFIER, inFunctionIdentifier);
+        }
     }
 
     @Override
@@ -501,10 +628,24 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         OperationMap objectMap = objs.getOperations();
         List<CodegenOperation> operations = objectMap.getOperation();
         for (CodegenOperation operation : operations) {
+            if (operation.pathParams != null && operation.pathParams.size() > 0) {
+                for (var pathParam : operation.pathParams) {
+                    if (!pathParam.baseName.contains("-")) {
+                        continue;
+                    }
+
+                    var newName = pathParam.baseName.replace("-", "_");
+                    LOGGER.info(pathParam.baseName + " cannot be used as a path param. Renamed to " + newName);
+
+                    operation.path = operation.path.replace("{" + pathParam.baseName + "}", "{" + newName + "}");
+                    pathParam.baseName = newName;
+                }
+            }
+
             // http method verb conversion, depending on client library (e.g. Hyper: PUT => Put, Reqwest: PUT => put)
             if (HYPER_LIBRARY.equals(getLibrary())) {
                 operation.httpMethod = StringUtils.camelize(operation.httpMethod.toLowerCase(Locale.ROOT));
-            } else if (REQWEST_LIBRARY.equals(getLibrary())) {
+            } else if (REQWEST_LIBRARY.equals(getLibrary()) || REQWEST_TRAIT_LIBRARY.equals(getLibrary())) {
                 operation.httpMethod = operation.httpMethod.toUpperCase(Locale.ROOT);
             }
 
@@ -567,14 +708,6 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         return objs;
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public void setPackageVersion(String packageVersion) {
-        this.packageVersion = packageVersion;
-    }
-
     @Override
     public String toDefaultValue(Schema p) {
         if (p.getDefault() != null) {
@@ -582,6 +715,15 @@ public class RustClientCodegen extends AbstractRustCodegen implements CodegenCon
         } else {
             return null;
         }
+    }
+
+    @Override
+    protected ImmutableMap.Builder<String, Lambda> addMustacheLambdas() {
+        return super.addMustacheLambdas()
+                // Convert variable names to lifetime names.
+                // Generally they are the same, but `#` is not valid in lifetime names.
+                // Rust uses `r#` prefix for variables that are also keywords.
+                .put("lifetimeName", new ReplaceAllLambda("^r#", "r_"));
     }
 
 }

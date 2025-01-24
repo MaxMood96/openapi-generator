@@ -13,8 +13,9 @@
 
 package org.openapitools.client.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Objects;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,9 +23,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,31 +41,33 @@ import org.openapitools.client.JSON;
   MixedPropertiesAndAdditionalPropertiesClass.JSON_PROPERTY_DATE_TIME,
   MixedPropertiesAndAdditionalPropertiesClass.JSON_PROPERTY_MAP
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class MixedPropertiesAndAdditionalPropertiesClass {
   public static final String JSON_PROPERTY_UUID = "uuid";
+  @javax.annotation.Nullable
   private UUID uuid;
 
   public static final String JSON_PROPERTY_DATE_TIME = "dateTime";
+  @javax.annotation.Nullable
   private OffsetDateTime dateTime;
 
   public static final String JSON_PROPERTY_MAP = "map";
-  private Map<String, Animal> map = null;
+  @javax.annotation.Nullable
+  private Map<String, Animal> map = new HashMap<>();
 
   public MixedPropertiesAndAdditionalPropertiesClass() { 
   }
 
-  public MixedPropertiesAndAdditionalPropertiesClass uuid(UUID uuid) {
+  public MixedPropertiesAndAdditionalPropertiesClass uuid(@javax.annotation.Nullable UUID uuid) {
     this.uuid = uuid;
     return this;
   }
 
-   /**
+  /**
    * Get uuid
    * @return uuid
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_UUID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -76,22 +78,21 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
 
   @JsonProperty(JSON_PROPERTY_UUID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUuid(UUID uuid) {
+  public void setUuid(@javax.annotation.Nullable UUID uuid) {
     this.uuid = uuid;
   }
 
 
-  public MixedPropertiesAndAdditionalPropertiesClass dateTime(OffsetDateTime dateTime) {
+  public MixedPropertiesAndAdditionalPropertiesClass dateTime(@javax.annotation.Nullable OffsetDateTime dateTime) {
     this.dateTime = dateTime;
     return this;
   }
 
-   /**
+  /**
    * Get dateTime
    * @return dateTime
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_DATE_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -102,12 +103,12 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
 
   @JsonProperty(JSON_PROPERTY_DATE_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDateTime(OffsetDateTime dateTime) {
+  public void setDateTime(@javax.annotation.Nullable OffsetDateTime dateTime) {
     this.dateTime = dateTime;
   }
 
 
-  public MixedPropertiesAndAdditionalPropertiesClass map(Map<String, Animal> map) {
+  public MixedPropertiesAndAdditionalPropertiesClass map(@javax.annotation.Nullable Map<String, Animal> map) {
     this.map = map;
     return this;
   }
@@ -120,12 +121,11 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
     return this;
   }
 
-   /**
+  /**
    * Get map
    * @return map
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -136,7 +136,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
 
   @JsonProperty(JSON_PROPERTY_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMap(Map<String, Animal> map) {
+  public void setMap(@javax.annotation.Nullable Map<String, Animal> map) {
     this.map = map;
   }
 
@@ -146,21 +146,12 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    MixedPropertiesAndAdditionalPropertiesClass mixedPropertiesAndAdditionalPropertiesClass = (MixedPropertiesAndAdditionalPropertiesClass) o;
-    return Objects.equals(this.uuid, mixedPropertiesAndAdditionalPropertiesClass.uuid) &&
-        Objects.equals(this.dateTime, mixedPropertiesAndAdditionalPropertiesClass.dateTime) &&
-        Objects.equals(this.map, mixedPropertiesAndAdditionalPropertiesClass.map);
+    return EqualsBuilder.reflectionEquals(this, o, false, null, true);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(uuid, dateTime, map);
+    return HashCodeBuilder.reflectionHashCode(this);
   }
 
   @Override

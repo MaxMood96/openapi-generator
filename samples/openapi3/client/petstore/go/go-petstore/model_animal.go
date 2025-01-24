@@ -12,7 +12,11 @@ package petstore
 
 import (
 	"encoding/json"
+	"fmt"
 )
+
+// checks if the Animal type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Animal{}
 
 // Animal struct for Animal
 type Animal struct {
@@ -59,7 +63,7 @@ func (o *Animal) GetClassName() string {
 // and a boolean to check if the value has been set.
 func (o *Animal) GetClassNameOk() (*string, bool) {
 	if o == nil {
-    return nil, false
+		return nil, false
 	}
 	return &o.ClassName, true
 }
@@ -69,9 +73,10 @@ func (o *Animal) SetClassName(v string) {
 	o.ClassName = v
 }
 
+
 // GetColor returns the Color field value if set, zero value otherwise.
 func (o *Animal) GetColor() string {
-	if o == nil || isNil(o.Color) {
+	if o == nil || IsNil(o.Color) {
 		var ret string
 		return ret
 	}
@@ -81,15 +86,15 @@ func (o *Animal) GetColor() string {
 // GetColorOk returns a tuple with the Color field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Animal) GetColorOk() (*string, bool) {
-	if o == nil || isNil(o.Color) {
-    return nil, false
+	if o == nil || IsNil(o.Color) {
+		return nil, false
 	}
 	return o.Color, true
 }
 
 // HasColor returns a boolean if a field has been set.
 func (o *Animal) HasColor() bool {
-	if o != nil && !isNil(o.Color) {
+	if o != nil && !IsNil(o.Color) {
 		return true
 	}
 
@@ -102,11 +107,17 @@ func (o *Animal) SetColor(v string) {
 }
 
 func (o Animal) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["className"] = o.ClassName
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
-	if !isNil(o.Color) {
+	return json.Marshal(toSerialize)
+}
+
+func (o Animal) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["className"] = o.ClassName
+	if !IsNil(o.Color) {
 		toSerialize["color"] = o.Color
 	}
 
@@ -114,19 +125,61 @@ func (o Animal) MarshalJSON() ([]byte, error) {
 		toSerialize[key] = value
 	}
 
-	return json.Marshal(toSerialize)
+	return toSerialize, nil
 }
 
-func (o *Animal) UnmarshalJSON(bytes []byte) (err error) {
+func (o *Animal) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"className",
+	}
+
+	// defaultValueFuncMap captures the default values for required properties.
+	// These values are used when required properties are missing from the payload.
+	defaultValueFuncMap := map[string]func() interface{} {
+	}
+	var defaultValueApplied bool
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if value, exists := allProperties[requiredProperty]; !exists || value == "" {
+			if _, ok := defaultValueFuncMap[requiredProperty]; ok {
+				allProperties[requiredProperty] = defaultValueFuncMap[requiredProperty]()
+				defaultValueApplied = true
+			}
+		}
+		if value, exists := allProperties[requiredProperty]; !exists || value == ""{
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	if defaultValueApplied {
+		data, err = json.Marshal(allProperties)
+		if err != nil{
+			return err
+		}
+	}
 	varAnimal := _Animal{}
 
-	if err = json.Unmarshal(bytes, &varAnimal); err == nil {
-		*o = Animal(varAnimal)
+	err = json.Unmarshal(data, &varAnimal)
+
+	if err != nil {
+		return err
 	}
+
+	*o = Animal(varAnimal)
 
 	additionalProperties := make(map[string]interface{})
 
-	if err = json.Unmarshal(bytes, &additionalProperties); err == nil {
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "className")
 		delete(additionalProperties, "color")
 		o.AdditionalProperties = additionalProperties

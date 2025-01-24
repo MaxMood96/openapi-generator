@@ -13,6 +13,8 @@
 
 package org.openapitools.client.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Objects;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,24 +35,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   File.JSON_PROPERTY_SOURCE_U_R_I
 })
 @javax.annotation.concurrent.Immutable
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class File {
   public static final String JSON_PROPERTY_SOURCE_U_R_I = "sourceURI";
+  @javax.annotation.Nullable
   private String sourceURI;
 
   public File() {
   }
 
-  public File sourceURI(String sourceURI) {
+  public File sourceURI(@javax.annotation.Nullable String sourceURI) {
     
     this.sourceURI = sourceURI;
     return this;
   }
 
-   /**
+  /**
    * Test capitalization
    * @return sourceURI
-  **/
+   */
   @javax.annotation.Nullable
   @ApiModelProperty(value = "Test capitalization")
   @JsonProperty(JSON_PROPERTY_SOURCE_U_R_I)
@@ -63,26 +66,19 @@ public class File {
 
   @JsonProperty(JSON_PROPERTY_SOURCE_U_R_I)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSourceURI(String sourceURI) {
+  public void setSourceURI(@javax.annotation.Nullable String sourceURI) {
     this.sourceURI = sourceURI;
   }
 
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    File file = (File) o;
-    return Objects.equals(this.sourceURI, file.sourceURI);
+    return EqualsBuilder.reflectionEquals(this, o, false, null, true);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sourceURI);
+    return HashCodeBuilder.reflectionHashCode(this);
   }
 
   @Override

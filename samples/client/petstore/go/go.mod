@@ -5,8 +5,11 @@ replace github.com/OpenAPITools/openapi-generator/samples/client/petstore/go/go-
 go 1.13
 
 require (
+	cloud.google.com/go/compute v1.20.1 // indirect
 	github.com/OpenAPITools/openapi-generator/samples/client/petstore/go/go-petstore v0.0.0-00010101000000-000000000000
-	github.com/stretchr/testify v1.7.0
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a
+	github.com/go-openapi/swag v0.22.3
+	github.com/stretchr/testify v1.9.0
+	golang.org/x/net v0.27.0 // indirect
+	golang.org/x/oauth2 v0.21.0
+	google.golang.org/protobuf v1.31.0 // indirect
 )

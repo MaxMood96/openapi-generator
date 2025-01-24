@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.validation.constraints.*;
@@ -36,17 +34,21 @@ import org.hibernate.validator.constraints.*;
   HasOnlyReadOnly.JSON_PROPERTY_FOO
 })
 @JsonTypeName("hasOnlyReadOnly")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class HasOnlyReadOnly {
   public static final String JSON_PROPERTY_BAR = "bar";
+  @javax.annotation.Nullable
   private String bar;
 
   public static final String JSON_PROPERTY_FOO = "foo";
+  @javax.annotation.Nullable
   private String foo;
 
   public HasOnlyReadOnly() {
   }
-
+  /**
+   * Constructor with only readonly parameters
+   */
   @JsonCreator
   public HasOnlyReadOnly(
     @JsonProperty(JSON_PROPERTY_BAR) String bar, 
@@ -57,12 +59,12 @@ public class HasOnlyReadOnly {
     this.foo = foo;
   }
 
-   /**
+  /**
    * Get bar
    * @return bar
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_BAR)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -72,20 +74,18 @@ public class HasOnlyReadOnly {
 
 
 
-
-   /**
+  /**
    * Get foo
    * @return foo
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_FOO)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getFoo() {
     return foo;
   }
-
 
 
 

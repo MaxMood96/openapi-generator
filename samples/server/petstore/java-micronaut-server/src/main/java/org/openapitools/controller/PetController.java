@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-@Generated(value="org.openapitools.codegen.languages.JavaMicronautServerCodegen")
+@Generated(value="org.openapitools.codegen.languages.JavaMicronautServerCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 @Controller
 @Tag(name = "Pet", description = "The Pet API")
 public class PetController {
@@ -217,6 +217,8 @@ public class PetController {
      *
      * @param pet Pet object that needs to be added to the store (required)
      * @return Pet
+     * API documentation for the updatePet operation
+     * @see <a href="http://petstore.swagger.io/v2/doc/updatePet">Update an existing pet Documentation</a>
      */
     @Operation(
         operationId = "updatePet",

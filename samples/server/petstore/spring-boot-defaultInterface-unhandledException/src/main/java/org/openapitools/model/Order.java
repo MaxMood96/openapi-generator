@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -21,21 +22,17 @@ import javax.annotation.Generated;
  * Order
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Order {
 
-  @JsonProperty("id")
-  private Long id;
+  private @Nullable Long id;
 
-  @JsonProperty("petId")
-  private Long petId;
+  private @Nullable Long petId;
 
-  @JsonProperty("quantity")
-  private Integer quantity;
+  private @Nullable Integer quantity;
 
-  @JsonProperty("shipDate")
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime shipDate;
+  private @Nullable OffsetDateTime shipDate;
 
   /**
    * Order Status
@@ -74,10 +71,8 @@ public class Order {
     }
   }
 
-  @JsonProperty("status")
-  private StatusEnum status;
+  private @Nullable StatusEnum status;
 
-  @JsonProperty("complete")
   private Boolean complete = false;
 
   public Order id(Long id) {
@@ -88,9 +83,10 @@ public class Order {
   /**
    * Get id
    * @return id
-  */
+   */
   
-  @Schema(name = "id", required = false)
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
   public Long getId() {
     return id;
   }
@@ -107,9 +103,10 @@ public class Order {
   /**
    * Get petId
    * @return petId
-  */
+   */
   
-  @Schema(name = "petId", required = false)
+  @Schema(name = "petId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("petId")
   public Long getPetId() {
     return petId;
   }
@@ -126,9 +123,10 @@ public class Order {
   /**
    * Get quantity
    * @return quantity
-  */
+   */
   
-  @Schema(name = "quantity", required = false)
+  @Schema(name = "quantity", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("quantity")
   public Integer getQuantity() {
     return quantity;
   }
@@ -145,9 +143,10 @@ public class Order {
   /**
    * Get shipDate
    * @return shipDate
-  */
+   */
   @Valid 
-  @Schema(name = "shipDate", required = false)
+  @Schema(name = "shipDate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("shipDate")
   public OffsetDateTime getShipDate() {
     return shipDate;
   }
@@ -164,9 +163,10 @@ public class Order {
   /**
    * Order Status
    * @return status
-  */
+   */
   
-  @Schema(name = "status", description = "Order Status", required = false)
+  @Schema(name = "status", description = "Order Status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("status")
   public StatusEnum getStatus() {
     return status;
   }
@@ -183,9 +183,10 @@ public class Order {
   /**
    * Get complete
    * @return complete
-  */
+   */
   
-  @Schema(name = "complete", required = false)
+  @Schema(name = "complete", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("complete")
   public Boolean getComplete() {
     return complete;
   }

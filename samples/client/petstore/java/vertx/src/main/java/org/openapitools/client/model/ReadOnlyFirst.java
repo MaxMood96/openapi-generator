@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -32,17 +30,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   ReadOnlyFirst.JSON_PROPERTY_BAR,
   ReadOnlyFirst.JSON_PROPERTY_BAZ
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ReadOnlyFirst {
   public static final String JSON_PROPERTY_BAR = "bar";
+  @javax.annotation.Nullable
   private String bar;
 
   public static final String JSON_PROPERTY_BAZ = "baz";
+  @javax.annotation.Nullable
   private String baz;
 
   public ReadOnlyFirst() {
   }
-
+  /**
+   * Constructor with only readonly parameters
+   */
   @JsonCreator
   public ReadOnlyFirst(
     @JsonProperty(JSON_PROPERTY_BAR) String bar
@@ -51,12 +53,11 @@ public class ReadOnlyFirst {
     this.bar = bar;
   }
 
-   /**
+  /**
    * Get bar
    * @return bar
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_BAR)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -66,19 +67,17 @@ public class ReadOnlyFirst {
 
 
 
-
-  public ReadOnlyFirst baz(String baz) {
+  public ReadOnlyFirst baz(@javax.annotation.Nullable String baz) {
     
     this.baz = baz;
     return this;
   }
 
-   /**
+  /**
    * Get baz
    * @return baz
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_BAZ)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -89,10 +88,9 @@ public class ReadOnlyFirst {
 
   @JsonProperty(JSON_PROPERTY_BAZ)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setBaz(String baz) {
+  public void setBaz(@javax.annotation.Nullable String baz) {
     this.baz = baz;
   }
-
 
   @Override
   public boolean equals(Object o) {

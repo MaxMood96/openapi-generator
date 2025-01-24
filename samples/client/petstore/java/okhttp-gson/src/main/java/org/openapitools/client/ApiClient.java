@@ -49,6 +49,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,6 +67,58 @@ import org.openapitools.client.auth.OAuthFlow;
 public class ApiClient {
 
     private String basePath = "http://petstore.swagger.io:80/v2";
+    protected List<ServerConfiguration> servers = new ArrayList<ServerConfiguration>(Arrays.asList(
+    new ServerConfiguration(
+      "http://{server}.swagger.io:{port}/v2",
+      "petstore server",
+      new HashMap<String, ServerVariable>() {{
+        put("server", new ServerVariable(
+          "No description provided",
+          "petstore",
+          new HashSet<String>(
+            Arrays.asList(
+              "petstore",
+              "qa-petstore",
+              "dev-petstore"
+            )
+          )
+        ));
+        put("port", new ServerVariable(
+          "No description provided",
+          "80",
+          new HashSet<String>(
+            Arrays.asList(
+              "80",
+              "8080"
+            )
+          )
+        ));
+      }}
+    ),
+    new ServerConfiguration(
+      "https://localhost:8080/{version}",
+      "The local server",
+      new HashMap<String, ServerVariable>() {{
+        put("version", new ServerVariable(
+          "No description provided",
+          "v2",
+          new HashSet<String>(
+            Arrays.asList(
+              "v1",
+              "v2"
+            )
+          )
+        ));
+      }}
+    ),
+    new ServerConfiguration(
+      "https://127.0.0.1/no_variable",
+      "The local server without variables",
+      new HashMap<String, ServerVariable>()
+    )
+  ));
+    protected Integer serverIndex = 0;
+    protected Map<String, String> serverVariables = null;
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private Map<String, String> defaultCookieMap = new HashMap<String, String>();
@@ -95,12 +148,11 @@ public class ApiClient {
         initHttpClient();
 
         // Setup authentications (key: authentication name, value: authentication).
+        authentications.put("petstore_auth", new OAuth());
         authentications.put("api_key", new ApiKeyAuth("header", "api_key"));
         authentications.put("api_key_query", new ApiKeyAuth("query", "api_key_query"));
-        authentications.put("bearer_test", new HttpBearerAuth("bearer"));
         authentications.put("http_basic_test", new HttpBasicAuth());
-        authentications.put("http_signature_test", new HttpBearerAuth("signature"));
-        authentications.put("petstore_auth", new OAuth());
+        authentications.put("bearer_test", new HttpBearerAuth("bearer"));
         // Prevent the authentications from being modified.
         authentications = Collections.unmodifiableMap(authentications);
     }
@@ -116,12 +168,11 @@ public class ApiClient {
         httpClient = client;
 
         // Setup authentications (key: authentication name, value: authentication).
+        authentications.put("petstore_auth", new OAuth());
         authentications.put("api_key", new ApiKeyAuth("header", "api_key"));
         authentications.put("api_key_query", new ApiKeyAuth("query", "api_key_query"));
-        authentications.put("bearer_test", new HttpBearerAuth("bearer"));
         authentications.put("http_basic_test", new HttpBasicAuth());
-        authentications.put("http_signature_test", new HttpBearerAuth("signature"));
-        authentications.put("petstore_auth", new OAuth());
+        authentications.put("bearer_test", new HttpBearerAuth("bearer"));
         // Prevent the authentications from being modified.
         authentications = Collections.unmodifiableMap(authentications);
     }
@@ -189,9 +240,8 @@ public class ApiClient {
         // Setup authentications (key: authentication name, value: authentication).
         authentications.put("api_key", new ApiKeyAuth("header", "api_key"));
         authentications.put("api_key_query", new ApiKeyAuth("query", "api_key_query"));
-        authentications.put("bearer_test", new HttpBearerAuth("bearer"));
         authentications.put("http_basic_test", new HttpBasicAuth());
-        authentications.put("http_signature_test", new HttpBearerAuth("signature"));
+        authentications.put("bearer_test", new HttpBearerAuth("bearer"));
 
         // Prevent the authentications from being modified.
         authentications = Collections.unmodifiableMap(authentications);
@@ -239,6 +289,34 @@ public class ApiClient {
      */
     public ApiClient setBasePath(String basePath) {
         this.basePath = basePath;
+        this.serverIndex = null;
+        return this;
+    }
+
+    public List<ServerConfiguration> getServers() {
+        return servers;
+    }
+
+    public ApiClient setServers(List<ServerConfiguration> servers) {
+        this.servers = servers;
+        return this;
+    }
+
+    public Integer getServerIndex() {
+        return serverIndex;
+    }
+
+    public ApiClient setServerIndex(Integer serverIndex) {
+        this.serverIndex = serverIndex;
+        return this;
+    }
+
+    public Map<String, String> getServerVariables() {
+        return serverVariables;
+    }
+
+    public ApiClient setServerVariables(Map<String, String> serverVariables) {
+        this.serverVariables = serverVariables;
         return this;
     }
 
@@ -433,14 +511,23 @@ public class ApiClient {
         return authentications.get(authName);
     }
 
-        /**
-        * Helper method to set access token for the first Bearer authentication.
-        * @param bearerToken Bearer token
-        */
+    /**
+     * Helper method to set access token for the first Bearer authentication.
+     * @param bearerToken Bearer token
+     */
     public void setBearerToken(String bearerToken) {
+        setBearerToken(() -> bearerToken);
+    }
+
+    /**
+     * Helper method to set the supplier of access tokens for Bearer authentication.
+     *
+     * @param tokenSupplier The supplier of bearer tokens
+     */
+    public void setBearerToken(Supplier<String> tokenSupplier) {
         for (Authentication auth : authentications.values()) {
             if (auth instanceof HttpBearerAuth) {
-                ((HttpBearerAuth) auth).setBearerToken(bearerToken);
+                ((HttpBearerAuth) auth).setBearerToken(tokenSupplier);
                 return;
             }
         }
@@ -520,6 +607,31 @@ public class ApiClient {
             }
         }
         throw new RuntimeException("No OAuth2 authentication configured!");
+    }
+
+    /**
+     * Helper method to set credentials for AWSV4 Signature
+     *
+     * @param accessKey Access Key
+     * @param secretKey Secret Key
+     * @param region Region
+     * @param service Service to access to
+     */
+    public void setAWS4Configuration(String accessKey, String secretKey, String region, String service) {
+        throw new RuntimeException("No AWS4 authentication configured!");
+    }
+
+    /**
+     * Helper method to set credentials for AWSV4 Signature
+     *
+     * @param accessKey Access Key
+     * @param secretKey Secret Key
+     * @param sessionToken Session Token
+     * @param region Region
+     * @param service Service to access to
+     */
+    public void setAWS4Configuration(String accessKey, String secretKey, String sessionToken, String region, String service) {
+        throw new RuntimeException("No AWS4 authentication configured!");
     }
 
     /**
@@ -790,6 +902,31 @@ public class ApiClient {
 
         return params;
     }
+
+   /**
+    * Formats the specified free-form query parameters to a list of {@code Pair} objects.
+    *
+    * @param value The free-form query parameters.
+    * @return A list of {@code Pair} objects.
+    */
+    public List<Pair> freeFormParameterToPairs(Object value) {
+        List<Pair> params = new ArrayList<>();
+
+        // preconditions
+        if (value == null || !(value instanceof Map )) {
+            return params;
+        }
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> valuesMap = (Map<String, Object>) value;
+
+        for (Map.Entry<String, Object> entry : valuesMap.entrySet()) {
+            params.add(new Pair(entry.getKey(), parameterToString(entry.getValue())));
+        }
+
+        return params;
+    }
+
 
     /**
      * Formats the specified collection path parameter to a string value.
@@ -1229,21 +1366,20 @@ public class ApiClient {
      * @throws org.openapitools.client.ApiException If fail to serialize the request body object
      */
     public Request buildRequest(String baseUrl, String path, String method, List<Pair> queryParams, List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams, Map<String, String> cookieParams, Map<String, Object> formParams, String[] authNames, ApiCallback callback) throws ApiException {
-        // aggregate queryParams (non-collection) and collectionQueryParams into allQueryParams
-        List<Pair> allQueryParams = new ArrayList<Pair>(queryParams);
-        allQueryParams.addAll(collectionQueryParams);
-
         final String url = buildUrl(baseUrl, path, queryParams, collectionQueryParams);
 
         // prepare HTTP request body
         RequestBody reqBody;
         String contentType = headerParams.get("Content-Type");
-
+        String contentTypePure = contentType;
+        if (contentTypePure != null && contentTypePure.contains(";")) {
+            contentTypePure = contentType.substring(0, contentType.indexOf(";"));
+        }
         if (!HttpMethod.permitsRequestBody(method)) {
             reqBody = null;
-        } else if ("application/x-www-form-urlencoded".equals(contentType)) {
+        } else if ("application/x-www-form-urlencoded".equals(contentTypePure)) {
             reqBody = buildRequestBodyFormEncoding(formParams);
-        } else if ("multipart/form-data".equals(contentType)) {
+        } else if ("multipart/form-data".equals(contentTypePure)) {
             reqBody = buildRequestBodyMultipart(formParams);
         } else if (body == null) {
             if ("DELETE".equals(method)) {
@@ -1257,10 +1393,12 @@ public class ApiClient {
             reqBody = serialize(body, contentType);
         }
 
-        // update parameters with authentication settings
-        updateParamsForAuth(authNames, allQueryParams, headerParams, cookieParams, requestBodyToString(reqBody), method, URI.create(url));
+        List<Pair> updatedQueryParams = new ArrayList<>(queryParams);
 
-        final Request.Builder reqBuilder = new Request.Builder().url(url);
+        // update parameters with authentication settings
+        updateParamsForAuth(authNames, updatedQueryParams, headerParams, cookieParams, requestBodyToString(reqBody), method, URI.create(url));
+
+        final Request.Builder reqBuilder = new Request.Builder().url(buildUrl(baseUrl, path, updatedQueryParams, collectionQueryParams));
         processHeaderParams(headerParams, reqBuilder);
         processCookieParams(cookieParams, reqBuilder);
 
@@ -1294,7 +1432,18 @@ public class ApiClient {
         if (baseUrl != null) {
             url.append(baseUrl).append(path);
         } else {
-            url.append(basePath).append(path);
+            String baseURL;
+            if (serverIndex != null) {
+                if (serverIndex < 0 || serverIndex >= servers.size()) {
+                    throw new ArrayIndexOutOfBoundsException(String.format(
+                    "Invalid index %d when selecting the host settings. Must be less than %d", serverIndex, servers.size()
+                    ));
+                }
+                baseURL = servers.get(serverIndex).URL(serverVariables);
+            } else {
+                baseURL = basePath;
+            }
+            url.append(baseURL).append(path);
         }
 
         if (queryParams != null && !queryParams.isEmpty()) {

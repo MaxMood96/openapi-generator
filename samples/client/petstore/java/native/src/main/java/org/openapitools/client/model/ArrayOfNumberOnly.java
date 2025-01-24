@@ -13,8 +13,12 @@
 
 package org.openapitools.client.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,29 +26,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
+import org.openapitools.client.ApiClient;
 /**
  * ArrayOfNumberOnly
  */
 @JsonPropertyOrder({
   ArrayOfNumberOnly.JSON_PROPERTY_ARRAY_NUMBER
 })
-@javax.annotation.processing.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ArrayOfNumberOnly {
   public static final String JSON_PROPERTY_ARRAY_NUMBER = "ArrayNumber";
-  private List<BigDecimal> arrayNumber = null;
+  @javax.annotation.Nullable
+  private List<BigDecimal> arrayNumber = new ArrayList<>();
 
   public ArrayOfNumberOnly() { 
   }
 
-  public ArrayOfNumberOnly arrayNumber(List<BigDecimal> arrayNumber) {
+  public ArrayOfNumberOnly arrayNumber(@javax.annotation.Nullable List<BigDecimal> arrayNumber) {
     this.arrayNumber = arrayNumber;
     return this;
   }
@@ -57,15 +62,13 @@ public class ArrayOfNumberOnly {
     return this;
   }
 
-   /**
+  /**
    * Get arrayNumber
    * @return arrayNumber
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_ARRAY_NUMBER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
   public List<BigDecimal> getArrayNumber() {
     return arrayNumber;
   }
@@ -73,7 +76,7 @@ public class ArrayOfNumberOnly {
 
   @JsonProperty(JSON_PROPERTY_ARRAY_NUMBER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setArrayNumber(List<BigDecimal> arrayNumber) {
+  public void setArrayNumber(@javax.annotation.Nullable List<BigDecimal> arrayNumber) {
     this.arrayNumber = arrayNumber;
   }
 
@@ -83,19 +86,12 @@ public class ArrayOfNumberOnly {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ArrayOfNumberOnly arrayOfNumberOnly = (ArrayOfNumberOnly) o;
-    return Objects.equals(this.arrayNumber, arrayOfNumberOnly.arrayNumber);
+    return EqualsBuilder.reflectionEquals(this, o, false, null, true);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(arrayNumber);
+    return HashCodeBuilder.reflectionHashCode(this);
   }
 
   @Override
@@ -116,6 +112,105 @@ public class ArrayOfNumberOnly {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
+  }
+
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @param prefix prefix of the query string
+   * @return URL query string
+   */
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
+    }
+
+    StringJoiner joiner = new StringJoiner("&");
+
+    // add `ArrayNumber` to the URL query string
+    if (getArrayNumber() != null) {
+      for (int i = 0; i < getArrayNumber().size(); i++) {
+        if (getArrayNumber().get(i) != null) {
+          joiner.add(String.format("%sArrayNumber%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix),
+              URLEncoder.encode(ApiClient.valueToString(getArrayNumber().get(i)), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+        }
+      }
+    }
+
+    return joiner.toString();
+  }
+
+    public static class Builder {
+
+    private ArrayOfNumberOnly instance;
+
+    public Builder() {
+      this(new ArrayOfNumberOnly());
+    }
+
+    protected Builder(ArrayOfNumberOnly instance) {
+      this.instance = instance;
+    }
+
+    public ArrayOfNumberOnly.Builder arrayNumber(List<BigDecimal> arrayNumber) {
+      this.instance.arrayNumber = arrayNumber;
+      return this;
+    }
+
+
+    /**
+    * returns a built ArrayOfNumberOnly instance.
+    *
+    * The builder is not reusable.
+    */
+    public ArrayOfNumberOnly build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /**
+  * Create a builder with no initialized field.
+  */
+  public static ArrayOfNumberOnly.Builder builder() {
+    return new ArrayOfNumberOnly.Builder();
+  }
+
+  /**
+  * Create a builder with a shallow copy of this instance.
+  */
+  public ArrayOfNumberOnly.Builder toBuilder() {
+    return new ArrayOfNumberOnly.Builder()
+      .arrayNumber(getArrayNumber());
   }
 
 }

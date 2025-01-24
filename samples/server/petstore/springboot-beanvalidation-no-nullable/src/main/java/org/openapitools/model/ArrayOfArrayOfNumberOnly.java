@@ -8,7 +8,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -21,12 +23,11 @@ import javax.annotation.Generated;
  * ArrayOfArrayOfNumberOnly
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ArrayOfArrayOfNumberOnly {
 
-  @JsonProperty("ArrayArrayNumber")
   @Valid
-  private List<List<BigDecimal>> arrayArrayNumber = null;
+  private List<List<BigDecimal>> arrayArrayNumber = new ArrayList<>();
 
   public ArrayOfArrayOfNumberOnly arrayArrayNumber(List<List<BigDecimal>> arrayArrayNumber) {
     this.arrayArrayNumber = arrayArrayNumber;
@@ -44,9 +45,10 @@ public class ArrayOfArrayOfNumberOnly {
   /**
    * Get arrayArrayNumber
    * @return arrayArrayNumber
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
+  @JsonProperty("ArrayArrayNumber")
   public List<List<BigDecimal>> getArrayArrayNumber() {
     return arrayArrayNumber;
   }

@@ -1,5 +1,4 @@
 import connexion
-import six
 from typing import Dict
 from typing import Tuple
 from typing import Union
@@ -11,7 +10,7 @@ from {{packageName}} import util
 {{#operation}}
 
 
-def {{operationId}}({{#allParams}}{{paramName}}{{^required}}=None{{/required}}{{^-last}}, {{/-last}}{{/allParams}}):  # noqa: E501
+def {{operationId}}({{#allParams}}{{^isBodyParam}}{{paramName}}{{/isBodyParam}}{{#isBodyParam}}body{{/isBodyParam}}{{^required}}=None{{/required}}{{^-last}}, {{/-last}}{{/allParams}}):  # noqa: E501
     """{{summary}}{{^summary}}{{operationId}}{{/summary}}
 
     {{notes}} # noqa: E501
@@ -61,6 +60,9 @@ def {{operationId}}({{#allParams}}{{paramName}}{{^required}}=None{{/required}}{{
     :rtype: Union[{{returnType}}{{^returnType}}None{{/returnType}}, Tuple[{{returnType}}{{^returnType}}None{{/returnType}}, int], Tuple[{{returnType}}{{^returnType}}None{{/returnType}}, int, Dict[str, str]]
     """
     {{#allParams}}
+        {{#isBodyParam}}
+    {{paramName}} = body
+        {{/isBodyParam}}
         {{^isContainer}}
             {{#isDate}}
     {{paramName}} = util.deserialize_date({{paramName}})
@@ -97,15 +99,15 @@ def {{operationId}}({{#allParams}}{{paramName}}{{^required}}=None{{/required}}{{
             {{#items}}
                 {{#isDate}}
     if connexion.request.is_json:
-        {{paramName}} = {k: util.deserialize_date(v) for k, v in six.iteritems(connexion.request.get_json())}  # noqa: E501
+        {{paramName}} = {k: util.deserialize_date(v) for k, v in connexion.request.get_json().items()}  # noqa: E501
                 {{/isDate}}
                 {{#isDateTime}}
     if connexion.request.is_json:
-        {{paramName}} = {k: util.deserialize_datetime(v) for k, v in six.iteritems(connexion.request.get_json())}  # noqa: E501
+        {{paramName}} = {k: util.deserialize_datetime(v) for k, v in connexion.request.get_json().items()}  # noqa: E501
                 {{/isDateTime}}
                 {{#complexType}}
     if connexion.request.is_json:
-        {{paramName}} = {k: {{baseType}}.from_dict(v) for k, v in six.iteritems(connexion.request.get_json())}  # noqa: E501
+        {{paramName}} = {k: {{baseType}}.from_dict(v) for k, v in connexion.request.get_json().items()}  # noqa: E501
                 {{/complexType}}
             {{/items}}
         {{/isMap}}

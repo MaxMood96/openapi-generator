@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -19,26 +20,36 @@ import javax.annotation.Generated;
  * Capitalization
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Capitalization {
 
-  @JsonProperty("smallCamel")
-  private String smallCamel;
+  private @Nullable String smallCamel;
 
-  @JsonProperty("CapitalCamel")
-  private String capitalCamel;
+  private @Nullable String capitalCamel;
 
-  @JsonProperty("small_Snake")
-  private String smallSnake;
+  private @Nullable String smallSnake;
 
-  @JsonProperty("Capital_Snake")
-  private String capitalSnake;
+  private @Nullable String capitalSnake;
 
-  @JsonProperty("SCA_ETH_Flow_Points")
-  private String scAETHFlowPoints;
+  private @Nullable String scAETHFlowPoints;
 
-  @JsonProperty("ATT_NAME")
-  private String ATT_NAME;
+  private @Nullable String ATT_NAME;
+
+  public Capitalization() {
+    super();
+  }
+
+  /**
+   * Constructor with all args parameters
+   */
+  public Capitalization(@Nullable String smallCamel, @Nullable String capitalCamel, @Nullable String smallSnake, @Nullable String capitalSnake, @Nullable String scAETHFlowPoints, @Nullable String ATT_NAME) {
+      this.smallCamel = smallCamel;
+      this.capitalCamel = capitalCamel;
+      this.smallSnake = smallSnake;
+      this.capitalSnake = capitalSnake;
+      this.scAETHFlowPoints = scAETHFlowPoints;
+      this.ATT_NAME = ATT_NAME;
+  }
 
   public Capitalization smallCamel(String smallCamel) {
     this.smallCamel = smallCamel;
@@ -48,9 +59,10 @@ public class Capitalization {
   /**
    * Get smallCamel
    * @return smallCamel
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("smallCamel")
   public String getSmallCamel() {
     return smallCamel;
   }
@@ -67,9 +79,10 @@ public class Capitalization {
   /**
    * Get capitalCamel
    * @return capitalCamel
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("CapitalCamel")
   public String getCapitalCamel() {
     return capitalCamel;
   }
@@ -86,9 +99,10 @@ public class Capitalization {
   /**
    * Get smallSnake
    * @return smallSnake
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("small_Snake")
   public String getSmallSnake() {
     return smallSnake;
   }
@@ -105,9 +119,10 @@ public class Capitalization {
   /**
    * Get capitalSnake
    * @return capitalSnake
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("Capital_Snake")
   public String getCapitalSnake() {
     return capitalSnake;
   }
@@ -124,9 +139,10 @@ public class Capitalization {
   /**
    * Get scAETHFlowPoints
    * @return scAETHFlowPoints
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("SCA_ETH_Flow_Points")
   public String getScAETHFlowPoints() {
     return scAETHFlowPoints;
   }
@@ -143,9 +159,10 @@ public class Capitalization {
   /**
    * Name of the pet 
    * @return ATT_NAME
-  */
+   */
   
   @ApiModelProperty(value = "Name of the pet ")
+  @JsonProperty("ATT_NAME")
   public String getATTNAME() {
     return ATT_NAME;
   }

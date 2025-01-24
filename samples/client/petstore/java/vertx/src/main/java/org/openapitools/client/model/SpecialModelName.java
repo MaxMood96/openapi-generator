@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -31,27 +29,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonPropertyOrder({
   SpecialModelName.JSON_PROPERTY_$_SPECIAL_PROPERTY_NAME
 })
-@JsonTypeName("$special[model.name]")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@JsonTypeName("_special_model.name_")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class SpecialModelName {
   public static final String JSON_PROPERTY_$_SPECIAL_PROPERTY_NAME = "$special[property.name]";
+  @javax.annotation.Nullable
   private Long $specialPropertyName;
 
   public SpecialModelName() {
   }
 
-  public SpecialModelName $specialPropertyName(Long $specialPropertyName) {
+  public SpecialModelName $specialPropertyName(@javax.annotation.Nullable Long $specialPropertyName) {
     
     this.$specialPropertyName = $specialPropertyName;
     return this;
   }
 
-   /**
+  /**
    * Get $specialPropertyName
    * @return $specialPropertyName
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_$_SPECIAL_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -62,10 +60,9 @@ public class SpecialModelName {
 
   @JsonProperty(JSON_PROPERTY_$_SPECIAL_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void set$SpecialPropertyName(Long $specialPropertyName) {
+  public void set$SpecialPropertyName(@javax.annotation.Nullable Long $specialPropertyName) {
     this.$specialPropertyName = $specialPropertyName;
   }
-
 
   @Override
   public boolean equals(Object o) {
@@ -75,8 +72,8 @@ public class SpecialModelName {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SpecialModelName $specialModelName = (SpecialModelName) o;
-    return Objects.equals(this.$specialPropertyName, $specialModelName.$specialPropertyName);
+    SpecialModelName specialModelName = (SpecialModelName) o;
+    return Objects.equals(this.$specialPropertyName, specialModelName.$specialPropertyName);
   }
 
   @Override

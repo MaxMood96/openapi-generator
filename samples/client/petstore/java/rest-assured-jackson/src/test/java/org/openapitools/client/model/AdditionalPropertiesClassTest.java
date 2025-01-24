@@ -16,29 +16,27 @@ package org.openapitools.client.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Model tests for AdditionalPropertiesClass
  */
-public class AdditionalPropertiesClassTest {
+class AdditionalPropertiesClassTest {
     private final AdditionalPropertiesClass model = new AdditionalPropertiesClass();
 
     /**
      * Model tests for AdditionalPropertiesClass
      */
     @Test
-    public void testAdditionalPropertiesClass() {
+    void testAdditionalPropertiesClass() {
         // TODO: test AdditionalPropertiesClass
     }
 
@@ -46,7 +44,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapString'
      */
     @Test
-    public void mapStringTest() {
+    void mapStringTest() {
         // TODO: test mapString
     }
 
@@ -54,7 +52,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapNumber'
      */
     @Test
-    public void mapNumberTest() {
+    void mapNumberTest() {
         // TODO: test mapNumber
     }
 
@@ -62,7 +60,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapInteger'
      */
     @Test
-    public void mapIntegerTest() {
+    void mapIntegerTest() {
         // TODO: test mapInteger
     }
 
@@ -70,7 +68,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapBoolean'
      */
     @Test
-    public void mapBooleanTest() {
+    void mapBooleanTest() {
         // TODO: test mapBoolean
     }
 
@@ -78,7 +76,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapArrayInteger'
      */
     @Test
-    public void mapArrayIntegerTest() {
+    void mapArrayIntegerTest() {
         // TODO: test mapArrayInteger
     }
 
@@ -86,7 +84,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapArrayAnytype'
      */
     @Test
-    public void mapArrayAnytypeTest() {
+    void mapArrayAnytypeTest() {
         // TODO: test mapArrayAnytype
     }
 
@@ -94,7 +92,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapMapString'
      */
     @Test
-    public void mapMapStringTest() {
+    void mapMapStringTest() {
         // TODO: test mapMapString
     }
 
@@ -102,7 +100,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapMapAnytype'
      */
     @Test
-    public void mapMapAnytypeTest() {
+    void mapMapAnytypeTest() {
         // TODO: test mapMapAnytype
     }
 
@@ -110,7 +108,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'anytype1'
      */
     @Test
-    public void anytype1Test() {
+    void anytype1Test() {
         // TODO: test anytype1
     }
 
@@ -118,7 +116,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'anytype2'
      */
     @Test
-    public void anytype2Test() {
+    void anytype2Test() {
         // TODO: test anytype2
     }
 
@@ -126,7 +124,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'anytype3'
      */
     @Test
-    public void anytype3Test() {
+    void anytype3Test() {
         // TODO: test anytype3
     }
 

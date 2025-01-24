@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.openapitools.jackson.nullable.JsonNullable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -32,11 +30,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Just a string to inform instance is up and running. Make it nullable in hope to get it as pointer in generated model.
  */
-@ApiModel(description = "Just a string to inform instance is up and running. Make it nullable in hope to get it as pointer in generated model.")
 @JsonPropertyOrder({
   HealthCheckResult.JSON_PROPERTY_NULLABLE_MESSAGE
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class HealthCheckResult {
   public static final String JSON_PROPERTY_NULLABLE_MESSAGE = "NullableMessage";
   private JsonNullable<String> nullableMessage = JsonNullable.<String>undefined();
@@ -44,18 +41,17 @@ public class HealthCheckResult {
   public HealthCheckResult() {
   }
 
-  public HealthCheckResult nullableMessage(String nullableMessage) {
+  public HealthCheckResult nullableMessage(@javax.annotation.Nullable String nullableMessage) {
     this.nullableMessage = JsonNullable.<String>of(nullableMessage);
     
     return this;
   }
 
-   /**
+  /**
    * Get nullableMessage
    * @return nullableMessage
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonIgnore
 
   public String getNullableMessage() {
@@ -74,7 +70,7 @@ public class HealthCheckResult {
     this.nullableMessage = nullableMessage;
   }
 
-  public void setNullableMessage(String nullableMessage) {
+  public void setNullableMessage(@javax.annotation.Nullable String nullableMessage) {
     this.nullableMessage = JsonNullable.<String>of(nullableMessage);
   }
 

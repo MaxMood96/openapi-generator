@@ -20,8 +20,6 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -35,72 +33,73 @@ import org.hibernate.validator.constraints.*;
 /**
  * MixedPropertiesAndAdditionalPropertiesClass
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class MixedPropertiesAndAdditionalPropertiesClass {
   public static final String SERIALIZED_NAME_UUID = "uuid";
   @SerializedName(SERIALIZED_NAME_UUID)
+  @javax.annotation.Nullable
   private UUID uuid;
 
   public static final String SERIALIZED_NAME_DATE_TIME = "dateTime";
   @SerializedName(SERIALIZED_NAME_DATE_TIME)
+  @javax.annotation.Nullable
   private OffsetDateTime dateTime;
 
   public static final String SERIALIZED_NAME_MAP = "map";
   @SerializedName(SERIALIZED_NAME_MAP)
-  private Map<String, Animal> map = null;
+  @javax.annotation.Nullable
+  private Map<String, Animal> map = new HashMap<>();
 
   public MixedPropertiesAndAdditionalPropertiesClass() {
   }
 
-  public MixedPropertiesAndAdditionalPropertiesClass uuid(UUID uuid) {
+  public MixedPropertiesAndAdditionalPropertiesClass uuid(@javax.annotation.Nullable UUID uuid) {
     
     this.uuid = uuid;
     return this;
   }
 
-   /**
+  /**
    * Get uuid
    * @return uuid
-  **/
+   */
   @javax.annotation.Nullable
   @Valid
-  @ApiModelProperty(value = "")
+
 
   public UUID getUuid() {
     return uuid;
   }
 
 
-  public void setUuid(UUID uuid) {
+  public void setUuid(@javax.annotation.Nullable UUID uuid) {
     this.uuid = uuid;
   }
 
-
-  public MixedPropertiesAndAdditionalPropertiesClass dateTime(OffsetDateTime dateTime) {
+  public MixedPropertiesAndAdditionalPropertiesClass dateTime(@javax.annotation.Nullable OffsetDateTime dateTime) {
     
     this.dateTime = dateTime;
     return this;
   }
 
-   /**
+  /**
    * Get dateTime
    * @return dateTime
-  **/
+   */
   @javax.annotation.Nullable
   @Valid
-  @ApiModelProperty(value = "")
+
 
   public OffsetDateTime getDateTime() {
     return dateTime;
   }
 
 
-  public void setDateTime(OffsetDateTime dateTime) {
+  public void setDateTime(@javax.annotation.Nullable OffsetDateTime dateTime) {
     this.dateTime = dateTime;
   }
 
-
-  public MixedPropertiesAndAdditionalPropertiesClass map(Map<String, Animal> map) {
+  public MixedPropertiesAndAdditionalPropertiesClass map(@javax.annotation.Nullable Map<String, Animal> map) {
     
     this.map = map;
     return this;
@@ -114,23 +113,22 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
     return this;
   }
 
-   /**
+  /**
    * Get map
    * @return map
-  **/
+   */
   @javax.annotation.Nullable
   @Valid
-  @ApiModelProperty(value = "")
+
 
   public Map<String, Animal> getMap() {
     return map;
   }
 
 
-  public void setMap(Map<String, Animal> map) {
+  public void setMap(@javax.annotation.Nullable Map<String, Animal> map) {
     this.map = map;
   }
-
 
   @Override
   public boolean equals(Object o) {

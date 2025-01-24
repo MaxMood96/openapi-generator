@@ -5,6 +5,8 @@ import org.openapitools.client.model.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +55,7 @@ class StoreApiTest {
     /**
      * Find purchase order by ID
      *
-     * For valid response try integer IDs with value &lt;&#x3D; 5 or &gt; 10. Other values will generated exceptions
+     * For valid response try integer IDs with value &lt;&#x3D; 5 or &gt; 10. Other values will generate exceptions
      */
     @Test
     void getOrderByIdTest() {

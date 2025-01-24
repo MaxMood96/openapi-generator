@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.openapitools.model.OuterEnum;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -22,7 +23,7 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("Enum_Test")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class EnumTest {
 
   /**
@@ -62,8 +63,7 @@ public class EnumTest {
     }
   }
 
-  @JsonProperty("enum_string")
-  private EnumStringEnum enumString;
+  private @Nullable EnumStringEnum enumString;
 
   /**
    * Gets or Sets enumStringRequired
@@ -102,7 +102,6 @@ public class EnumTest {
     }
   }
 
-  @JsonProperty("enum_string_required")
   private EnumStringRequiredEnum enumStringRequired;
 
   /**
@@ -140,8 +139,7 @@ public class EnumTest {
     }
   }
 
-  @JsonProperty("enum_integer")
-  private EnumIntegerEnum enumInteger;
+  private @Nullable EnumIntegerEnum enumInteger;
 
   /**
    * Gets or Sets enumNumber
@@ -178,11 +176,20 @@ public class EnumTest {
     }
   }
 
-  @JsonProperty("enum_number")
-  private EnumNumberEnum enumNumber;
+  private @Nullable EnumNumberEnum enumNumber;
 
-  @JsonProperty("outerEnum")
-  private OuterEnum outerEnum;
+  private @Nullable OuterEnum outerEnum;
+
+  public EnumTest() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public EnumTest(EnumStringRequiredEnum enumStringRequired) {
+    this.enumStringRequired = enumStringRequired;
+  }
 
   public EnumTest enumString(EnumStringEnum enumString) {
     this.enumString = enumString;
@@ -192,9 +199,10 @@ public class EnumTest {
   /**
    * Get enumString
    * @return enumString
-  */
+   */
   
-  @Schema(name = "enum_string", required = false)
+  @Schema(name = "enum_string", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("enum_string")
   public EnumStringEnum getEnumString() {
     return enumString;
   }
@@ -211,9 +219,10 @@ public class EnumTest {
   /**
    * Get enumStringRequired
    * @return enumStringRequired
-  */
+   */
   @NotNull 
-  @Schema(name = "enum_string_required", required = true)
+  @Schema(name = "enum_string_required", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("enum_string_required")
   public EnumStringRequiredEnum getEnumStringRequired() {
     return enumStringRequired;
   }
@@ -230,9 +239,10 @@ public class EnumTest {
   /**
    * Get enumInteger
    * @return enumInteger
-  */
+   */
   
-  @Schema(name = "enum_integer", required = false)
+  @Schema(name = "enum_integer", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("enum_integer")
   public EnumIntegerEnum getEnumInteger() {
     return enumInteger;
   }
@@ -249,9 +259,10 @@ public class EnumTest {
   /**
    * Get enumNumber
    * @return enumNumber
-  */
+   */
   
-  @Schema(name = "enum_number", required = false)
+  @Schema(name = "enum_number", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("enum_number")
   public EnumNumberEnum getEnumNumber() {
     return enumNumber;
   }
@@ -268,9 +279,10 @@ public class EnumTest {
   /**
    * Get outerEnum
    * @return outerEnum
-  */
+   */
   @Valid 
-  @Schema(name = "outerEnum", required = false)
+  @Schema(name = "outerEnum", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("outerEnum")
   public OuterEnum getOuterEnum() {
     return outerEnum;
   }

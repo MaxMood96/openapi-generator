@@ -16,30 +16,28 @@ package org.openapitools.client.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Model tests for FormatTest
  */
-public class FormatTestTest {
+class FormatTestTest {
     private final FormatTest model = new FormatTest();
 
     /**
      * Model tests for FormatTest
      */
     @Test
-    public void testFormatTest() {
+    void testFormatTest() {
         // TODO: test FormatTest
     }
 
@@ -47,7 +45,7 @@ public class FormatTestTest {
      * Test the property 'integer'
      */
     @Test
-    public void integerTest() {
+    void integerTest() {
         // TODO: test integer
     }
 
@@ -55,7 +53,7 @@ public class FormatTestTest {
      * Test the property 'int32'
      */
     @Test
-    public void int32Test() {
+    void int32Test() {
         // TODO: test int32
     }
 
@@ -63,7 +61,7 @@ public class FormatTestTest {
      * Test the property 'int64'
      */
     @Test
-    public void int64Test() {
+    void int64Test() {
         // TODO: test int64
     }
 
@@ -71,7 +69,7 @@ public class FormatTestTest {
      * Test the property 'number'
      */
     @Test
-    public void numberTest() {
+    void numberTest() {
         // TODO: test number
     }
 
@@ -79,7 +77,7 @@ public class FormatTestTest {
      * Test the property '_float'
      */
     @Test
-    public void _floatTest() {
+    void _floatTest() {
         // TODO: test _float
     }
 
@@ -87,7 +85,7 @@ public class FormatTestTest {
      * Test the property '_double'
      */
     @Test
-    public void _doubleTest() {
+    void _doubleTest() {
         // TODO: test _double
     }
 
@@ -95,7 +93,7 @@ public class FormatTestTest {
      * Test the property 'string'
      */
     @Test
-    public void stringTest() {
+    void stringTest() {
         // TODO: test string
     }
 
@@ -103,7 +101,7 @@ public class FormatTestTest {
      * Test the property '_byte'
      */
     @Test
-    public void _byteTest() {
+    void _byteTest() {
         // TODO: test _byte
     }
 
@@ -111,7 +109,7 @@ public class FormatTestTest {
      * Test the property 'binary'
      */
     @Test
-    public void binaryTest() {
+    void binaryTest() {
         // TODO: test binary
     }
 
@@ -119,7 +117,7 @@ public class FormatTestTest {
      * Test the property 'date'
      */
     @Test
-    public void dateTest() {
+    void dateTest() {
         // TODO: test date
     }
 
@@ -127,7 +125,7 @@ public class FormatTestTest {
      * Test the property 'dateTime'
      */
     @Test
-    public void dateTimeTest() {
+    void dateTimeTest() {
         // TODO: test dateTime
     }
 
@@ -135,7 +133,7 @@ public class FormatTestTest {
      * Test the property 'uuid'
      */
     @Test
-    public void uuidTest() {
+    void uuidTest() {
         // TODO: test uuid
     }
 
@@ -143,7 +141,7 @@ public class FormatTestTest {
      * Test the property 'password'
      */
     @Test
-    public void passwordTest() {
+    void passwordTest() {
         // TODO: test password
     }
 
@@ -151,7 +149,7 @@ public class FormatTestTest {
      * Test the property 'bigDecimal'
      */
     @Test
-    public void bigDecimalTest() {
+    void bigDecimalTest() {
         // TODO: test bigDecimal
     }
 

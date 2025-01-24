@@ -17,7 +17,6 @@
 
 package org.openapitools.codegen.examples;
 
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.XML;
 import org.apache.commons.lang3.StringUtils;
@@ -128,8 +127,7 @@ public class XmlExampleGenerator {
         StringBuilder sb = new StringBuilder();
 
         if (ModelUtils.isArraySchema(schema)) {
-            ArraySchema as = (ArraySchema) schema;
-            Schema inner = as.getItems();
+            Schema inner = ModelUtils.getSchemaItems(schema);
             boolean wrapped = false;
             if (schema.getXml() != null && schema.getXml().getWrapped() != null && schema.getXml().getWrapped()) {
                 wrapped = true;
@@ -155,6 +153,9 @@ public class XmlExampleGenerator {
             }
         } else if (StringUtils.isNotEmpty(schema.get$ref())) {
             Schema actualSchema = examples.get(schema.get$ref());
+            if (actualSchema == null) {
+                actualSchema = examples.get(ModelUtils.getSimpleRef(schema.get$ref()));
+            }
             sb.append(toXml(actualSchema, indent, path));
         } else {
             if (name != null) {

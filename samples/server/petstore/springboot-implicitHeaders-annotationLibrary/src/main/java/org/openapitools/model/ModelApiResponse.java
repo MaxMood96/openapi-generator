@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -19,17 +20,14 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("ApiResponse")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ModelApiResponse {
 
-  @JsonProperty("code")
-  private Integer code;
+  private @Nullable Integer code;
 
-  @JsonProperty("type")
-  private String type;
+  private @Nullable String type;
 
-  @JsonProperty("message")
-  private String message;
+  private @Nullable String message;
 
   public ModelApiResponse code(Integer code) {
     this.code = code;
@@ -39,8 +37,9 @@ public class ModelApiResponse {
   /**
    * Get code
    * @return code
-  */
+   */
   
+  @JsonProperty("code")
   public Integer getCode() {
     return code;
   }
@@ -57,8 +56,9 @@ public class ModelApiResponse {
   /**
    * Get type
    * @return type
-  */
+   */
   
+  @JsonProperty("type")
   public String getType() {
     return type;
   }
@@ -75,8 +75,9 @@ public class ModelApiResponse {
   /**
    * Get message
    * @return message
-  */
+   */
   
+  @JsonProperty("message")
   public String getMessage() {
     return message;
   }

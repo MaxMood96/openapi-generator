@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.openapitools.client.model.Foo;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -33,26 +31,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   FooGetDefaultResponse.JSON_PROPERTY_STRING
 })
 @JsonTypeName("_foo_get_default_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class FooGetDefaultResponse {
   public static final String JSON_PROPERTY_STRING = "string";
+  @javax.annotation.Nullable
   private Foo string;
 
   public FooGetDefaultResponse() {
   }
 
-  public FooGetDefaultResponse string(Foo string) {
+  public FooGetDefaultResponse string(@javax.annotation.Nullable Foo string) {
     
     this.string = string;
     return this;
   }
 
-   /**
+  /**
    * Get string
    * @return string
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
   @JsonProperty(JSON_PROPERTY_STRING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -63,7 +61,7 @@ public class FooGetDefaultResponse {
 
   @JsonProperty(JSON_PROPERTY_STRING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setString(Foo string) {
+  public void setString(@javax.annotation.Nullable Foo string) {
     this.string = string;
   }
 

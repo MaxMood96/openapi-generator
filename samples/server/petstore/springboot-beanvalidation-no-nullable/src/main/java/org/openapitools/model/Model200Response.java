@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -21,14 +22,12 @@ import javax.annotation.Generated;
 
 @ApiModel(description = "Model for testing model name starting with number")
 @JsonTypeName("200_response")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Model200Response {
 
-  @JsonProperty("name")
-  private Integer name;
+  private @Nullable Integer name;
 
-  @JsonProperty("class")
-  private String propertyClass;
+  private @Nullable String propertyClass;
 
   public Model200Response name(Integer name) {
     this.name = name;
@@ -38,9 +37,10 @@ public class Model200Response {
   /**
    * Get name
    * @return name
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("name")
   public Integer getName() {
     return name;
   }
@@ -57,9 +57,10 @@ public class Model200Response {
   /**
    * Get propertyClass
    * @return propertyClass
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("class")
   public String getPropertyClass() {
     return propertyClass;
   }

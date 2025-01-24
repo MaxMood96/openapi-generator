@@ -20,26 +20,28 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 /**
  * ReadOnlyFirst
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ReadOnlyFirst {
   public static final String SERIALIZED_NAME_BAR = "bar";
   @SerializedName(SERIALIZED_NAME_BAR)
+  @javax.annotation.Nullable
   private String bar;
 
   public static final String SERIALIZED_NAME_BAZ = "baz";
   @SerializedName(SERIALIZED_NAME_BAZ)
+  @javax.annotation.Nullable
   private String baz;
 
   public ReadOnlyFirst() {
   }
-
+  /**
+   * Constructor with only readonly parameters
+   */
   
   public ReadOnlyFirst(
      String bar
@@ -48,12 +50,11 @@ public class ReadOnlyFirst {
     this.bar = bar;
   }
 
-   /**
+  /**
    * Get bar
    * @return bar
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
 
   public String getBar() {
     return bar;
@@ -61,29 +62,26 @@ public class ReadOnlyFirst {
 
 
 
-
-  public ReadOnlyFirst baz(String baz) {
+  public ReadOnlyFirst baz(@javax.annotation.Nullable String baz) {
     
     this.baz = baz;
     return this;
   }
 
-   /**
+  /**
    * Get baz
    * @return baz
-  **/
+   */
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
 
   public String getBaz() {
     return baz;
   }
 
 
-  public void setBaz(String baz) {
+  public void setBaz(@javax.annotation.Nullable String baz) {
     this.baz = baz;
   }
-
 
   @Override
   public boolean equals(Object o) {

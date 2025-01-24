@@ -18,117 +18,93 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Model tests for AdditionalPropertiesClass
  */
-public class AdditionalPropertiesClassTest {
+class AdditionalPropertiesClassTest {
     private final AdditionalPropertiesClass model = new AdditionalPropertiesClass();
 
     /**
      * Model tests for AdditionalPropertiesClass
      */
     @Test
-    public void testAdditionalPropertiesClass() {
+    void testAdditionalPropertiesClass() {
         // TODO: test AdditionalPropertiesClass
     }
 
     /**
-     * Test the property 'mapString'
+     * Test the property 'mapProperty'
      */
     @Test
-    public void mapStringTest() {
-        // TODO: test mapString
+    void mapPropertyTest() {
+        // TODO: test mapProperty
     }
 
     /**
-     * Test the property 'mapNumber'
+     * Test the property 'mapOfMapProperty'
      */
     @Test
-    public void mapNumberTest() {
-        // TODO: test mapNumber
-    }
-
-    /**
-     * Test the property 'mapInteger'
-     */
-    @Test
-    public void mapIntegerTest() {
-        // TODO: test mapInteger
-    }
-
-    /**
-     * Test the property 'mapBoolean'
-     */
-    @Test
-    public void mapBooleanTest() {
-        // TODO: test mapBoolean
-    }
-
-    /**
-     * Test the property 'mapArrayInteger'
-     */
-    @Test
-    public void mapArrayIntegerTest() {
-        // TODO: test mapArrayInteger
-    }
-
-    /**
-     * Test the property 'mapArrayAnytype'
-     */
-    @Test
-    public void mapArrayAnytypeTest() {
-        // TODO: test mapArrayAnytype
-    }
-
-    /**
-     * Test the property 'mapMapString'
-     */
-    @Test
-    public void mapMapStringTest() {
-        // TODO: test mapMapString
-    }
-
-    /**
-     * Test the property 'mapMapAnytype'
-     */
-    @Test
-    public void mapMapAnytypeTest() {
-        // TODO: test mapMapAnytype
+    void mapOfMapPropertyTest() {
+        // TODO: test mapOfMapProperty
     }
 
     /**
      * Test the property 'anytype1'
      */
     @Test
-    public void anytype1Test() {
+    void anytype1Test() {
         // TODO: test anytype1
     }
 
     /**
-     * Test the property 'anytype2'
+     * Test the property 'mapWithUndeclaredPropertiesAnytype1'
      */
     @Test
-    public void anytype2Test() {
-        // TODO: test anytype2
+    void mapWithUndeclaredPropertiesAnytype1Test() {
+        // TODO: test mapWithUndeclaredPropertiesAnytype1
     }
 
     /**
-     * Test the property 'anytype3'
+     * Test the property 'mapWithUndeclaredPropertiesAnytype2'
      */
     @Test
-    public void anytype3Test() {
-        // TODO: test anytype3
+    void mapWithUndeclaredPropertiesAnytype2Test() {
+        // TODO: test mapWithUndeclaredPropertiesAnytype2
+    }
+
+    /**
+     * Test the property 'mapWithUndeclaredPropertiesAnytype3'
+     */
+    @Test
+    void mapWithUndeclaredPropertiesAnytype3Test() {
+        // TODO: test mapWithUndeclaredPropertiesAnytype3
+    }
+
+    /**
+     * Test the property 'emptyMap'
+     */
+    @Test
+    void emptyMapTest() {
+        // TODO: test emptyMap
+    }
+
+    /**
+     * Test the property 'mapWithUndeclaredPropertiesString'
+     */
+    @Test
+    void mapWithUndeclaredPropertiesStringTest() {
+        // TODO: test mapWithUndeclaredPropertiesString
     }
 
 }

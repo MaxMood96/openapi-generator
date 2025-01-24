@@ -20,12 +20,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import javax.validation.constraints.*;
-import javax.validation.Valid;
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 
 /**
  * ModelList
@@ -34,26 +32,27 @@ import javax.validation.Valid;
   ModelList.JSON_PROPERTY_123LIST
 })
 @JsonTypeName("List")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ModelList {
   public static final String JSON_PROPERTY_123LIST = "123-list";
+  @jakarta.annotation.Nullable
   private String _123list;
 
   public ModelList() {
   }
 
-  public ModelList _123list(String _123list) {
+  public ModelList _123list(@jakarta.annotation.Nullable String _123list) {
     
     this._123list = _123list;
     return this;
   }
 
-   /**
+  /**
    * Get _123list
    * @return _123list
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+
   @JsonProperty(JSON_PROPERTY_123LIST)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -64,10 +63,9 @@ public class ModelList {
 
   @JsonProperty(JSON_PROPERTY_123LIST)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void set123list(String _123list) {
+  public void set123list(@jakarta.annotation.Nullable String _123list) {
     this._123list = _123list;
   }
-
 
   @Override
   public boolean equals(Object o) {

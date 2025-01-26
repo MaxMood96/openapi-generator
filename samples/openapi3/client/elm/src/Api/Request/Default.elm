@@ -16,6 +16,7 @@
 module Api.Request.Default exposing
     ( headerPost, HeaderType(..), headerTypeVariants
     , maybeGet
+    , paramSanitizeTestIdPost
     , pathStringIntegerEnumerationGet, Enumeration(..), enumerationVariants
     , queryGet, Enum(..), enumVariants
     , securedPost
@@ -23,7 +24,7 @@ module Api.Request.Default exposing
     )
 
 import Api
-import Api.Data
+import Api.Data exposing (..)
 import Dict
 import Http
 import Json.Decode
@@ -51,7 +52,6 @@ stringFromHeaderType model =
 
         HeaderTypeRight ->
             "right"
-
 
 
 
@@ -83,7 +83,6 @@ stringFromEnumeration model =
 
 
 
-
 type Enum
     = EnumA
     | EnumB
@@ -112,8 +111,6 @@ stringFromEnum model =
 
 
 
-
-
 headerPost : String -> Maybe Int -> Maybe HeaderType -> Api.Request String
 headerPost string_header integer_header headerType_header =
     Api.request
@@ -124,7 +121,6 @@ headerPost string_header integer_header headerType_header =
         [ ( "string", Just <| identity string_header ), ( "integer", Maybe.map String.fromInt integer_header ), ( "headerType", Maybe.map stringFromHeaderType headerType_header ) ]
         Nothing
         Json.Decode.string
-
 
 
 maybeGet : Api.Request Api.Data.Maybe_
@@ -139,6 +135,17 @@ maybeGet =
         Api.Data.maybeDecoder
 
 
+paramSanitizeTestIdPost : String -> Maybe String -> Maybe String -> Api.Request ()
+paramSanitizeTestIdPost testId_path queryWithSpaces_query nameWithSpaces =
+    Api.request
+        "POST"
+        "/param-sanitize/{test id}"
+        [ ( "test id", identity testId_path ) ]
+        [ ( "query with spaces", Maybe.map identity queryWithSpaces_query ) ]
+        []
+        (Just <| Http.multipartBody <| List.filterMap identity [ Maybe.map (Http.stringPart "name with spaces") nameWithSpaces ])
+        (Json.Decode.succeed ())
+
 
 pathStringIntegerEnumerationGet : String -> Int -> Enumeration -> Api.Request ()
 pathStringIntegerEnumerationGet string_path integer_path enumeration_path =
@@ -150,7 +157,6 @@ pathStringIntegerEnumerationGet string_path integer_path enumeration_path =
         []
         Nothing
         (Json.Decode.succeed ())
-
 
 
 queryGet : Maybe String -> Maybe Int -> Maybe Enum -> Api.Request ()
@@ -165,7 +171,8 @@ queryGet string_query int_query enum_query =
         (Json.Decode.succeed ())
 
 
-
+{-| Secured endpoint
+-}
 securedPost : String -> Api.Request ()
 securedPost auth_token =
     Api.request
@@ -178,8 +185,6 @@ securedPost auth_token =
         (Json.Decode.succeed ())
         |> Api.withBearerToken auth_token
 
-
-
 uuidGet : Maybe Uuid -> Api.Request Uuid
 uuidGet value_query =
     Api.request
@@ -190,3 +195,4 @@ uuidGet value_query =
         []
         Nothing
         Uuid.decoder
+

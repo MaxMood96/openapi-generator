@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -23,28 +24,33 @@ import javax.annotation.Generated;
  * Pet
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Pet {
 
-  @JsonProperty("@type")
   private String atType = "Pet";
 
-  @JsonProperty("age")
   private Integer age = 4;
 
-  @JsonProperty("happy")
   private Boolean happy = true;
 
-  @JsonProperty("price")
   private BigDecimal price = new BigDecimal("32000000000");
 
-  @JsonProperty("lastFeed")
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime lastFeed = OffsetDateTime.parse("1973-12-19T11:39:57Z[UTC]", java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME.withZone(java.time.ZoneId.systemDefault()));
 
-  @JsonProperty("dateOfBirth")
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate dateOfBirth = LocalDate.parse("2021-01-01");
+
+  public Pet() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public Pet(String atType) {
+    this.atType = atType;
+  }
 
   public Pet atType(String atType) {
     this.atType = atType;
@@ -54,9 +60,10 @@ public class Pet {
   /**
    * Get atType
    * @return atType
-  */
+   */
   @NotNull 
   @ApiModelProperty(required = true, value = "")
+  @JsonProperty("@type")
   public String getAtType() {
     return atType;
   }
@@ -73,9 +80,10 @@ public class Pet {
   /**
    * Get age
    * @return age
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("age")
   public Integer getAge() {
     return age;
   }
@@ -92,9 +100,10 @@ public class Pet {
   /**
    * Get happy
    * @return happy
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("happy")
   public Boolean getHappy() {
     return happy;
   }
@@ -111,9 +120,10 @@ public class Pet {
   /**
    * Get price
    * @return price
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
+  @JsonProperty("price")
   public BigDecimal getPrice() {
     return price;
   }
@@ -130,9 +140,10 @@ public class Pet {
   /**
    * Get lastFeed
    * @return lastFeed
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
+  @JsonProperty("lastFeed")
   public OffsetDateTime getLastFeed() {
     return lastFeed;
   }
@@ -149,9 +160,10 @@ public class Pet {
   /**
    * Get dateOfBirth
    * @return dateOfBirth
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
+  @JsonProperty("dateOfBirth")
   public LocalDate getDateOfBirth() {
     return dateOfBirth;
   }

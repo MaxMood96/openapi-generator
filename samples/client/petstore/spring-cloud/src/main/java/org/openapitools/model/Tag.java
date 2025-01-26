@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -20,14 +21,12 @@ import javax.annotation.Generated;
  */
 
 @ApiModel(description = "A tag for a pet")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Tag {
 
-  @JsonProperty("id")
-  private Long id;
+  private @Nullable Long id;
 
-  @JsonProperty("name")
-  private String name;
+  private @Nullable String name;
 
   public Tag id(Long id) {
     this.id = id;
@@ -37,9 +36,10 @@ public class Tag {
   /**
    * Get id
    * @return id
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("id")
   public Long getId() {
     return id;
   }
@@ -56,9 +56,10 @@ public class Tag {
   /**
    * Get name
    * @return name
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("name")
   public String getName() {
     return name;
   }

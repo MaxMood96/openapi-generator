@@ -12,7 +12,12 @@ package petstore
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
+
+// checks if the TypeHolderDefault type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &TypeHolderDefault{}
 
 // TypeHolderDefault struct for TypeHolderDefault
 type TypeHolderDefault struct {
@@ -22,6 +27,8 @@ type TypeHolderDefault struct {
 	BoolItem bool `json:"bool_item"`
 	ArrayItem []int32 `json:"array_item"`
 }
+
+type _TypeHolderDefault TypeHolderDefault
 
 // NewTypeHolderDefault instantiates a new TypeHolderDefault object
 // This constructor will assign default values to properties that have it defined,
@@ -63,7 +70,7 @@ func (o *TypeHolderDefault) GetStringItem() string {
 // and a boolean to check if the value has been set.
 func (o *TypeHolderDefault) GetStringItemOk() (*string, bool) {
 	if o == nil {
-    return nil, false
+		return nil, false
 	}
 	return &o.StringItem, true
 }
@@ -87,7 +94,7 @@ func (o *TypeHolderDefault) GetNumberItem() float32 {
 // and a boolean to check if the value has been set.
 func (o *TypeHolderDefault) GetNumberItemOk() (*float32, bool) {
 	if o == nil {
-    return nil, false
+		return nil, false
 	}
 	return &o.NumberItem, true
 }
@@ -111,7 +118,7 @@ func (o *TypeHolderDefault) GetIntegerItem() int32 {
 // and a boolean to check if the value has been set.
 func (o *TypeHolderDefault) GetIntegerItemOk() (*int32, bool) {
 	if o == nil {
-    return nil, false
+		return nil, false
 	}
 	return &o.IntegerItem, true
 }
@@ -135,7 +142,7 @@ func (o *TypeHolderDefault) GetBoolItem() bool {
 // and a boolean to check if the value has been set.
 func (o *TypeHolderDefault) GetBoolItemOk() (*bool, bool) {
 	if o == nil {
-    return nil, false
+		return nil, false
 	}
 	return &o.BoolItem, true
 }
@@ -159,7 +166,7 @@ func (o *TypeHolderDefault) GetArrayItem() []int32 {
 // and a boolean to check if the value has been set.
 func (o *TypeHolderDefault) GetArrayItemOk() ([]int32, bool) {
 	if o == nil {
-    return nil, false
+		return nil, false
 	}
 	return o.ArrayItem, true
 }
@@ -170,23 +177,62 @@ func (o *TypeHolderDefault) SetArrayItem(v []int32) {
 }
 
 func (o TypeHolderDefault) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["string_item"] = o.StringItem
-	}
-	if true {
-		toSerialize["number_item"] = o.NumberItem
-	}
-	if true {
-		toSerialize["integer_item"] = o.IntegerItem
-	}
-	if true {
-		toSerialize["bool_item"] = o.BoolItem
-	}
-	if true {
-		toSerialize["array_item"] = o.ArrayItem
+	toSerialize,err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o TypeHolderDefault) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["string_item"] = o.StringItem
+	toSerialize["number_item"] = o.NumberItem
+	toSerialize["integer_item"] = o.IntegerItem
+	toSerialize["bool_item"] = o.BoolItem
+	toSerialize["array_item"] = o.ArrayItem
+	return toSerialize, nil
+}
+
+func (o *TypeHolderDefault) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"string_item",
+		"number_item",
+		"integer_item",
+		"bool_item",
+		"array_item",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTypeHolderDefault := _TypeHolderDefault{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varTypeHolderDefault)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TypeHolderDefault(varTypeHolderDefault)
+
+	return err
 }
 
 type NullableTypeHolderDefault struct {

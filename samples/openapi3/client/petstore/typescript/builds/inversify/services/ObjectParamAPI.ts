@@ -1,5 +1,5 @@
 import type { HttpFile } from '../http/http';
-import type { Configuration } from '../configuration'
+import type { Configuration } from '../configuration';
 import type * as req from "../types/ObjectParamAPI";
 
 import type { ApiResponse } from '../models/ApiResponse';
@@ -86,7 +86,7 @@ export abstract class AbstractObjectStoreApi {
     public abstract getInventory(param: req.StoreApiGetInventoryRequest, options?: Configuration): Promise<{ [key: string]: number; }>;
 
     /**
-     * For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
+     * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions
      * Find purchase order by ID
      * @param param the request object
      */

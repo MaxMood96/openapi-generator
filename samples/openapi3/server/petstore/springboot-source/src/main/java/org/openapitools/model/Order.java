@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -20,21 +21,17 @@ import javax.annotation.Generated;
  * An order for a pets from the pet store
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Order {
 
-  @JsonProperty("id")
-  private Long id;
+  private @Nullable Long id;
 
-  @JsonProperty("petId")
-  private Long petId;
+  private @Nullable Long petId;
 
-  @JsonProperty("quantity")
-  private Integer quantity;
+  private @Nullable Integer quantity;
 
-  @JsonProperty("shipDate")
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime shipDate;
+  private @Nullable OffsetDateTime shipDate;
 
   /**
    * Order Status
@@ -73,10 +70,8 @@ public class Order {
     }
   }
 
-  @JsonProperty("status")
-  private StatusEnum status;
+  private @Nullable StatusEnum status;
 
-  @JsonProperty("complete")
   private Boolean complete = false;
 
   public Order id(Long id) {
@@ -87,8 +82,9 @@ public class Order {
   /**
    * Get id
    * @return id
-  */
+   */
   
+  @JsonProperty("id")
   public Long getId() {
     return id;
   }
@@ -105,8 +101,9 @@ public class Order {
   /**
    * Get petId
    * @return petId
-  */
+   */
   
+  @JsonProperty("petId")
   public Long getPetId() {
     return petId;
   }
@@ -123,8 +120,9 @@ public class Order {
   /**
    * Get quantity
    * @return quantity
-  */
+   */
   
+  @JsonProperty("quantity")
   public Integer getQuantity() {
     return quantity;
   }
@@ -141,8 +139,9 @@ public class Order {
   /**
    * Get shipDate
    * @return shipDate
-  */
+   */
   @Valid 
+  @JsonProperty("shipDate")
   public OffsetDateTime getShipDate() {
     return shipDate;
   }
@@ -159,8 +158,9 @@ public class Order {
   /**
    * Order Status
    * @return status
-  */
+   */
   
+  @JsonProperty("status")
   public StatusEnum getStatus() {
     return status;
   }
@@ -177,8 +177,9 @@ public class Order {
   /**
    * Get complete
    * @return complete
-  */
+   */
   
+  @JsonProperty("complete")
   public Boolean getComplete() {
     return complete;
   }

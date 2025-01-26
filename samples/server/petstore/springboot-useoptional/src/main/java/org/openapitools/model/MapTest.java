@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -22,12 +23,11 @@ import javax.annotation.Generated;
  * MapTest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class MapTest {
 
-  @JsonProperty("map_map_of_string")
   @Valid
-  private Map<String, Map<String, String>> mapMapOfString = null;
+  private Map<String, Map<String, String>> mapMapOfString = new HashMap<>();
 
   /**
    * Gets or Sets inner
@@ -64,17 +64,14 @@ public class MapTest {
     }
   }
 
-  @JsonProperty("map_of_enum_string")
   @Valid
-  private Map<String, InnerEnum> mapOfEnumString = null;
+  private Map<String, InnerEnum> mapOfEnumString = new HashMap<>();
 
-  @JsonProperty("direct_map")
   @Valid
-  private Map<String, Boolean> directMap = null;
+  private Map<String, Boolean> directMap = new HashMap<>();
 
-  @JsonProperty("indirect_map")
   @Valid
-  private Map<String, Boolean> indirectMap = null;
+  private Map<String, Boolean> indirectMap = new HashMap<>();
 
   public MapTest mapMapOfString(Map<String, Map<String, String>> mapMapOfString) {
     this.mapMapOfString = mapMapOfString;
@@ -92,9 +89,10 @@ public class MapTest {
   /**
    * Get mapMapOfString
    * @return mapMapOfString
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
+  @JsonProperty("map_map_of_string")
   public Map<String, Map<String, String>> getMapMapOfString() {
     return mapMapOfString;
   }
@@ -119,9 +117,10 @@ public class MapTest {
   /**
    * Get mapOfEnumString
    * @return mapOfEnumString
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("map_of_enum_string")
   public Map<String, InnerEnum> getMapOfEnumString() {
     return mapOfEnumString;
   }
@@ -146,9 +145,10 @@ public class MapTest {
   /**
    * Get directMap
    * @return directMap
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("direct_map")
   public Map<String, Boolean> getDirectMap() {
     return directMap;
   }
@@ -173,9 +173,10 @@ public class MapTest {
   /**
    * Get indirectMap
    * @return indirectMap
-  */
+   */
   
   @ApiModelProperty(value = "")
+  @JsonProperty("indirect_map")
   public Map<String, Boolean> getIndirectMap() {
     return indirectMap;
   }
@@ -226,5 +227,81 @@ public class MapTest {
     }
     return o.toString().replace("\n", "\n    ");
   }
+  
+  public static class Builder {
+
+    private MapTest instance;
+
+    public Builder() {
+      this(new MapTest());
+    }
+
+    protected Builder(MapTest instance) {
+      this.instance = instance;
+    }
+
+    protected Builder copyOf(MapTest value) { 
+      this.instance.setMapMapOfString(value.mapMapOfString);
+      this.instance.setMapOfEnumString(value.mapOfEnumString);
+      this.instance.setDirectMap(value.directMap);
+      this.instance.setIndirectMap(value.indirectMap);
+      return this;
+    }
+
+    public MapTest.Builder mapMapOfString(Map<String, Map<String, String>> mapMapOfString) {
+      this.instance.mapMapOfString(mapMapOfString);
+      return this;
+    }
+    
+    public MapTest.Builder mapOfEnumString(Map<String, InnerEnum> mapOfEnumString) {
+      this.instance.mapOfEnumString(mapOfEnumString);
+      return this;
+    }
+    
+    public MapTest.Builder directMap(Map<String, Boolean> directMap) {
+      this.instance.directMap(directMap);
+      return this;
+    }
+    
+    public MapTest.Builder indirectMap(Map<String, Boolean> indirectMap) {
+      this.instance.indirectMap(indirectMap);
+      return this;
+    }
+    
+    /**
+    * returns a built MapTest instance.
+    *
+    * The builder is not reusable (NullPointerException)
+    */
+    public MapTest build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /**
+  * Create a builder with no initialized field (except for the default values).
+  */
+  public static MapTest.Builder builder() {
+    return new MapTest.Builder();
+  }
+
+  /**
+  * Create a builder with a shallow copy of this instance.
+  */
+  public MapTest.Builder toBuilder() {
+    MapTest.Builder builder = new MapTest.Builder();
+    return builder.copyOf(this);
+  }
+
 }
 

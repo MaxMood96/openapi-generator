@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class FakeApi {
     private ApiClient apiClient;
 
@@ -970,7 +970,7 @@ public class FakeApi {
   /**
     * Fake endpoint to test group parameters (optional)
     * Fake endpoint to test group parameters (optional)
-    * <p><b>400</b> - Someting wrong
+    * <p><b>400</b> - Something wrong
     * @param requiredStringGroup Required String in group parameters
     * @param requiredBooleanGroup Required Boolean in group parameters
     * @param requiredInt64Group Required Integer in group parameters
@@ -986,7 +986,7 @@ public class FakeApi {
   /**
     * Fake endpoint to test group parameters (optional)
     * Fake endpoint to test group parameters (optional)
-    * <p><b>400</b> - Someting wrong
+    * <p><b>400</b> - Something wrong
     * @param requiredStringGroup Required String in group parameters
     * @param requiredBooleanGroup Required Boolean in group parameters
     * @param requiredInt64Group Required Integer in group parameters

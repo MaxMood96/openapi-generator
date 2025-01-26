@@ -18,27 +18,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Model tests for AdditionalPropertiesClass
  */
-public class AdditionalPropertiesClassTest {
+class AdditionalPropertiesClassTest {
     private final AdditionalPropertiesClass model = new AdditionalPropertiesClass();
 
     /**
      * Model tests for AdditionalPropertiesClass
      */
     @Test
-    public void testAdditionalPropertiesClass() {
+    void testAdditionalPropertiesClass() {
         // TODO: test AdditionalPropertiesClass
     }
 
@@ -46,7 +42,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapProperty'
      */
     @Test
-    public void mapPropertyTest() {
+    void mapPropertyTest() {
         // TODO: test mapProperty
     }
 
@@ -54,7 +50,7 @@ public class AdditionalPropertiesClassTest {
      * Test the property 'mapOfMapProperty'
      */
     @Test
-    public void mapOfMapPropertyTest() {
+    void mapOfMapPropertyTest() {
         // TODO: test mapOfMapProperty
     }
 

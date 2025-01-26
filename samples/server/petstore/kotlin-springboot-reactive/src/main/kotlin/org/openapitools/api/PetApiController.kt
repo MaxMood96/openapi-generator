@@ -38,24 +38,26 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
     @Operation(
         summary = "Add a new pet to the store",
         operationId = "addPet",
-        description = "",
+        description = """""",
         responses = [
+            ApiResponse(responseCode = "200", description = "successful operation", content = [Content(schema = Schema(implementation = Pet::class))]),
             ApiResponse(responseCode = "405", description = "Invalid input") ],
         security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "write:pets", "read:pets" ]) ]
     )
     @RequestMapping(
         method = [RequestMethod.POST],
         value = ["/pet"],
+        produces = ["application/xml", "application/json"],
         consumes = ["application/json", "application/xml"]
     )
-    suspend fun addPet(@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody body: Pet): ResponseEntity<Unit> {
-        return ResponseEntity(service.addPet(body), HttpStatus.valueOf(405))
+    suspend fun addPet(@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody pet: Pet): ResponseEntity<Pet> {
+        return ResponseEntity(service.addPet(pet), HttpStatus.valueOf(200))
     }
 
     @Operation(
         summary = "Deletes a pet",
         operationId = "deletePet",
-        description = "",
+        description = """""",
         responses = [
             ApiResponse(responseCode = "400", description = "Invalid pet value") ],
         security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "write:pets", "read:pets" ]) ]
@@ -71,11 +73,11 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
     @Operation(
         summary = "Finds Pets by status",
         operationId = "findPetsByStatus",
-        description = "Multiple status values can be provided with comma separated strings",
+        description = """Multiple status values can be provided with comma separated strings""",
         responses = [
-            ApiResponse(responseCode = "200", description = "successful operation", content = [Content(schema = Schema(implementation = Pet::class))]),
+            ApiResponse(responseCode = "200", description = "successful operation", content = [Content(array = ArraySchema(schema = Schema(implementation = Pet::class)))]),
             ApiResponse(responseCode = "400", description = "Invalid status value") ],
-        security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "write:pets", "read:pets" ]) ]
+        security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "read:pets" ]) ]
     )
     @RequestMapping(
         method = [RequestMethod.GET],
@@ -89,11 +91,11 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
     @Operation(
         summary = "Finds Pets by tags",
         operationId = "findPetsByTags",
-        description = "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
+        description = """Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.""",
         responses = [
-            ApiResponse(responseCode = "200", description = "successful operation", content = [Content(schema = Schema(implementation = Pet::class))]),
+            ApiResponse(responseCode = "200", description = "successful operation", content = [Content(array = ArraySchema(schema = Schema(implementation = Pet::class)))]),
             ApiResponse(responseCode = "400", description = "Invalid tag value") ],
-        security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "write:pets", "read:pets" ]) ]
+        security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "read:pets" ]) ]
     )
     @RequestMapping(
         method = [RequestMethod.GET],
@@ -107,7 +109,7 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
     @Operation(
         summary = "Find pet by ID",
         operationId = "getPetById",
-        description = "Returns a single pet",
+        description = """Returns a single pet""",
         responses = [
             ApiResponse(responseCode = "200", description = "successful operation", content = [Content(schema = Schema(implementation = Pet::class))]),
             ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
@@ -126,8 +128,9 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
     @Operation(
         summary = "Update an existing pet",
         operationId = "updatePet",
-        description = "",
+        description = """""",
         responses = [
+            ApiResponse(responseCode = "200", description = "successful operation", content = [Content(schema = Schema(implementation = Pet::class))]),
             ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
             ApiResponse(responseCode = "404", description = "Pet not found"),
             ApiResponse(responseCode = "405", description = "Validation exception") ],
@@ -136,16 +139,17 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
     @RequestMapping(
         method = [RequestMethod.PUT],
         value = ["/pet"],
+        produces = ["application/xml", "application/json"],
         consumes = ["application/json", "application/xml"]
     )
-    suspend fun updatePet(@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody body: Pet): ResponseEntity<Unit> {
-        return ResponseEntity(service.updatePet(body), HttpStatus.valueOf(400))
+    suspend fun updatePet(@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody pet: Pet): ResponseEntity<Pet> {
+        return ResponseEntity(service.updatePet(pet), HttpStatus.valueOf(200))
     }
 
     @Operation(
         summary = "Updates a pet in the store with form data",
         operationId = "updatePetWithForm",
-        description = "",
+        description = """""",
         responses = [
             ApiResponse(responseCode = "405", description = "Invalid input") ],
         security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "write:pets", "read:pets" ]) ]
@@ -162,7 +166,7 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
     @Operation(
         summary = "uploads an image",
         operationId = "uploadFile",
-        description = "",
+        description = """""",
         responses = [
             ApiResponse(responseCode = "200", description = "successful operation", content = [Content(schema = Schema(implementation = ModelApiResponse::class))]) ],
         security = [ SecurityRequirement(name = "petstore_auth", scopes = [ "write:pets", "read:pets" ]) ]
@@ -173,7 +177,7 @@ class PetApiController(@Autowired(required = true) val service: PetApiService) {
         produces = ["application/json"],
         consumes = ["multipart/form-data"]
     )
-    suspend fun uploadFile(@Parameter(description = "ID of pet to update", required = true) @PathVariable("petId") petId: kotlin.Long,@Parameter(description = "Additional data to pass to server") @RequestParam(value = "additionalMetadata", required = false) additionalMetadata: kotlin.String? ,@Parameter(description = "file detail") @Valid @RequestPart("file") file: org.springframework.core.io.Resource?): ResponseEntity<ModelApiResponse> {
+    suspend fun uploadFile(@Parameter(description = "ID of pet to update", required = true) @PathVariable("petId") petId: kotlin.Long,@Parameter(description = "Additional data to pass to server") @RequestParam(value = "additionalMetadata", required = false) additionalMetadata: kotlin.String? ,@Parameter(description = "file to upload") @Valid @RequestPart("file", required = false) file: org.springframework.web.multipart.MultipartFile?): ResponseEntity<ModelApiResponse> {
         return ResponseEntity(service.uploadFile(petId, additionalMetadata, file), HttpStatus.valueOf(200))
     }
 }

@@ -7,12 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.openapitools.model.Bar;
-import org.openapitools.model.BarCreate;
-import org.openapitools.model.Foo;
-import org.openapitools.model.Pasta;
-import org.openapitools.model.Pizza;
-import org.openapitools.model.PizzaSpeziale;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -41,23 +36,29 @@ import javax.annotation.Generated;
   @JsonSubTypes.Type(value = PizzaSpeziale.class, name = "PizzaSpeziale")
 })
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class Entity {
 
-  @JsonProperty("href")
-  private String href;
+  private @Nullable String href;
 
-  @JsonProperty("id")
-  private String id;
+  private @Nullable String id;
 
-  @JsonProperty("@schemaLocation")
-  private String atSchemaLocation;
+  private @Nullable String atSchemaLocation;
 
-  @JsonProperty("@baseType")
-  private String atBaseType;
+  private @Nullable String atBaseType;
 
-  @JsonProperty("@type")
   private String atType;
+
+  public Entity() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public Entity(String atType) {
+    this.atType = atType;
+  }
 
   public Entity href(String href) {
     this.href = href;
@@ -67,9 +68,10 @@ public class Entity {
   /**
    * Hyperlink reference
    * @return href
-  */
+   */
   
-  @Schema(name = "href", description = "Hyperlink reference", required = false)
+  @Schema(name = "href", description = "Hyperlink reference", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("href")
   public String getHref() {
     return href;
   }
@@ -86,9 +88,10 @@ public class Entity {
   /**
    * unique identifier
    * @return id
-  */
+   */
   
-  @Schema(name = "id", description = "unique identifier", required = false)
+  @Schema(name = "id", description = "unique identifier", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
   public String getId() {
     return id;
   }
@@ -105,9 +108,10 @@ public class Entity {
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    * @return atSchemaLocation
-  */
+   */
   
-  @Schema(name = "@schemaLocation", description = "A URI to a JSON-Schema file that defines additional attributes and relationships", required = false)
+  @Schema(name = "@schemaLocation", description = "A URI to a JSON-Schema file that defines additional attributes and relationships", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("@schemaLocation")
   public String getAtSchemaLocation() {
     return atSchemaLocation;
   }
@@ -124,9 +128,10 @@ public class Entity {
   /**
    * When sub-classing, this defines the super-class
    * @return atBaseType
-  */
+   */
   
-  @Schema(name = "@baseType", description = "When sub-classing, this defines the super-class", required = false)
+  @Schema(name = "@baseType", description = "When sub-classing, this defines the super-class", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("@baseType")
   public String getAtBaseType() {
     return atBaseType;
   }
@@ -143,9 +148,10 @@ public class Entity {
   /**
    * When sub-classing, this defines the sub-class Extensible name
    * @return atType
-  */
+   */
   @NotNull 
-  @Schema(name = "@type", description = "When sub-classing, this defines the sub-class Extensible name", required = true)
+  @Schema(name = "@type", description = "When sub-classing, this defines the sub-class Extensible name", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("@type")
   public String getAtType() {
     return atType;
   }
@@ -198,5 +204,87 @@ public class Entity {
     }
     return o.toString().replace("\n", "\n    ");
   }
+  
+  public static class Builder {
+
+    private Entity instance;
+
+    public Builder() {
+      this(new Entity());
+    }
+
+    protected Builder(Entity instance) {
+      this.instance = instance;
+    }
+
+    protected Builder copyOf(Entity value) { 
+      this.instance.setHref(value.href);
+      this.instance.setId(value.id);
+      this.instance.setAtSchemaLocation(value.atSchemaLocation);
+      this.instance.setAtBaseType(value.atBaseType);
+      this.instance.setAtType(value.atType);
+      return this;
+    }
+
+    public Entity.Builder href(String href) {
+      this.instance.href(href);
+      return this;
+    }
+    
+    public Entity.Builder id(String id) {
+      this.instance.id(id);
+      return this;
+    }
+    
+    public Entity.Builder atSchemaLocation(String atSchemaLocation) {
+      this.instance.atSchemaLocation(atSchemaLocation);
+      return this;
+    }
+    
+    public Entity.Builder atBaseType(String atBaseType) {
+      this.instance.atBaseType(atBaseType);
+      return this;
+    }
+    
+    public Entity.Builder atType(String atType) {
+      this.instance.atType(atType);
+      return this;
+    }
+    
+    /**
+    * returns a built Entity instance.
+    *
+    * The builder is not reusable (NullPointerException)
+    */
+    public Entity build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /**
+  * Create a builder with no initialized field (except for the default values).
+  */
+  public static Entity.Builder builder() {
+    return new Entity.Builder();
+  }
+
+  /**
+  * Create a builder with a shallow copy of this instance.
+  */
+  public Entity.Builder toBuilder() {
+    Entity.Builder builder = new Entity.Builder();
+    return builder.copyOf(this);
+  }
+
 }
 

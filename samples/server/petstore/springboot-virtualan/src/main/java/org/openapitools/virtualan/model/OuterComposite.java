@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.math.BigDecimal;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -19,17 +20,14 @@ import javax.annotation.Generated;
  * OuterComposite
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class OuterComposite {
 
-  @JsonProperty("my_number")
-  private BigDecimal myNumber;
+  private @Nullable BigDecimal myNumber;
 
-  @JsonProperty("my_string")
-  private String myString;
+  private @Nullable String myString;
 
-  @JsonProperty("my_boolean")
-  private Boolean myBoolean;
+  private @Nullable Boolean myBoolean;
 
   public OuterComposite myNumber(BigDecimal myNumber) {
     this.myNumber = myNumber;
@@ -39,9 +37,10 @@ public class OuterComposite {
   /**
    * Get myNumber
    * @return myNumber
-  */
+   */
   @Valid 
-  @Schema(name = "my_number", required = false)
+  @Schema(name = "my_number", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("my_number")
   public BigDecimal getMyNumber() {
     return myNumber;
   }
@@ -58,9 +57,10 @@ public class OuterComposite {
   /**
    * Get myString
    * @return myString
-  */
+   */
   
-  @Schema(name = "my_string", required = false)
+  @Schema(name = "my_string", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("my_string")
   public String getMyString() {
     return myString;
   }
@@ -77,9 +77,10 @@ public class OuterComposite {
   /**
    * Get myBoolean
    * @return myBoolean
-  */
+   */
   
-  @Schema(name = "my_boolean", required = false)
+  @Schema(name = "my_boolean", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("my_boolean")
   public Boolean getMyBoolean() {
     return myBoolean;
   }

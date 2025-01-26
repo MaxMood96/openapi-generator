@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,8 +27,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import javax.validation.constraints.*;
-import javax.validation.Valid;
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 
 /**
  * FormatTest
@@ -52,67 +50,81 @@ import javax.validation.Valid;
   FormatTest.JSON_PROPERTY_BIG_DECIMAL
 })
 @JsonTypeName("format_test")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class FormatTest {
   public static final String JSON_PROPERTY_INTEGER = "integer";
+  @jakarta.annotation.Nullable
   private Integer integer;
 
   public static final String JSON_PROPERTY_INT32 = "int32";
+  @jakarta.annotation.Nullable
   private Integer int32;
 
   public static final String JSON_PROPERTY_INT64 = "int64";
+  @jakarta.annotation.Nullable
   private Long int64;
 
   public static final String JSON_PROPERTY_NUMBER = "number";
+  @jakarta.annotation.Nonnull
   private BigDecimal number;
 
   public static final String JSON_PROPERTY_FLOAT = "float";
+  @jakarta.annotation.Nullable
   private Float _float;
 
   public static final String JSON_PROPERTY_DOUBLE = "double";
+  @jakarta.annotation.Nullable
   private Double _double;
 
   public static final String JSON_PROPERTY_STRING = "string";
+  @jakarta.annotation.Nullable
   private String string;
 
   public static final String JSON_PROPERTY_BYTE = "byte";
+  @jakarta.annotation.Nonnull
   private byte[] _byte;
 
   public static final String JSON_PROPERTY_BINARY = "binary";
+  @jakarta.annotation.Nullable
   private File binary;
 
   public static final String JSON_PROPERTY_DATE = "date";
+  @jakarta.annotation.Nonnull
   private LocalDate date;
 
   public static final String JSON_PROPERTY_DATE_TIME = "dateTime";
+  @jakarta.annotation.Nullable
   private OffsetDateTime dateTime;
 
   public static final String JSON_PROPERTY_UUID = "uuid";
+  @jakarta.annotation.Nullable
   private UUID uuid;
 
   public static final String JSON_PROPERTY_PASSWORD = "password";
+  @jakarta.annotation.Nonnull
   private String password;
 
   public static final String JSON_PROPERTY_BIG_DECIMAL = "BigDecimal";
+  @jakarta.annotation.Nullable
   private BigDecimal bigDecimal;
 
   public FormatTest() {
   }
 
-  public FormatTest integer(Integer integer) {
+  public FormatTest integer(@jakarta.annotation.Nullable Integer integer) {
     
     this.integer = integer;
     return this;
   }
 
-   /**
+  /**
    * Get integer
    * minimum: 10
    * maximum: 100
    * @return integer
-  **/
-  @javax.annotation.Nullable
- @Min(10) @Max(100)  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+ @Min(10) @Max(100)
   @JsonProperty(JSON_PROPERTY_INTEGER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -123,25 +135,24 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_INTEGER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setInteger(Integer integer) {
+  public void setInteger(@jakarta.annotation.Nullable Integer integer) {
     this.integer = integer;
   }
 
-
-  public FormatTest int32(Integer int32) {
+  public FormatTest int32(@jakarta.annotation.Nullable Integer int32) {
     
     this.int32 = int32;
     return this;
   }
 
-   /**
+  /**
    * Get int32
    * minimum: 20
    * maximum: 200
    * @return int32
-  **/
-  @javax.annotation.Nullable
- @Min(20) @Max(200)  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+ @Min(20) @Max(200)
   @JsonProperty(JSON_PROPERTY_INT32)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -152,23 +163,22 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_INT32)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setInt32(Integer int32) {
+  public void setInt32(@jakarta.annotation.Nullable Integer int32) {
     this.int32 = int32;
   }
 
-
-  public FormatTest int64(Long int64) {
+  public FormatTest int64(@jakarta.annotation.Nullable Long int64) {
     
     this.int64 = int64;
     return this;
   }
 
-   /**
+  /**
    * Get int64
    * @return int64
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+
   @JsonProperty(JSON_PROPERTY_INT64)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -179,27 +189,26 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_INT64)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setInt64(Long int64) {
+  public void setInt64(@jakarta.annotation.Nullable Long int64) {
     this.int64 = int64;
   }
 
-
-  public FormatTest number(BigDecimal number) {
+  public FormatTest number(@jakarta.annotation.Nonnull BigDecimal number) {
     
     this.number = number;
     return this;
   }
 
-   /**
+  /**
    * Get number
    * minimum: 32.1
    * maximum: 543.2
    * @return number
-  **/
-  @javax.annotation.Nonnull
+   */
+  @jakarta.annotation.Nonnull
   @NotNull
   @Valid
- @DecimalMin("32.1") @DecimalMax("543.2")  @ApiModelProperty(required = true, value = "")
+ @DecimalMin("32.1") @DecimalMax("543.2")
   @JsonProperty(JSON_PROPERTY_NUMBER)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
@@ -210,25 +219,24 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_NUMBER)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setNumber(BigDecimal number) {
+  public void setNumber(@jakarta.annotation.Nonnull BigDecimal number) {
     this.number = number;
   }
 
-
-  public FormatTest _float(Float _float) {
+  public FormatTest _float(@jakarta.annotation.Nullable Float _float) {
     
     this._float = _float;
     return this;
   }
 
-   /**
+  /**
    * Get _float
    * minimum: 54.3
    * maximum: 987.6
    * @return _float
-  **/
-  @javax.annotation.Nullable
- @DecimalMin("54.3") @DecimalMax("987.6")  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+ @DecimalMin("54.3") @DecimalMax("987.6")
   @JsonProperty(JSON_PROPERTY_FLOAT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -239,25 +247,24 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_FLOAT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFloat(Float _float) {
+  public void setFloat(@jakarta.annotation.Nullable Float _float) {
     this._float = _float;
   }
 
-
-  public FormatTest _double(Double _double) {
+  public FormatTest _double(@jakarta.annotation.Nullable Double _double) {
     
     this._double = _double;
     return this;
   }
 
-   /**
+  /**
    * Get _double
    * minimum: 67.8
    * maximum: 123.4
    * @return _double
-  **/
-  @javax.annotation.Nullable
- @DecimalMin("67.8") @DecimalMax("123.4")  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+ @DecimalMin("67.8") @DecimalMax("123.4")
   @JsonProperty(JSON_PROPERTY_DOUBLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -268,23 +275,22 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_DOUBLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDouble(Double _double) {
+  public void setDouble(@jakarta.annotation.Nullable Double _double) {
     this._double = _double;
   }
 
-
-  public FormatTest string(String string) {
+  public FormatTest string(@jakarta.annotation.Nullable String string) {
     
     this.string = string;
     return this;
   }
 
-   /**
+  /**
    * Get string
    * @return string
-  **/
-  @javax.annotation.Nullable
- @Pattern(regexp="/[a-z]/i")  @ApiModelProperty(value = "")
+   */
+  @jakarta.annotation.Nullable
+ @Pattern(regexp="/[a-z]/i")
   @JsonProperty(JSON_PROPERTY_STRING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -295,24 +301,23 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_STRING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setString(String string) {
+  public void setString(@jakarta.annotation.Nullable String string) {
     this.string = string;
   }
 
-
-  public FormatTest _byte(byte[] _byte) {
+  public FormatTest _byte(@jakarta.annotation.Nonnull byte[] _byte) {
     
     this._byte = _byte;
     return this;
   }
 
-   /**
+  /**
    * Get _byte
    * @return _byte
-  **/
-  @javax.annotation.Nonnull
+   */
+  @jakarta.annotation.Nonnull
   @NotNull
-  @ApiModelProperty(required = true, value = "")
+
   @JsonProperty(JSON_PROPERTY_BYTE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
@@ -323,24 +328,23 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_BYTE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setByte(byte[] _byte) {
+  public void setByte(@jakarta.annotation.Nonnull byte[] _byte) {
     this._byte = _byte;
   }
 
-
-  public FormatTest binary(File binary) {
+  public FormatTest binary(@jakarta.annotation.Nullable File binary) {
     
     this.binary = binary;
     return this;
   }
 
-   /**
+  /**
    * Get binary
    * @return binary
-  **/
-  @javax.annotation.Nullable
+   */
+  @jakarta.annotation.Nullable
   @Valid
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_BINARY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -351,25 +355,24 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_BINARY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setBinary(File binary) {
+  public void setBinary(@jakarta.annotation.Nullable File binary) {
     this.binary = binary;
   }
 
-
-  public FormatTest date(LocalDate date) {
+  public FormatTest date(@jakarta.annotation.Nonnull LocalDate date) {
     
     this.date = date;
     return this;
   }
 
-   /**
+  /**
    * Get date
    * @return date
-  **/
-  @javax.annotation.Nonnull
+   */
+  @jakarta.annotation.Nonnull
   @NotNull
   @Valid
-  @ApiModelProperty(required = true, value = "")
+
   @JsonProperty(JSON_PROPERTY_DATE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
@@ -380,24 +383,23 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_DATE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setDate(LocalDate date) {
+  public void setDate(@jakarta.annotation.Nonnull LocalDate date) {
     this.date = date;
   }
 
-
-  public FormatTest dateTime(OffsetDateTime dateTime) {
+  public FormatTest dateTime(@jakarta.annotation.Nullable OffsetDateTime dateTime) {
     
     this.dateTime = dateTime;
     return this;
   }
 
-   /**
+  /**
    * Get dateTime
    * @return dateTime
-  **/
-  @javax.annotation.Nullable
+   */
+  @jakarta.annotation.Nullable
   @Valid
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_DATE_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -408,24 +410,23 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_DATE_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDateTime(OffsetDateTime dateTime) {
+  public void setDateTime(@jakarta.annotation.Nullable OffsetDateTime dateTime) {
     this.dateTime = dateTime;
   }
 
-
-  public FormatTest uuid(UUID uuid) {
+  public FormatTest uuid(@jakarta.annotation.Nullable UUID uuid) {
     
     this.uuid = uuid;
     return this;
   }
 
-   /**
+  /**
    * Get uuid
    * @return uuid
-  **/
-  @javax.annotation.Nullable
+   */
+  @jakarta.annotation.Nullable
   @Valid
-  @ApiModelProperty(example = "72f98069-206d-4f12-9f12-3d1e525a8e84", value = "")
+
   @JsonProperty(JSON_PROPERTY_UUID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -436,24 +437,23 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_UUID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUuid(UUID uuid) {
+  public void setUuid(@jakarta.annotation.Nullable UUID uuid) {
     this.uuid = uuid;
   }
 
-
-  public FormatTest password(String password) {
+  public FormatTest password(@jakarta.annotation.Nonnull String password) {
     
     this.password = password;
     return this;
   }
 
-   /**
+  /**
    * Get password
    * @return password
-  **/
-  @javax.annotation.Nonnull
+   */
+  @jakarta.annotation.Nonnull
   @NotNull
- @Size(min=10,max=64)  @ApiModelProperty(required = true, value = "")
+ @Size(min=10,max=64)
   @JsonProperty(JSON_PROPERTY_PASSWORD)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
@@ -464,24 +464,23 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_PASSWORD)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPassword(String password) {
+  public void setPassword(@jakarta.annotation.Nonnull String password) {
     this.password = password;
   }
 
-
-  public FormatTest bigDecimal(BigDecimal bigDecimal) {
+  public FormatTest bigDecimal(@jakarta.annotation.Nullable BigDecimal bigDecimal) {
     
     this.bigDecimal = bigDecimal;
     return this;
   }
 
-   /**
+  /**
    * Get bigDecimal
    * @return bigDecimal
-  **/
-  @javax.annotation.Nullable
+   */
+  @jakarta.annotation.Nullable
   @Valid
-  @ApiModelProperty(value = "")
+
   @JsonProperty(JSON_PROPERTY_BIG_DECIMAL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
@@ -492,10 +491,9 @@ public class FormatTest {
 
   @JsonProperty(JSON_PROPERTY_BIG_DECIMAL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setBigDecimal(BigDecimal bigDecimal) {
+  public void setBigDecimal(@jakarta.annotation.Nullable BigDecimal bigDecimal) {
     this.bigDecimal = bigDecimal;
   }
-
 
   @Override
   public boolean equals(Object o) {
@@ -543,7 +541,7 @@ public class FormatTest {
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    dateTime: ").append(toIndentedString(dateTime)).append("\n");
     sb.append("    uuid: ").append(toIndentedString(uuid)).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    password: ").append("*").append("\n");
     sb.append("    bigDecimal: ").append(toIndentedString(bigDecimal)).append("\n");
     sb.append("}");
     return sb.toString();

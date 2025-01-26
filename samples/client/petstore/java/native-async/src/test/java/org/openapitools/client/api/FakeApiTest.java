@@ -16,45 +16,64 @@ package org.openapitools.client.api;
 import org.openapitools.client.ApiException;
 import java.math.BigDecimal;
 import org.openapitools.client.model.Client;
+import org.openapitools.client.model.FakeBigDecimalMap200Response;
 import java.io.File;
 import org.openapitools.client.model.FileSchemaTestClass;
+import org.openapitools.client.model.HealthCheckResult;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import org.openapitools.client.model.OuterComposite;
+import org.openapitools.client.model.OuterEnum;
+import org.openapitools.client.model.TestInlineFreeformAdditionalPropertiesRequest;
 import org.openapitools.client.model.User;
-import org.openapitools.client.model.XmlItem;
-import org.junit.Test;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import java.util.concurrent.CompletableFuture;
 
 /**
  * API tests for FakeApi
  */
-@Ignore
+@Disabled
 public class FakeApiTest {
 
     private final FakeApi api = new FakeApi();
 
     
     /**
-     * creates an XmlItem
+     * 
      *
-     * this route creates an XmlItem
+     * for Java apache and Java native, test toUrlQueryString for maps with BegDecimal keys
      *
      * @throws ApiException
      *          if the Api call fails
      */
     @Test
-    public void createXmlItemTest() throws ApiException {
-        XmlItem xmlItem = null;
+    public void fakeBigDecimalMapTest() throws ApiException {
+        CompletableFuture<FakeBigDecimalMap200Response> response = 
+        api.fakeBigDecimalMap();
         
-        CompletableFuture<Void> response = api.createXmlItem(xmlItem);
+        // TODO: test validations
+    }
+    
+    /**
+     * Health check endpoint
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void fakeHealthGetTest() throws ApiException {
+        CompletableFuture<HealthCheckResult> response = 
+        api.fakeHealthGet();
         
         // TODO: test validations
     }
@@ -86,9 +105,9 @@ public class FakeApiTest {
      */
     @Test
     public void fakeOuterCompositeSerializeTest() throws ApiException {
-        OuterComposite body = null;
+        OuterComposite outerComposite = null;
         CompletableFuture<OuterComposite> response = 
-        api.fakeOuterCompositeSerialize(body);
+        api.fakeOuterCompositeSerialize(outerComposite);
         
         // TODO: test validations
     }
@@ -128,6 +147,55 @@ public class FakeApiTest {
     }
     
     /**
+     * application/json UTF8
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getApplicationJsonUtf8Test() throws ApiException {
+        CompletableFuture<List<OuterEnum>> response = 
+        api.getApplicationJsonUtf8();
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * Array of Enums
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getArrayOfEnumsTest() throws ApiException {
+        CompletableFuture<List<OuterEnum>> response = 
+        api.getArrayOfEnums();
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * test referenced additionalProperties
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void testAdditionalPropertiesReferenceTest() throws ApiException {
+        Map<String, Object> requestBody = null;
+        
+        CompletableFuture<Void> response = api.testAdditionalPropertiesReference(requestBody);
+        
+        // TODO: test validations
+    }
+    
+    /**
      * 
      *
      * For this test, the body for this request much reference a schema named &#x60;File&#x60;.
@@ -137,9 +205,9 @@ public class FakeApiTest {
      */
     @Test
     public void testBodyWithFileSchemaTest() throws ApiException {
-        FileSchemaTestClass body = null;
+        FileSchemaTestClass fileSchemaTestClass = null;
         
-        CompletableFuture<Void> response = api.testBodyWithFileSchema(body);
+        CompletableFuture<Void> response = api.testBodyWithFileSchema(fileSchemaTestClass);
         
         // TODO: test validations
     }
@@ -155,9 +223,9 @@ public class FakeApiTest {
     @Test
     public void testBodyWithQueryParamsTest() throws ApiException {
         String query = null;
-        User body = null;
+        User user = null;
         
-        CompletableFuture<Void> response = api.testBodyWithQueryParams(query, body);
+        CompletableFuture<Void> response = api.testBodyWithQueryParams(query, user);
         
         // TODO: test validations
     }
@@ -172,17 +240,17 @@ public class FakeApiTest {
      */
     @Test
     public void testClientModelTest() throws ApiException {
-        Client body = null;
+        Client client = null;
         CompletableFuture<Client> response = 
-        api.testClientModel(body);
+        api.testClientModel(client);
         
         // TODO: test validations
     }
     
     /**
-     * Fake endpoint for testing various parameters  假端點  偽のエンドポイント  가짜 엔드 포인트
+     * Fake endpoint for testing various parameters 假端點 偽のエンドポイント 가짜 엔드 포인트 
      *
-     * Fake endpoint for testing various parameters  假端點  偽のエンドポイント  가짜 엔드 포인트
+     * Fake endpoint for testing various parameters 假端點 偽のエンドポイント 가짜 엔드 포인트 
      *
      * @throws ApiException
      *          if the Api call fails
@@ -274,9 +342,26 @@ public class FakeApiTest {
      */
     @Test
     public void testInlineAdditionalPropertiesTest() throws ApiException {
-        Map<String, String> param = null;
+        Map<String, String> requestBody = null;
         
-        CompletableFuture<Void> response = api.testInlineAdditionalProperties(param);
+        CompletableFuture<Void> response = api.testInlineAdditionalProperties(requestBody);
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * test inline free-form additionalProperties
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void testInlineFreeformAdditionalPropertiesTest() throws ApiException {
+        TestInlineFreeformAdditionalPropertiesRequest testInlineFreeformAdditionalPropertiesRequest = null;
+        
+        CompletableFuture<Void> response = api.testInlineFreeformAdditionalProperties(testInlineFreeformAdditionalPropertiesRequest);
         
         // TODO: test validations
     }
@@ -316,6 +401,23 @@ public class FakeApiTest {
         List<String> context = null;
         
         CompletableFuture<Void> response = api.testQueryParameterCollectionFormat(pipe, ioutil, http, url, context);
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * test referenced string map
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void testStringMapReferenceTest() throws ApiException {
+        Map<String, String> requestBody = null;
+        
+        CompletableFuture<Void> response = api.testStringMapReference(requestBody);
         
         // TODO: test validations
     }

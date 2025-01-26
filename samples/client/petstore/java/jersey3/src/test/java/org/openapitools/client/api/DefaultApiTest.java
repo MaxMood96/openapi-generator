@@ -15,7 +15,7 @@ package org.openapitools.client.api;
 
 import org.openapitools.client.*;
 import org.openapitools.client.auth.*;
-import org.openapitools.client.model.InlineResponseDefault;
+import org.openapitools.client.model.FooGetDefaultResponse;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 
 /**
  * API tests for DefaultApi
@@ -38,7 +41,7 @@ public class DefaultApiTest {
      */
     @Test
     public void fooGetTest() throws ApiException {
-        //InlineResponseDefault response = api.fooGet();
+        //FooGetDefaultResponse response = api.fooGet();
         // TODO: test validations
     }
 

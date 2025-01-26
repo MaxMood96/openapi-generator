@@ -8,12 +8,37 @@ import Foundation
 #if !os(macOS)
 import MobileCoreServices
 #endif
+#if canImport(UniformTypeIdentifiers)
+import UniformTypeIdentifiers
+#endif
 
-public protocol URLSessionProtocol {
-    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
+// Protocol defined for a session data task. This allows mocking out the URLSessionProtocol below since
+// you may not want to create or return a real URLSessionDataTask.
+public protocol URLSessionDataTaskProtocol {
+    func resume()
+
+    var taskIdentifier: Int { get }
+
+    var progress: Progress { get }
+
+    func cancel()
 }
 
-extension URLSession: URLSessionProtocol {}
+// Protocol allowing implementations to alter what is returned or to test their implementations.
+public protocol URLSessionProtocol {
+    // Task which performs the network fetch. Expected to be from URLSession.dataTask(with:completionHandler:) such that a network request
+    // is sent off when `.resume()` is called.
+    func dataTaskFromProtocol(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol
+}
+
+extension URLSession: URLSessionProtocol {
+  // Passthrough to URLSession.dataTask(with:completionHandler) since URLSessionDataTask conforms to URLSessionDataTaskProtocol and fetches the network data.
+  public func dataTaskFromProtocol(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> any URLSessionDataTaskProtocol {
+    return dataTask(with: request, completionHandler: completionHandler)
+  }
+}
+
+extension URLSessionDataTask: URLSessionDataTaskProtocol {}
 
 class URLSessionRequestBuilderFactory: RequestBuilderFactory {
     func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type {
@@ -45,15 +70,6 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
      May be assigned if you want to control the authentication challenges.
      */
     public var taskDidReceiveChallenge: PetstoreClientAPIChallengeHandler?
-
-    /**
-     May be assigned if you want to do any of those things:
-     - control the task completion
-     - intercept and handle errors like authorization
-     - retry the request.
-     */
-    @available(*, deprecated, message: "Please override execute() method to intercept and handle errors like authorization or retry the request. Check the Wiki for more info. https://github.com/OpenAPITools/openapi-generator/wiki/FAQ#how-do-i-implement-bearer-token-authentication-with-urlsession-on-the-swift-api-client")
-    public var taskCompletionShouldRetry: ((Data?, URLResponse?, Error?, @escaping (Bool) -> Void) -> Void)?
 
     required public init(method: String, URLString: String, parameters: [String: Any]?, headers: [String: String] = [:], requiresAuthentication: Bool) {
         super.init(method: method, URLString: URLString, parameters: parameters, headers: headers, requiresAuthentication: requiresAuthentication)
@@ -92,10 +108,6 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
 
         originalRequest.httpMethod = method.rawValue
 
-        headers.forEach { key, value in
-            originalRequest.setValue(value, forHTTPHeaderField: key)
-        }
-
         buildHeaders().forEach { key, value in
             originalRequest.setValue(value, forHTTPHeaderField: key)
         }
@@ -122,12 +134,14 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         case .options, .post, .put, .patch, .delete, .trace, .connect:
             let contentType = headers["Content-Type"] ?? "application/json"
 
-            if contentType == "application/json" {
+            if contentType.hasPrefix("application/") && contentType.contains("json") {
                 encoding = JSONDataEncoding()
-            } else if contentType == "multipart/form-data" {
+            } else if contentType.hasPrefix("multipart/form-data") {
                 encoding = FormDataEncoding(contentTypeForFormPart: contentTypeForFormPart(fileURL:))
-            } else if contentType == "application/x-www-form-urlencoded" {
+            } else if contentType.hasPrefix("application/x-www-form-urlencoded") {
                 encoding = FormURLEncoding()
+            } else if contentType.hasPrefix("application/octet-stream"){
+                encoding = OctetStreamEncoding()
             } else {
                 fatalError("Unsupported Media Type - \(contentType)")
             }
@@ -144,33 +158,14 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
                  }
              }
 
-            let dataTask = urlSession.dataTask(with: request) { data, response, error in
-
-                if let taskCompletionShouldRetry = self.taskCompletionShouldRetry {
-
-                    taskCompletionShouldRetry(data, response, error) { shouldRetry in
-
-                        if shouldRetry {
-                            cleanupRequest()
-                            self.execute(apiResponseQueue, completion)
-                        } else {
-                            apiResponseQueue.async {
-                                self.processRequestResponse(urlRequest: request, data: data, response: response, error: error, completion: completion)
-                                cleanupRequest()
-                            }
-                        }
-                    }
-                } else {
-                    apiResponseQueue.async {
-                        self.processRequestResponse(urlRequest: request, data: data, response: response, error: error, completion: completion)
-                        cleanupRequest()
-                    }
+            let dataTask = urlSession.dataTaskFromProtocol(with: request) { data, response, error in
+                apiResponseQueue.async {
+                    self.processRequestResponse(urlRequest: request, data: data, response: response, error: error, completion: completion)
+                    cleanupRequest()
                 }
             }
 
-            if #available(iOS 11.0, macOS 10.13, macCatalyst 13.0, tvOS 11.0, watchOS 4.0, *) {
-                onProgressReady?(dataTask.progress)
-            }
+            onProgressReady?(dataTask.progress)
 
             taskIdentifier = dataTask.taskIdentifier
             challengeHandlerStore[dataTask.taskIdentifier] = taskDidReceiveChallenge
@@ -208,7 +203,7 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
         switch T.self {
         case is Void.Type:
 
-            completion(.success(Response(response: httpResponse, body: () as! T)))
+            completion(.success(Response(response: httpResponse, body: () as! T, bodyData: data)))
 
         default:
             fatalError("Unsupported Response Body Type - \(String(describing: T.self))")
@@ -218,10 +213,10 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
 
     open func buildHeaders() -> [String: String] {
         var httpHeaders: [String: String] = [:]
-        for (key, value) in headers {
+        for (key, value) in PetstoreClientAPI.customHeaders {
             httpHeaders[key] = value
         }
-        for (key, value) in PetstoreClientAPI.customHeaders {
+        for (key, value) in headers {
             httpHeaders[key] = value
         }
         return httpHeaders
@@ -303,7 +298,7 @@ open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBui
 
             let body = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
 
-            completion(.success(Response<T>(response: httpResponse, body: body as! T)))
+            completion(.success(Response<T>(response: httpResponse, body: body as! T, bodyData: data)))
 
         case is URL.Type:
             do {
@@ -334,7 +329,7 @@ open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBui
                 try fileManager.createDirectory(atPath: directoryPath, withIntermediateDirectories: true, attributes: nil)
                 try data.write(to: filePath, options: .atomic)
 
-                completion(.success(Response(response: httpResponse, body: filePath as! T)))
+                completion(.success(Response(response: httpResponse, body: filePath as! T, bodyData: data)))
 
             } catch let requestParserError as DownloadException {
                 completion(.failure(ErrorResponse.error(400, data, response, requestParserError)))
@@ -344,30 +339,30 @@ open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBui
 
         case is Void.Type:
 
-            completion(.success(Response(response: httpResponse, body: () as! T)))
+            completion(.success(Response(response: httpResponse, body: () as! T, bodyData: data)))
 
         case is Data.Type:
 
-            completion(.success(Response(response: httpResponse, body: data as! T)))
+            completion(.success(Response(response: httpResponse, body: data as! T, bodyData: data)))
 
         default:
 
-            guard let data = data, !data.isEmpty else {
-                if let E = T.self as? ExpressibleByNilLiteral.Type {
-                    completion(.success(Response(response: httpResponse, body: E.init(nilLiteral: ()) as! T)))
+            guard let unwrappedData = data, !unwrappedData.isEmpty else {
+                if let expressibleByNilLiteralType = T.self as? ExpressibleByNilLiteral.Type {
+                    completion(.success(Response(response: httpResponse, body: expressibleByNilLiteralType.init(nilLiteral: ()) as! T, bodyData: data)))
                 } else {
                     completion(.failure(ErrorResponse.error(httpResponse.statusCode, nil, response, DecodableRequestBuilderError.emptyDataResponse)))
                 }
                 return
             }
 
-            let decodeResult = CodableHelper.decode(T.self, from: data)
+            let decodeResult = CodableHelper.decode(T.self, from: unwrappedData)
 
             switch decodeResult {
             case let .success(decodableObj):
-                completion(.success(Response(response: httpResponse, body: decodableObj)))
+                completion(.success(Response(response: httpResponse, body: decodableObj, bodyData: unwrappedData)))
             case let .failure(error):
-                completion(.failure(ErrorResponse.error(httpResponse.statusCode, data, response, error)))
+                completion(.failure(ErrorResponse.error(httpResponse.statusCode, unwrappedData, response, error)))
             }
         }
     }
@@ -590,10 +585,20 @@ private class FormDataEncoding: ParameterEncoding {
     func mimeType(for url: URL) -> String {
         let pathExtension = url.pathExtension
 
-        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
-            if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+        if #available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *) {
+            #if canImport(UniformTypeIdentifiers)
+            if let utType = UTType(filenameExtension: pathExtension) {
+                return utType.preferredMIMEType ?? "application/octet-stream"
+            }
+            #else
+            return "application/octet-stream" 
+            #endif
+        } else {
+            if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue(),
+                    let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
                 return mimetype as String
             }
+            return "application/octet-stream"
         }
         return "application/octet-stream"
     }
@@ -606,13 +611,49 @@ private class FormURLEncoding: ParameterEncoding {
         var urlRequest = urlRequest
 
         var requestBodyComponents = URLComponents()
-        requestBodyComponents.queryItems = APIHelper.mapValuesToQueryItems(parameters ?? [:])
+        let queryItems = APIHelper.mapValuesToQueryItems(parameters ?? [:])
+        
+        /// `httpBody` needs to be percent encoded
+        /// -> https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST
+        /// "application/x-www-form-urlencoded: [...] Non-alphanumeric characters in both keys and values are percent-encoded"
+        let percentEncodedQueryItems = queryItems?.compactMap { queryItem in
+            return URLQueryItem(
+                name: queryItem.name.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? queryItem.name,
+                value: queryItem.value?.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? queryItem.value)
+        }
+        requestBodyComponents.queryItems = percentEncodedQueryItems
 
         if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
             urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         }
 
+        /// We can't use `requestBodyComponents.percentEncodedQuery` since this does NOT percent encode the `+` sign
+        /// that is why we do the percent encoding manually for each key/value pair
         urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
+
+        return urlRequest
+    }
+}
+
+private class OctetStreamEncoding: ParameterEncoding {
+    func encode(_ urlRequest: URLRequest, with parameters: [String: Any]?) throws -> URLRequest {
+
+        var urlRequest = urlRequest
+
+        guard let body = parameters?["body"] else { return urlRequest }
+
+        if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
+            urlRequest.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+        }
+
+        switch body {
+        case let fileURL as URL:
+            urlRequest.httpBody = try Data(contentsOf: fileURL)
+        case let data as Data:
+            urlRequest.httpBody = data
+        default:
+            fatalError("Unprocessable body \(body)")
+        }
 
         return urlRequest
     }

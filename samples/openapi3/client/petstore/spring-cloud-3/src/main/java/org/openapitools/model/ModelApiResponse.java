@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -21,17 +22,14 @@ import jakarta.annotation.Generated;
 
 @Schema(name = "ApiResponse", description = "Describes the result of uploading an image resource")
 @JsonTypeName("ApiResponse")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.12.0-SNAPSHOT")
 public class ModelApiResponse {
 
-  @JsonProperty("code")
-  private Integer code;
+  private @Nullable Integer code;
 
-  @JsonProperty("type")
-  private String type;
+  private @Nullable String type;
 
-  @JsonProperty("message")
-  private String message;
+  private @Nullable String message;
 
   public ModelApiResponse code(Integer code) {
     this.code = code;
@@ -41,9 +39,10 @@ public class ModelApiResponse {
   /**
    * Get code
    * @return code
-  */
+   */
   
-  @Schema(name = "code", required = false)
+  @Schema(name = "code", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("code")
   public Integer getCode() {
     return code;
   }
@@ -60,9 +59,10 @@ public class ModelApiResponse {
   /**
    * Get type
    * @return type
-  */
+   */
   
-  @Schema(name = "type", required = false)
+  @Schema(name = "type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("type")
   public String getType() {
     return type;
   }
@@ -79,9 +79,10 @@ public class ModelApiResponse {
   /**
    * Get message
    * @return message
-  */
+   */
   
-  @Schema(name = "message", required = false)
+  @Schema(name = "message", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("message")
   public String getMessage() {
     return message;
   }

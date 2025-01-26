@@ -31,6 +31,7 @@ import io.swagger.v3.parser.util.SchemaTypeUtil;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.config.CodegenConfigurator;
 import org.openapitools.codegen.languages.JavaClientCodegen;
+import org.openapitools.codegen.languages.features.DocumentationProviderFeatures.AnnotationLibrary;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -65,7 +66,8 @@ public class JavaModelTest {
 
         final CodegenProperty property1 = vars.get(0);
         Assert.assertEquals(property1.baseName, "id");
-        Assert.assertEquals(property1.nameInCamelCase, "Id");
+        Assert.assertEquals(property1.nameInPascalCase, "Id");
+        Assert.assertEquals(property1.nameInCamelCase, "id");
         Assert.assertEquals(property1.nameInSnakeCase, "ID");
         Assert.assertEquals(property1.getter, "getId");
         Assert.assertEquals(property1.setter, "setId");
@@ -78,7 +80,8 @@ public class JavaModelTest {
 
         final CodegenProperty property2 = vars.get(1);
         Assert.assertEquals(property2.baseName, "name");
-        Assert.assertEquals(property2.nameInCamelCase, "Name");
+        Assert.assertEquals(property2.nameInPascalCase, "Name");
+        Assert.assertEquals(property2.nameInCamelCase, "name");
         Assert.assertEquals(property2.nameInSnakeCase, "NAME");
         Assert.assertEquals(property2.getter, "getName");
         Assert.assertEquals(property2.setter, "setName");
@@ -92,7 +95,8 @@ public class JavaModelTest {
 
         final CodegenProperty property3 = vars.get(2);
         Assert.assertEquals(property3.baseName, "createdAt");
-        Assert.assertEquals(property3.nameInCamelCase, "CreatedAt");
+        Assert.assertEquals(property3.nameInPascalCase, "CreatedAt");
+        Assert.assertEquals(property3.nameInCamelCase, "createdAt");
         Assert.assertEquals(property3.nameInSnakeCase, "CREATED_AT");
         Assert.assertEquals(property3.getter, "getCreatedAt");
         Assert.assertEquals(property3.setter, "setCreatedAt");
@@ -270,10 +274,10 @@ public class JavaModelTest {
 
         final CodegenProperty property = cm.vars.get(0);
         Assert.assertEquals(property.baseName, "@Some:restricted%characters#to!handle+");
-        Assert.assertEquals(property.getter, "getAtSomeColonRestrictedPercentCharactersHashToExclamationHandlePlus");
-        Assert.assertEquals(property.setter, "setAtSomeColonRestrictedPercentCharactersHashToExclamationHandlePlus");
+        Assert.assertEquals(property.getter, "getAtSomeRestrictedPercentCharactersHashToExclamationHandlePlus");
+        Assert.assertEquals(property.setter, "setAtSomeRestrictedPercentCharactersHashToExclamationHandlePlus");
         Assert.assertEquals(property.dataType, "Boolean");
-        Assert.assertEquals(property.name, "atSomeColonRestrictedPercentCharactersHashToExclamationHandlePlus");
+        Assert.assertEquals(property.name, "atSomeRestrictedPercentCharactersHashToExclamationHandlePlus");
         Assert.assertNull(property.defaultValue);
         Assert.assertEquals(property.baseType, "Boolean");
         Assert.assertFalse(property.required);
@@ -481,7 +485,8 @@ public class JavaModelTest {
                 .items(new Schema().name("elobjeto").$ref("#/components/schemas/Children"))
                 .name("arraySchema")
                 .description("an array model");
-        final DefaultCodegen codegen = new JavaClientCodegen();
+        final JavaClientCodegen codegen = new JavaClientCodegen();
+        codegen.setAnnotationLibrary(AnnotationLibrary.SWAGGER1);
         OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", schema);
         codegen.setOpenAPI(openAPI);
         final CodegenModel cm = codegen.fromModel("sample", schema);
@@ -502,7 +507,8 @@ public class JavaModelTest {
                 .uniqueItems(true)
                 .name("arraySchema")
                 .description("an array model");
-        final DefaultCodegen codegen = new JavaClientCodegen();
+        final JavaClientCodegen codegen = new JavaClientCodegen();
+        codegen.setAnnotationLibrary(AnnotationLibrary.SWAGGER1);
         OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", schema);
         codegen.setOpenAPI(openAPI);
         final CodegenModel cm = codegen.fromModel("sample", schema);
@@ -521,7 +527,8 @@ public class JavaModelTest {
         final Schema schema = new Schema()
                 .description("a map model")
                 .additionalProperties(new Schema().$ref("#/components/schemas/Children"));
-        final DefaultCodegen codegen = new JavaClientCodegen();
+        final JavaClientCodegen codegen = new JavaClientCodegen();
+        codegen.setAnnotationLibrary(AnnotationLibrary.SWAGGER1);
         OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", schema);
         codegen.setOpenAPI(openAPI);
         final CodegenModel cm = codegen.fromModel("sample", schema);
@@ -1026,7 +1033,8 @@ public class JavaModelTest {
         final CodegenProperty cp = codegen.fromProperty("property", property);
 
         Assert.assertEquals(cp.baseName, "property");
-        Assert.assertEquals(cp.nameInCamelCase, "Property");
+        Assert.assertEquals(cp.nameInPascalCase, "Property");
+        Assert.assertEquals(cp.nameInCamelCase, "property");
         Assert.assertEquals(cp.nameInSnakeCase, "PROPERTY");
         Assert.assertEquals(cp.dataType, "Long");
         Assert.assertEquals(cp.name, "property");
@@ -1052,7 +1060,8 @@ public class JavaModelTest {
 
         CodegenProperty cp1 = cm.vars.get(0);
         Assert.assertEquals(cp1.baseName, "Integer1");
-        Assert.assertEquals(cp1.nameInCamelCase, "Integer1");
+        Assert.assertEquals(cp1.nameInPascalCase, "Integer1");
+        Assert.assertEquals(cp1.nameInCamelCase, "integer1");
         Assert.assertEquals(cp1.nameInSnakeCase, "INTEGER1");
         Assert.assertEquals(cp1.dataType, "Integer");
         Assert.assertEquals(cp1.name, "integer1");
@@ -1061,7 +1070,8 @@ public class JavaModelTest {
 
         CodegenProperty cp2 = cm.vars.get(1);
         Assert.assertEquals(cp2.baseName, "Integer2");
-        Assert.assertEquals(cp2.nameInCamelCase, "Integer2");
+        Assert.assertEquals(cp2.nameInPascalCase, "Integer2");
+        Assert.assertEquals(cp2.nameInCamelCase, "integer2");
         Assert.assertEquals(cp2.nameInSnakeCase, "INTEGER2");
         Assert.assertEquals(cp2.dataType, "Integer");
         Assert.assertEquals(cp2.name, "integer2");
@@ -1106,7 +1116,8 @@ public class JavaModelTest {
         final CodegenProperty cp = codegen.fromProperty("somePropertyWithMinMaxAndPattern", property);
 
         Assert.assertEquals(cp.baseName, "somePropertyWithMinMaxAndPattern");
-        Assert.assertEquals(cp.nameInCamelCase, "SomePropertyWithMinMaxAndPattern");
+        Assert.assertEquals(cp.nameInPascalCase, "SomePropertyWithMinMaxAndPattern");
+        Assert.assertEquals(cp.nameInCamelCase, "somePropertyWithMinMaxAndPattern");
         Assert.assertEquals(cp.nameInSnakeCase, "SOME_PROPERTY_WITH_MIN_MAX_AND_PATTERN");
         Assert.assertEquals(cp.dataType, "String");
         Assert.assertEquals(cp.name, "somePropertyWithMinMaxAndPattern");
@@ -1119,6 +1130,17 @@ public class JavaModelTest {
         Assert.assertEquals(cp.minLength, Integer.valueOf(3));
         Assert.assertEquals(cp.maxLength, Integer.valueOf(10));
         Assert.assertEquals(cp.pattern, "^[A-Z]+$");
+    }
+    
+    @Test(description = "convert string property with password format")
+    public void stringPropertyPasswordFormatTest() {
+        OpenAPI openAPI = TestUtils.createOpenAPI();
+        final Schema property = new StringSchema().format("password");
+        final DefaultCodegen codegen = new JavaClientCodegen();
+        codegen.setOpenAPI(openAPI);
+        
+        final CodegenProperty cp = codegen.fromProperty("somePropertyWithPasswordFormat", property);
+        Assert.assertEquals(cp.isPassword, true);
     }
 
     @Test(description = "convert string property in an object")
@@ -1134,7 +1156,8 @@ public class JavaModelTest {
         Assert.assertEquals(cm.getVars().size(), 1);
         CodegenProperty cp = cm.getVars().get(0);
         Assert.assertEquals(cp.baseName, "somePropertyWithMinMaxAndPattern");
-        Assert.assertEquals(cp.nameInCamelCase, "SomePropertyWithMinMaxAndPattern");
+        Assert.assertEquals(cp.nameInPascalCase, "SomePropertyWithMinMaxAndPattern");
+        Assert.assertEquals(cp.nameInCamelCase, "somePropertyWithMinMaxAndPattern");
         Assert.assertEquals(cp.nameInSnakeCase, "SOME_PROPERTY_WITH_MIN_MAX_AND_PATTERN");
         Assert.assertEquals(cp.dataType, "String");
         Assert.assertEquals(cp.name, "somePropertyWithMinMaxAndPattern");
@@ -1166,7 +1189,8 @@ public class JavaModelTest {
         Assert.assertEquals(cm.getVars().size(), 1);
         CodegenProperty cp = cm.getVars().get(0);
         Assert.assertEquals(cp.baseName, "somePropertyWithMinMaxAndPattern");
-        Assert.assertEquals(cp.nameInCamelCase, "SomePropertyWithMinMaxAndPattern");
+        Assert.assertEquals(cp.nameInPascalCase, "SomePropertyWithMinMaxAndPattern");
+        Assert.assertEquals(cp.nameInCamelCase, "somePropertyWithMinMaxAndPattern");
         Assert.assertEquals(cp.nameInSnakeCase, "SOME_PROPERTY_WITH_MIN_MAX_AND_PATTERN");
         Assert.assertEquals(cp.dataType, "String");
         Assert.assertEquals(cp.name, "somePropertyWithMinMaxAndPattern");

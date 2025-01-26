@@ -1,10 +1,12 @@
 package org.openapitools.model
 
 import java.util.Objects
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 import org.openapitools.model.Category
 import org.openapitools.model.Tag
+import java.io.Serializable
 import javax.validation.constraints.DecimalMax
 import javax.validation.constraints.DecimalMin
 import javax.validation.constraints.Email
@@ -26,31 +28,42 @@ import javax.validation.Valid
  */
 data class Pet(
 
-    @field:JsonProperty("name", required = true) val name: kotlin.String,
+    @get:JsonProperty("name", required = true) val name: kotlin.String,
 
-    @field:JsonProperty("photoUrls", required = true) val photoUrls: kotlin.collections.List<kotlin.String>,
+    @get:JsonProperty("photoUrls", required = true) val photoUrls: kotlin.collections.List<kotlin.String>,
 
-    @field:JsonProperty("id") val id: kotlin.Long? = null,
-
-    @field:Valid
-    @field:JsonProperty("category") val category: Category? = null,
+    @get:JsonProperty("id") val id: kotlin.Long? = null,
 
     @field:Valid
-    @field:JsonProperty("tags") val tags: kotlin.collections.List<Tag>? = null,
+    @get:JsonProperty("category") val category: Category? = null,
 
-    @field:JsonProperty("status") val status: Pet.Status? = null
-) {
+    @field:Valid
+    @get:JsonProperty("tags") val tags: kotlin.collections.List<Tag>? = null,
+
+    @get:JsonProperty("status") val status: Pet.Status? = null
+    ) : Serializable{
 
     /**
     * pet status in the store
     * Values: available,pending,sold
     */
-    enum class Status(val value: kotlin.String) {
+    enum class Status(@get:JsonValue val value: kotlin.String) {
 
-        @JsonProperty("available") available("available"),
-        @JsonProperty("pending") pending("pending"),
-        @JsonProperty("sold") sold("sold")
+        available("available"),
+        pending("pending"),
+        sold("sold");
+
+        companion object {
+            @JvmStatic
+            @JsonCreator
+            fun forValue(value: kotlin.String): Status {
+                return values().first{it -> it.value == value}
+            }
+        }
     }
 
+    companion object {
+        private const val serialVersionUID: kotlin.Long = 1
+    }
 }
 

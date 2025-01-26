@@ -14,10 +14,8 @@
 package org.openapitools.client.model;
 
 import com.google.gson.annotations.SerializedName;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
 
 /**
  * Model tests for EnumClass

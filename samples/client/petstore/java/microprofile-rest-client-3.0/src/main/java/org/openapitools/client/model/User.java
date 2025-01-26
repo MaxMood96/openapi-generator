@@ -1,6 +1,6 @@
 /**
  * OpenAPI Petstore
- * This is a sample server Petstore server. For this sample, you can use the api key `special-key` to test the authorization filters.
+ * This spec is mainly for testing Petstore server and contains fake endpoints, models. Please do not use this for any other purpose. Special characters: \" \\
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -12,7 +12,8 @@
 
 package org.openapitools.client.model;
 
-
+import java.util.Objects;
+import java.util.Arrays;
 import java.lang.reflect.Type;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
@@ -23,10 +24,11 @@ import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbSubtype;
+import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
+import jakarta.json.bind.annotation.JsonbCreator;
 
-/**
-  * A User who is purchasing from the pet store
- **/
 
 public class User  {
   
@@ -52,22 +54,22 @@ public class User  {
   private String phone;
 
  /**
-   * User Status
-  **/
+  * User Status
+  */
   @JsonbProperty("userStatus")
   private Integer userStatus;
 
- /**
+  /**
    * Get id
    * @return id
-  **/
+   **/
   public Long getId() {
     return id;
   }
 
   /**
-    * Set id
-  **/
+   * Set id
+   */
   public void setId(Long id) {
     this.id = id;
   }
@@ -77,17 +79,17 @@ public class User  {
     return this;
   }
 
- /**
+  /**
    * Get username
    * @return username
-  **/
+   **/
   public String getUsername() {
     return username;
   }
 
   /**
-    * Set username
-  **/
+   * Set username
+   */
   public void setUsername(String username) {
     this.username = username;
   }
@@ -97,17 +99,17 @@ public class User  {
     return this;
   }
 
- /**
+  /**
    * Get firstName
    * @return firstName
-  **/
+   **/
   public String getFirstName() {
     return firstName;
   }
 
   /**
-    * Set firstName
-  **/
+   * Set firstName
+   */
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
@@ -117,17 +119,17 @@ public class User  {
     return this;
   }
 
- /**
+  /**
    * Get lastName
    * @return lastName
-  **/
+   **/
   public String getLastName() {
     return lastName;
   }
 
   /**
-    * Set lastName
-  **/
+   * Set lastName
+   */
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
@@ -137,17 +139,17 @@ public class User  {
     return this;
   }
 
- /**
+  /**
    * Get email
    * @return email
-  **/
+   **/
   public String getEmail() {
     return email;
   }
 
   /**
-    * Set email
-  **/
+   * Set email
+   */
   public void setEmail(String email) {
     this.email = email;
   }
@@ -157,17 +159,17 @@ public class User  {
     return this;
   }
 
- /**
+  /**
    * Get password
    * @return password
-  **/
+   **/
   public String getPassword() {
     return password;
   }
 
   /**
-    * Set password
-  **/
+   * Set password
+   */
   public void setPassword(String password) {
     this.password = password;
   }
@@ -177,17 +179,17 @@ public class User  {
     return this;
   }
 
- /**
+  /**
    * Get phone
    * @return phone
-  **/
+   **/
   public String getPhone() {
     return phone;
   }
 
   /**
-    * Set phone
-  **/
+   * Set phone
+   */
   public void setPhone(String phone) {
     this.phone = phone;
   }
@@ -197,17 +199,17 @@ public class User  {
     return this;
   }
 
- /**
+  /**
    * User Status
    * @return userStatus
-  **/
+   **/
   public Integer getUserStatus() {
     return userStatus;
   }
 
   /**
-    * Set userStatus
-  **/
+   * Set userStatus
+   */
   public void setUserStatus(Integer userStatus) {
     this.userStatus = userStatus;
   }
@@ -217,10 +219,33 @@ public class User  {
     return this;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    User user = (User) o;
+    return Objects.equals(this.id, user.id) &&
+        Objects.equals(this.username, user.username) &&
+        Objects.equals(this.firstName, user.firstName) &&
+        Objects.equals(this.lastName, user.lastName) &&
+        Objects.equals(this.email, user.email) &&
+        Objects.equals(this.password, user.password) &&
+        Objects.equals(this.phone, user.phone) &&
+        Objects.equals(this.userStatus, user.userStatus);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, username, firstName, lastName, email, password, phone, userStatus);
+  }
 
   /**
-    * Create a string representation of this pojo.
-  **/
+   * Create a string representation of this pojo.
+   */
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

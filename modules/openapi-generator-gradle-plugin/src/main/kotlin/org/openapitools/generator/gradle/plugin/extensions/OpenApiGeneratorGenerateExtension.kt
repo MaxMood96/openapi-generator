@@ -17,6 +17,8 @@
 package org.openapitools.generator.gradle.plugin.extensions
 
 import org.gradle.api.Project
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.mapProperty
 import org.gradle.kotlin.dsl.property
@@ -53,9 +55,24 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     val inputSpec = project.objects.property<String>()
 
     /**
+     * Local root folder with spec files
+     */
+    val inputSpecRootDirectory = project.objects.property<String>()
+
+    /**
+     * The remote Open API 2.0/3.x specification URL location.
+     */
+    val remoteInputSpec = project.objects.property<String>()
+
+    /**
      * The template directory holding a custom template.
      */
     val templateDir = project.objects.property<String?>()
+
+    /**
+     * The template location (which may be a directory or a classpath location) holding custom templates.
+     */
+    val templateResourcePath = project.objects.property<String?>()
 
     /**
      * Adds authorization headers when fetching the OpenAPI definitions remotely.
@@ -136,6 +153,11 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     val languageSpecificPrimitives = project.objects.listProperty<String>()
 
     /**
+     * Specifies .openapi-generator-ignore list in the form of relative/path/to/file1,relative/path/to/file2. For example: README.md,pom.xml. 
+     */
+    val openapiGeneratorIgnoreList = project.objects.listProperty<String>()
+
+    /**
      * Specifies mappings between a given class and the import that should be used for that class.
      */
     val importMappings = project.objects.mapProperty<String, String>()
@@ -151,9 +173,39 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     val inlineSchemaNameMappings = project.objects.mapProperty<String, String>()
 
     /**
-     * Specifies default values for inline schema naming convention
+     * Specifies options for inline schemas
      */
-    val inlineSchemaNameDefaults = project.objects.mapProperty<String, String>()
+    val inlineSchemaOptions = project.objects.mapProperty<String, String>()
+
+    /**
+     * Specifies mappings between a property name and the new name
+     */
+    val nameMappings = project.objects.mapProperty<String, String>()
+
+    /**
+     * Specifies mappings between a parameter name and the new name
+     */
+    val parameterNameMappings = project.objects.mapProperty<String, String>()
+
+    /**
+     * Specifies mappings between a model name and the new name
+     */
+    val modelNameMappings = project.objects.mapProperty<String, String>()
+
+    /**
+     * Specifies mappings between an enum name and the new name
+     */
+    val enumNameMappings = project.objects.mapProperty<String, String>()
+
+    /**
+     * Specifies mappings between an operation id name and the new name
+     */
+    val operationIdNameMappings = project.objects.mapProperty<String, String>()
+
+    /**
+     * Specifies mappings (rules) in OpenAPI normalizer
+     */
+    val openapiNormalizer = project.objects.mapProperty<String, String>()
 
     /**
      * Root package for generated code.
@@ -296,12 +348,6 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     val generateApiDocumentation = project.objects.property<Boolean>()
 
     /**
-     * A special-case setting which configures some generators with XML support. In some cases,
-     * this forces json OR xml, so the default here is false.
-     */
-    val withXml = project.objects.property<Boolean>()
-
-    /**
      * To write all log messages (not just errors) to STDOUT
      */
     val logToStderr = project.objects.property<Boolean>()
@@ -336,6 +382,17 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
      */
     val engine = project.objects.property<String?>()
 
+    /**
+     * Defines whether the output dir should be cleaned up before generating the output.
+     *
+     */
+    val cleanupOutput = project.objects.property<Boolean>()
+
+    /**
+     * Defines whether the generator should run in dry-run mode.
+     */
+    val dryRun = project.objects.property<Boolean>()
+
     init {
         applyDefaults()
     }
@@ -350,12 +407,13 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
         generateModelDocumentation.set(true)
         generateApiTests.set(true)
         generateApiDocumentation.set(true)
-        withXml.set(false)
         configOptions.set(mapOf())
         validateSpec.set(true)
         logToStderr.set(false)
         enablePostProcessFile.set(false)
         skipValidateSpec.set(false)
         generateAliasAsModel.set(false)
+        cleanupOutput.set(false)
+        dryRun.set(false)
     }
 }
